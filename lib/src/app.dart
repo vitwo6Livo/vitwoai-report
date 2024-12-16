@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
-
-import 'login/presentation/login-Screen.dart';
+import 'package:vitwoai_report/src/settings/theme.dart';
+import 'routes/routeNames.dart';
+import 'routes/routeNavigation.dart';
 
 class ReportApp extends StatelessWidget {
   const ReportApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Login_Screen(),
+      theme: Styles.themeData(context),
+      onGenerateTitle: (BuildContext context) => 'Vitwoai Report',
+      initialRoute: RouteNames.mainScrren,
+      onGenerateRoute: Routes.generateRoute,
     );
   }
 }
