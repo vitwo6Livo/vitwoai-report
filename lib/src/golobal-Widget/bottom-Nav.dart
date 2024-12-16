@@ -10,6 +10,6 @@ class Bottom_Navigation extends StatefulWidget {
 class _Bottom_NavigationState extends State<Bottom_Navigation> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return const Scaffold();
   }
 }

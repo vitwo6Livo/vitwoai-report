@@ -6,17 +6,17 @@ class Styles {
     return ThemeData(
       scaffoldBackgroundColor: AppColor.screenBg,
       textTheme: ThemeData.light().textTheme.copyWith(
-            bodyLarge: TextStyle(
+            bodyLarge: const TextStyle(
               fontFamily: '',
               fontSize: 22,
               // color: AppColor.,
             ),
-            bodySmall: TextStyle(
+            bodySmall: const TextStyle(
               fontFamily: '',
               // color: AppColor.,
               fontSize: 14,
             ),
-            bodyMedium: TextStyle(
+            bodyMedium: const TextStyle(
               fontFamily: '',
               // color: AppColor.,
               fontWeight: FontWeight.bold,
