@@ -1,5 +1,3 @@
-// ignore_for_file: use_full_hex_values_for_flutter_colors, file_names
-
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -20,12 +18,6 @@ class _PieChartWidgetState extends State<PieChartWidget> {
     [30, 'Food', Colors.green],
     [20, 'Transportation', Colors.orange],
     [10, 'Entertainment', Colors.purple],
-    // [50, 'Savings', Colors.red],
-    // [15, 'Utilities', Colors.teal],
-    // [25, 'Healthcare', Colors.yellow],
-    // [35, 'Education', Colors.pink],
-    // [45, 'Insurance', Colors.cyan],
-    // [5, 'Miscellaneous', Colors.grey],
   ];
   @override
   Widget build(BuildContext context) {

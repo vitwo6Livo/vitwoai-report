@@ -1,15 +1,10 @@
-// ignore_for_file: camel_case_types, file_names, use_key_in_widget_constructors, must_be_immutable
-
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vitwoai_report/src/home/presentation/mainScreenWidget/barChart/barChart-Widget.dart';
 import 'package:vitwoai_report/src/home/presentation/mainScreenWidget/pieChart/pieChart-Widget.dart';
-import 'package:vitwoai_report/src/settings/all-Button.dart';
-import 'package:vitwoai_report/src/settings/mediaQuery.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
 import '../../golobal-Widget/customPage-Route.dart';
-import '../../golobal-Widget/dasboard-Widget.dart';
 import '../../golobal-Widget/dasboardChartCard-Widget.dart';
 import 'addWidget-Screen.dart';
 import 'mainScreenWidget/areaChart-Widget.dart';
@@ -87,7 +82,6 @@ class _Main_ScreenState extends State<Main_Screen> {
       ),
       body: noSelectedItems
           ? Column(
-              // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
                   HandText.customizeInfo,
