@@ -37,7 +37,7 @@ class _ProductWiseScreenState extends State<ProductWiseScreen> {
               child: DropdownButton<String>(
                 value: _selectedItem,
                 hint: Text(_items[0],
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontWeight: FontWeight.bold, color: Colors.white)),
                 isExpanded: true,
                 underline: const SizedBox(),
@@ -59,7 +59,7 @@ class _ProductWiseScreenState extends State<ProductWiseScreen> {
                     _selectedItem = newValue;
                   });
                 },
-                dropdownColor: Color.fromARGB(255, 11, 101, 192),
+                dropdownColor: Color(0xfff003060),
                 style: const TextStyle(fontSize: 16, color: Colors.black),
               ),
             ),
