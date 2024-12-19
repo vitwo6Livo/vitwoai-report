@@ -51,68 +51,71 @@ class _AllReportState extends State<AllReport> {
       const ReportDetails(),
     ];
     return Scaffold(
-        drawer: AppDrawer(
-          onItemSelected: (index) {
-            setState(() {
-              i = index;
-            });
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => screens[i],
-              ),
-            );
-          },
-        ),
-        appBar: AppBar(
-          title: Text(
-            "All Reports",
-            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  color: AppColor.appbarFont,
-                ),
-          ),
-          actions: [
-            const Padding(
-              padding: EdgeInsets.only(right: 10),
-              child: Icon(Icons.notifications_active),
+      drawer: AppDrawer(
+        onItemSelected: (index) {
+          setState(() {
+            i = index;
+          });
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => screens[i],
             ),
-          ],
+          );
+        },
+      ),
+      appBar: AppBar(
+        title: Text(
+          "All Reports",
+          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                color: AppColor.appbarFont,
+              ),
         ),
-        body: Expanded(
-          child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2),
-              itemCount: listItems.length,
-              itemBuilder: (context, index) {
-                return InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => onClickList[index]));
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                            height: 140,
-                            width: 120,
-                            child:
-                                LottieBuilder.asset(listItems[index]["image"])),
-                        Text(
-                          listItems[index]["title"],
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        )
-                      ],
-                    ),
+        actions: [
+          const Padding(
+            padding: EdgeInsets.only(right: 10),
+            child: Icon(Icons.notifications_active),
+          ),
+        ],
+      ),
+      body: GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2),
+          itemCount: listItems.length,
+          itemBuilder: (context, index) {
+            return InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => onClickList[index],
                   ),
                 );
-              }),
-        ));
+              },
+              child: Container(
+                margin: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10)),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      child: LottieBuilder.asset(
+                        listItems[index]["image"],
+                        height: 140,
+                        width: 120,
+                      ),
+                    ),
+                    Text(
+                      listItems[index]["title"],
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }),
+    );
   }
 }

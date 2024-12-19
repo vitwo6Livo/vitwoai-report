@@ -41,89 +41,87 @@ class _BarChartWidgetState extends State<BarChartWidget> {
         _getChartData();
       });
     });
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Bar Chart',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    Text(
-                      'This is Bar Chart',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodySmall!
-                          .copyWith(fontSize: 10),
-                    ),
-                  ],
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      CustomPageRoute(
-                        child: const PieChartDetails(),
-                        direction: AxisDirection.up,
-                      ),
-                    );
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(1),
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(Radius.circular(8)),
-                      border: Border.all(width: 1, color: Colors.grey),
-                    ),
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.settings,
-                          size: 15,
-                        ),
-                        Text(
-                          'Settings',
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                      ],
-                    ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Bar Chart',
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
-                )
-              ],
-            ),
-          ),
-          Card(
-            child: SfCartesianChart(
-              primaryXAxis: CategoryAxis(
-                title: AxisTitle(text: "Food Chart"),
+                  Text(
+                    'This is Bar Chart',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall!
+                        .copyWith(fontSize: 10),
+                  ),
+                ],
               ),
-              legend: Legend(isVisible: true),
-              series: [
-                BarSeries(
-                  dataSource: foodData,
-                  xValueMapper: (datum, index) => datum['name'],
-                  yValueMapper: (datum, index) => datum['price'],
-                  color: Colors.green,
-                  name: "Healthy",
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                    CustomPageRoute(
+                      child: const PieChartDetails(),
+                      direction: AxisDirection.up,
+                    ),
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(1),
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                    border: Border.all(width: 1, color: Colors.grey),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.settings,
+                        size: 15,
+                      ),
+                      Text(
+                        'Settings',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                    ],
+                  ),
                 ),
-                BarSeries(
-                  dataSource: foodData,
-                  xValueMapper: (datum, index) => datum['name'],
-                  yValueMapper: (datum, index) => datum['calories'],
-                  color: Colors.orange,
-                  name: "Healthy",
-                )
-              ],
-            ),
+              )
+            ],
           ),
-        ],
-      ),
+        ),
+        Card(
+          child: SfCartesianChart(
+            primaryXAxis: CategoryAxis(
+              title: AxisTitle(text: "Food Chart"),
+            ),
+            legend: Legend(isVisible: true),
+            series: [
+              BarSeries(
+                dataSource: foodData,
+                xValueMapper: (datum, index) => datum['name'],
+                yValueMapper: (datum, index) => datum['price'],
+                color: Colors.green,
+                name: "Healthy",
+              ),
+              BarSeries(
+                dataSource: foodData,
+                xValueMapper: (datum, index) => datum['name'],
+                yValueMapper: (datum, index) => datum['calories'],
+                color: Colors.orange,
+                name: "Healthy",
+              )
+            ],
+          ),
+        ),
+      ],
     );
   }
 

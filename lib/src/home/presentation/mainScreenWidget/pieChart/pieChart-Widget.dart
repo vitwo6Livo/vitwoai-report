@@ -21,249 +21,247 @@ class _PieChartWidgetState extends State<PieChartWidget> {
   ];
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Pie Chart',
-                      style: Theme.of(context).textTheme.bodyMedium,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Pie Chart',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  Text(
+                    'This is Pie Chart',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall!
+                        .copyWith(fontSize: 10),
+                  ),
+                ],
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                    CustomPageRoute(
+                      child: const PieChartDetails(),
+                      direction: AxisDirection.up,
                     ),
-                    Text(
-                      'This is Pie Chart',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodySmall!
-                          .copyWith(fontSize: 10),
-                    ),
-                  ],
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      CustomPageRoute(
-                        child: const PieChartDetails(),
-                        direction: AxisDirection.up,
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(1),
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                    border: Border.all(width: 1, color: Colors.grey),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.settings,
+                        size: 15,
                       ),
-                    );
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(1),
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(Radius.circular(8)),
-                      border: Border.all(width: 1, color: Colors.grey),
-                    ),
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.settings,
-                          size: 15,
-                        ),
-                        Text(
-                          'Settings',
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                      ],
-                    ),
+                      Text(
+                        'Settings',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                    ],
                   ),
-                )
-              ],
-            ),
+                ),
+              )
+            ],
           ),
-          Card(
-            child: SfCircularChart(
-              series: [
-                PieSeries(
-                  // radius: "30%",
-                  dataSource: chartData,
-                  yValueMapper: (datum, index) => datum[0],
-                  xValueMapper: (datum, index) => datum[1],
-                  explode: true,
-                  pointColorMapper: (datum, index) => datum[2],
-                  dataLabelMapper: (datum, index) => datum[0].toString() + "%",
-                  dataLabelSettings: const DataLabelSettings(
-                    isVisible: true,
-                    labelPosition: ChartDataLabelPosition.outside,
-                  ),
-                )
-              ],
-              legend: Legend(isVisible: true, position: LegendPosition.top),
-            ),
+        ),
+        Card(
+          child: SfCircularChart(
+            series: [
+              PieSeries(
+                // radius: "30%",
+                dataSource: chartData,
+                yValueMapper: (datum, index) => datum[0],
+                xValueMapper: (datum, index) => datum[1],
+                explode: true,
+                pointColorMapper: (datum, index) => datum[2],
+                dataLabelMapper: (datum, index) => datum[0].toString() + "%",
+                dataLabelSettings: const DataLabelSettings(
+                  isVisible: true,
+                  labelPosition: ChartDataLabelPosition.outside,
+                ),
+              )
+            ],
+            legend: Legend(isVisible: true, position: LegendPosition.top),
           ),
-          // AspectRatio(
-          //   aspectRatio: 2.3,
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //     children: <Widget>[
-          //       SizedBox(
-          //         width: 150,
-          //         child: PieChart(
-          //           PieChartData(
-          //             pieTouchData: PieTouchData(
-          //               touchCallback: (FlTouchEvent event, pieTouchResponse) {
-          //                 setState(() {
-          //                   if (!event.isInterestedForInteractions ||
-          //                       pieTouchResponse == null ||
-          //                       pieTouchResponse.touchedSection == null) {
-          //                     touchedIndex = -1;
-          //                     return;
-          //                   }
-          //                   touchedIndex = pieTouchResponse
-          //                       .touchedSection!.touchedSectionIndex;
-          //                 });
-          //               },
-          //             ),
-          //             borderData: FlBorderData(show: false),
-          //             sectionsSpace: 0,
-          //             centerSpaceRadius: 35,
-          //             sections: showingSections(),
-          //           ),
-          //         ),
-          //       ),
-          //       Padding(
-          //         padding: const EdgeInsets.only(right: 0),
-          //         child: SizedBox(
-          //           width: 200,
-          //           child: Column(
-          //             crossAxisAlignment: CrossAxisAlignment.start,
-          //             children: [
-          //               const SizedBox(height: 16),
-          //               Row(
-          //                 children: [
-          //                   Container(
-          //                     height: 16,
-          //                     width: 16,
-          //                     decoration: const BoxDecoration(
-          //                       color: Color(0xffffdd03f),
-          //                       borderRadius: BorderRadius.all(
-          //                         Radius.circular(5),
-          //                       ),
-          //                     ),
-          //                   ),
-          //                   const SizedBox(width: 8),
-          //                   Text(
-          //                     'Flutter (25%)',
-          //                     style: Theme.of(context).textTheme.bodySmall,
-          //                   ),
-          //                 ],
-          //               ),
-          //               const SizedBox(height: 5),
-          //               Row(
-          //                 children: [
-          //                   Container(
-          //                     height: 16,
-          //                     width: 16,
-          //                     decoration: const BoxDecoration(
-          //                       color: Color(0xfff4cc8ff),
-          //                       borderRadius: BorderRadius.all(
-          //                         Radius.circular(5),
-          //                       ),
-          //                     ),
-          //                   ),
-          //                   const SizedBox(width: 8),
-          //                   Text(
-          //                     'Java (20%)',
-          //                     style: Theme.of(context).textTheme.bodySmall,
-          //                   ),
-          //                 ],
-          //               ),
-          //               const SizedBox(height: 5),
-          //               Row(
-          //                 children: [
-          //                   Container(
-          //                     height: 16,
-          //                     width: 16,
-          //                     decoration: const BoxDecoration(
-          //                       color: Color(0xfffff724a),
-          //                       borderRadius: BorderRadius.all(
-          //                         Radius.circular(5),
-          //                       ),
-          //                     ),
-          //                   ),
-          //                   const SizedBox(width: 8),
-          //                   Text(
-          //                     'CSS (15%)',
-          //                     style: Theme.of(context).textTheme.bodySmall,
-          //                   ),
-          //                 ],
-          //               ),
-          //               const SizedBox(height: 5),
-          //               Row(
-          //                 children: [
-          //                   Container(
-          //                     height: 16,
-          //                     width: 16,
-          //                     decoration: const BoxDecoration(
-          //                       color: Color(0xfff9b7be8),
-          //                       borderRadius: BorderRadius.all(
-          //                         Radius.circular(5),
-          //                       ),
-          //                     ),
-          //                   ),
-          //                   const SizedBox(width: 8),
-          //                   Text(
-          //                     'HTML (15%)',
-          //                     style: Theme.of(context).textTheme.bodySmall,
-          //                   ),
-          //                 ],
-          //               ),
-          //               const SizedBox(height: 5),
-          //               Row(
-          //                 children: [
-          //                   Container(
-          //                     height: 16,
-          //                     width: 16,
-          //                     decoration: const BoxDecoration(
-          //                       color: Color(0xfff5ae3b7),
-          //                       borderRadius: BorderRadius.all(
-          //                         Radius.circular(5),
-          //                       ),
-          //                     ),
-          //                   ),
-          //                   const SizedBox(width: 8),
-          //                   Text(
-          //                     'AWS (18%)',
-          //                     style: Theme.of(context).textTheme.bodySmall,
-          //                   ),
-          //                 ],
-          //               ),
-          //               const SizedBox(height: 5),
-          //               Row(
-          //                 children: [
-          //                   Container(
-          //                     height: 16,
-          //                     width: 16,
-          //                     decoration: const BoxDecoration(
-          //                       color: Color(0xffff6424d),
-          //                       borderRadius: BorderRadius.all(
-          //                         Radius.circular(5),
-          //                       ),
-          //                     ),
-          //                   ),
-          //                   const SizedBox(width: 8),
-          //                   Text(
-          //                     'Kotlin (09%)',
-          //                     style: Theme.of(context).textTheme.bodySmall,
-          //                   ),
-          //                 ],
-          //               ),
-          //             ],
-          //           ),
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
-        ],
-      ),
+        ),
+        // AspectRatio(
+        //   aspectRatio: 2.3,
+        //   child: Row(
+        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //     children: <Widget>[
+        //       SizedBox(
+        //         width: 150,
+        //         child: PieChart(
+        //           PieChartData(
+        //             pieTouchData: PieTouchData(
+        //               touchCallback: (FlTouchEvent event, pieTouchResponse) {
+        //                 setState(() {
+        //                   if (!event.isInterestedForInteractions ||
+        //                       pieTouchResponse == null ||
+        //                       pieTouchResponse.touchedSection == null) {
+        //                     touchedIndex = -1;
+        //                     return;
+        //                   }
+        //                   touchedIndex = pieTouchResponse
+        //                       .touchedSection!.touchedSectionIndex;
+        //                 });
+        //               },
+        //             ),
+        //             borderData: FlBorderData(show: false),
+        //             sectionsSpace: 0,
+        //             centerSpaceRadius: 35,
+        //             sections: showingSections(),
+        //           ),
+        //         ),
+        //       ),
+        //       Padding(
+        //         padding: const EdgeInsets.only(right: 0),
+        //         child: SizedBox(
+        //           width: 200,
+        //           child: Column(
+        //             crossAxisAlignment: CrossAxisAlignment.start,
+        //             children: [
+        //               const SizedBox(height: 16),
+        //               Row(
+        //                 children: [
+        //                   Container(
+        //                     height: 16,
+        //                     width: 16,
+        //                     decoration: const BoxDecoration(
+        //                       color: Color(0xffffdd03f),
+        //                       borderRadius: BorderRadius.all(
+        //                         Radius.circular(5),
+        //                       ),
+        //                     ),
+        //                   ),
+        //                   const SizedBox(width: 8),
+        //                   Text(
+        //                     'Flutter (25%)',
+        //                     style: Theme.of(context).textTheme.bodySmall,
+        //                   ),
+        //                 ],
+        //               ),
+        //               const SizedBox(height: 5),
+        //               Row(
+        //                 children: [
+        //                   Container(
+        //                     height: 16,
+        //                     width: 16,
+        //                     decoration: const BoxDecoration(
+        //                       color: Color(0xfff4cc8ff),
+        //                       borderRadius: BorderRadius.all(
+        //                         Radius.circular(5),
+        //                       ),
+        //                     ),
+        //                   ),
+        //                   const SizedBox(width: 8),
+        //                   Text(
+        //                     'Java (20%)',
+        //                     style: Theme.of(context).textTheme.bodySmall,
+        //                   ),
+        //                 ],
+        //               ),
+        //               const SizedBox(height: 5),
+        //               Row(
+        //                 children: [
+        //                   Container(
+        //                     height: 16,
+        //                     width: 16,
+        //                     decoration: const BoxDecoration(
+        //                       color: Color(0xfffff724a),
+        //                       borderRadius: BorderRadius.all(
+        //                         Radius.circular(5),
+        //                       ),
+        //                     ),
+        //                   ),
+        //                   const SizedBox(width: 8),
+        //                   Text(
+        //                     'CSS (15%)',
+        //                     style: Theme.of(context).textTheme.bodySmall,
+        //                   ),
+        //                 ],
+        //               ),
+        //               const SizedBox(height: 5),
+        //               Row(
+        //                 children: [
+        //                   Container(
+        //                     height: 16,
+        //                     width: 16,
+        //                     decoration: const BoxDecoration(
+        //                       color: Color(0xfff9b7be8),
+        //                       borderRadius: BorderRadius.all(
+        //                         Radius.circular(5),
+        //                       ),
+        //                     ),
+        //                   ),
+        //                   const SizedBox(width: 8),
+        //                   Text(
+        //                     'HTML (15%)',
+        //                     style: Theme.of(context).textTheme.bodySmall,
+        //                   ),
+        //                 ],
+        //               ),
+        //               const SizedBox(height: 5),
+        //               Row(
+        //                 children: [
+        //                   Container(
+        //                     height: 16,
+        //                     width: 16,
+        //                     decoration: const BoxDecoration(
+        //                       color: Color(0xfff5ae3b7),
+        //                       borderRadius: BorderRadius.all(
+        //                         Radius.circular(5),
+        //                       ),
+        //                     ),
+        //                   ),
+        //                   const SizedBox(width: 8),
+        //                   Text(
+        //                     'AWS (18%)',
+        //                     style: Theme.of(context).textTheme.bodySmall,
+        //                   ),
+        //                 ],
+        //               ),
+        //               const SizedBox(height: 5),
+        //               Row(
+        //                 children: [
+        //                   Container(
+        //                     height: 16,
+        //                     width: 16,
+        //                     decoration: const BoxDecoration(
+        //                       color: Color(0xffff6424d),
+        //                       borderRadius: BorderRadius.all(
+        //                         Radius.circular(5),
+        //                       ),
+        //                     ),
+        //                   ),
+        //                   const SizedBox(width: 8),
+        //                   Text(
+        //                     'Kotlin (09%)',
+        //                     style: Theme.of(context).textTheme.bodySmall,
+        //                   ),
+        //                 ],
+        //               ),
+        //             ],
+        //           ),
+        //         ),
+        //       ),
+        //     ],
+        //   ),
+        // ),
+      ],
     );
   }
 
