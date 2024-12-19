@@ -38,7 +38,7 @@ class _AllReportState extends State<AllReport> {
       {"image": "assets/json/sales-product-wise.json", "title": "Product Wise"},
       {"image": "assets/json/PO Wise.json", "title": "Customer Wise"},
       {"image": "assets/json/sales-so-wise.json", "title": "Vertical Wise"},
-      {"image": "assets/json/sales-vertical-wise.json", "title": "SO Wise"},
+      // {"image": "assets/json/sales-vertical-wise.json", "title": "SO Wise"},
       {"image": "assets/json/Product Wise.json", "title": "Kam Wise"},
       {"image": "assets/json/sales-region-wise.json", "title": "Region Wise"},
       {"image": "assets/json/Vendor Wise.json", "title": "Receivable Customer"}
@@ -79,43 +79,36 @@ class _AllReportState extends State<AllReport> {
         ],
       ),
       body: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2),
-          itemCount: listItems.length,
-          itemBuilder: (context, index) {
-            return InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => onClickList[index],
-                  ),
-                );
-              },
-              child: Container(
-                margin: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10)),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      child: LottieBuilder.asset(
-                        listItems[index]["image"],
-                        height: 140,
-                        width: 120,
-                      ),
-                    ),
-                    Text(
-                      listItems[index]["title"],
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
+        gridDelegate:
+            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        itemCount: listItems.length,
+        itemBuilder: (context, index) {
+          return InkWell(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => onClickList[index]));
+            },
+            child: Container(
+              margin: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(10)),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                      height: 140,
+                      width: 120,
+                      child: LottieBuilder.asset(listItems[index]["image"])),
+                  Text(
+                    listItems[index]["title"],
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  )
+                ],
               ),
-            );
-          }),
+            ),
+          );
+        },
+      ),
     );
   }
 }
