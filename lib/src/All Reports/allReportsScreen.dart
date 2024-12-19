@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:vitwoai_report/src/All%20Reports/Purches%20Register/product%20Wise/productWiseScreen.dart';
 import 'package:vitwoai_report/src/All%20Reports/Purches%20Register/vendor%20Wise/vendorWiseScreen.dart';
+import 'package:vitwoai_report/src/settings/texts.dart';
 
 import '../Report Details/reportDetailsScreen.dart';
 import '../golobal-Widget/bottom-Nav.dart';
 import '../home/presentation/main-Screen.dart';
 import '../settings/colors.dart';
+import '../settings/localJson.dart';
 
 class AllReport extends StatefulWidget {
   const AllReport({super.key});
@@ -21,8 +23,8 @@ class _AllReportState extends State<AllReport> {
     int i = 0;
     List<Map<String, dynamic>> listItems = [
       {
-        "image": "assets/json/purchase-product-wise.json",
-        "title": "Product Wise"
+        "image": Localjson.productJson,
+        "title": HandText.productWise,
       },
       {
         "image": "assets/json/purchase-vendor-wise.json",
