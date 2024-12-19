@@ -28,80 +28,78 @@ class _CandileChartWidgetState extends State<CandileChartWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Fast Line Chart',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    Text(
-                      'This is Fast Line Chart',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodySmall!
-                          .copyWith(fontSize: 10),
-                    ),
-                  ],
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      CustomPageRoute(
-                        child: const PieChartDetails(),
-                        direction: AxisDirection.up,
-                      ),
-                    );
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(1),
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(Radius.circular(8)),
-                      border: Border.all(width: 1, color: Colors.grey),
-                    ),
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.settings,
-                          size: 15,
-                        ),
-                        Text(
-                          'Settings',
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                      ],
-                    ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Fast Line Chart',
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
-                )
-              ],
-            ),
-          ),
-          Card(
-              child: SfCartesianChart(
-            title: ChartTitle(text: 'Fast Line Chart'),
-            primaryXAxis: NumericAxis(title: AxisTitle(text: 'X Axis')),
-            primaryYAxis: NumericAxis(title: AxisTitle(text: 'Y Axis')),
-            series: <FastLineSeries<ChartData, num>>[
-              FastLineSeries<ChartData, num>(
-                dataSource: chartData,
-                xValueMapper: (ChartData data, _) => data.x,
-                yValueMapper: (ChartData data, _) => data.y,
-                color: Colors.blue,
-                dataLabelSettings: DataLabelSettings(isVisible: false),
+                  Text(
+                    'This is Fast Line Chart',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall!
+                        .copyWith(fontSize: 10),
+                  ),
+                ],
               ),
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                    CustomPageRoute(
+                      child: const PieChartDetails(),
+                      direction: AxisDirection.up,
+                    ),
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(1),
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                    border: Border.all(width: 1, color: Colors.grey),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.settings,
+                        size: 15,
+                      ),
+                      Text(
+                        'Settings',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                    ],
+                  ),
+                ),
+              )
             ],
-          )),
-        ],
-      ),
+          ),
+        ),
+        Card(
+            child: SfCartesianChart(
+          title: ChartTitle(text: 'Fast Line Chart'),
+          primaryXAxis: NumericAxis(title: AxisTitle(text: 'X Axis')),
+          primaryYAxis: NumericAxis(title: AxisTitle(text: 'Y Axis')),
+          series: <FastLineSeries<ChartData, num>>[
+            FastLineSeries<ChartData, num>(
+              dataSource: chartData,
+              xValueMapper: (ChartData data, _) => data.x,
+              yValueMapper: (ChartData data, _) => data.y,
+              color: Colors.blue,
+              dataLabelSettings: DataLabelSettings(isVisible: false),
+            ),
+          ],
+        )),
+      ],
     );
   }
 }

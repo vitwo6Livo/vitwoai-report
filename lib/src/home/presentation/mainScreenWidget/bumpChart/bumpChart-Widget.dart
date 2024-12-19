@@ -8,100 +8,98 @@ class BumpChartWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Stacked line Chart',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    Text(
-                      'This is stacked line Chart',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodySmall!
-                          .copyWith(fontSize: 10),
-                    ),
-                  ],
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      CustomPageRoute(
-                        child: const PieChartDetails(),
-                        direction: AxisDirection.up,
-                      ),
-                    );
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(1),
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(Radius.circular(8)),
-                      border: Border.all(width: 1, color: Colors.grey),
-                    ),
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.settings,
-                          size: 15,
-                        ),
-                        Text(
-                          'Settings',
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                      ],
-                    ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Stacked line Chart',
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
-                )
-              ],
-            ),
-          ),
-          Card(
-              child: SfCartesianChart(
-            title: const ChartTitle(text: 'Monthly Revenue Comparison'),
-            legend: const Legend(isVisible: true),
-            tooltipBehavior: TooltipBehavior(enable: true),
-            primaryXAxis: const CategoryAxis(
-              title: AxisTitle(text: 'Months'),
-            ),
-            primaryYAxis: const NumericAxis(
-              title: AxisTitle(text: 'Revenue (in USD)'),
-            ),
-            series: <StackedLineSeries<SalesData, String>>[
-              StackedLineSeries<SalesData, String>(
-                dataSource: getChartData(),
-                xValueMapper: (SalesData sales, _) => sales.month,
-                yValueMapper: (SalesData sales, _) => sales.productA,
-                name: 'Product A',
-                markerSettings: const MarkerSettings(isVisible: true),
+                  Text(
+                    'This is stacked line Chart',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall!
+                        .copyWith(fontSize: 10),
+                  ),
+                ],
               ),
-              StackedLineSeries<SalesData, String>(
-                dataSource: getChartData(),
-                xValueMapper: (SalesData sales, _) => sales.month,
-                yValueMapper: (SalesData sales, _) => sales.productB,
-                name: 'Product B',
-                markerSettings: const MarkerSettings(isVisible: true),
-              ),
-              StackedLineSeries<SalesData, String>(
-                dataSource: getChartData(),
-                xValueMapper: (SalesData sales, _) => sales.month,
-                yValueMapper: (SalesData sales, _) => sales.productC,
-                name: 'Product C',
-                markerSettings: const MarkerSettings(isVisible: true),
-              ),
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                    CustomPageRoute(
+                      child: const PieChartDetails(),
+                      direction: AxisDirection.up,
+                    ),
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(1),
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                    border: Border.all(width: 1, color: Colors.grey),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.settings,
+                        size: 15,
+                      ),
+                      Text(
+                        'Settings',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                    ],
+                  ),
+                ),
+              )
             ],
-          )),
-        ],
-      ),
+          ),
+        ),
+        Card(
+            child: SfCartesianChart(
+          title: const ChartTitle(text: 'Monthly Revenue Comparison'),
+          legend: const Legend(isVisible: true),
+          tooltipBehavior: TooltipBehavior(enable: true),
+          primaryXAxis: const CategoryAxis(
+            title: AxisTitle(text: 'Months'),
+          ),
+          primaryYAxis: const NumericAxis(
+            title: AxisTitle(text: 'Revenue (in USD)'),
+          ),
+          series: <StackedLineSeries<SalesData, String>>[
+            StackedLineSeries<SalesData, String>(
+              dataSource: getChartData(),
+              xValueMapper: (SalesData sales, _) => sales.month,
+              yValueMapper: (SalesData sales, _) => sales.productA,
+              name: 'Product A',
+              markerSettings: const MarkerSettings(isVisible: true),
+            ),
+            StackedLineSeries<SalesData, String>(
+              dataSource: getChartData(),
+              xValueMapper: (SalesData sales, _) => sales.month,
+              yValueMapper: (SalesData sales, _) => sales.productB,
+              name: 'Product B',
+              markerSettings: const MarkerSettings(isVisible: true),
+            ),
+            StackedLineSeries<SalesData, String>(
+              dataSource: getChartData(),
+              xValueMapper: (SalesData sales, _) => sales.month,
+              yValueMapper: (SalesData sales, _) => sales.productC,
+              name: 'Product C',
+              markerSettings: const MarkerSettings(isVisible: true),
+            ),
+          ],
+        )),
+      ],
     );
   }
 }
