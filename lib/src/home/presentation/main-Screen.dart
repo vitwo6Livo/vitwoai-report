@@ -1,19 +1,24 @@
+// ignore_for_file: camel_case_types, must_be_immutable
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vitwoai_report/src/home/presentation/mainScreenWidget/barChart/barChart-Widget.dart';
 import 'package:vitwoai_report/src/home/presentation/mainScreenWidget/pieChart/pieChart-Widget.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
+import '../../All Reports/allReportsScreen.dart';
+import '../../Report Details/reportDetailsScreen.dart';
+import '../../golobal-Widget/bottom-Nav.dart';
 import '../../golobal-Widget/customPage-Route.dart';
 import '../../golobal-Widget/dasboardChartCard-Widget.dart';
 import 'addWidget-Screen.dart';
-import 'mainScreenWidget/areaChart-Widget.dart';
-import 'mainScreenWidget/boxChart-Widget.dart';
-import 'mainScreenWidget/bumpChart-Widget.dart';
-import 'mainScreenWidget/calendarChart-Widget.dart';
-import 'mainScreenWidget/candleChart-Widget.dart';
-import 'mainScreenWidget/heatChart-Widget.dart';
-import 'mainScreenWidget/treeChart-Widget.dart';
+import 'mainScreenWidget/areaChart/areaChart-Widget.dart';
+import 'mainScreenWidget/boxChart/boxChart-Widget.dart';
+import 'mainScreenWidget/bumpChart/bumpChart-Widget.dart';
+import 'mainScreenWidget/calendarChart/calendarChart-Widget.dart';
+import 'mainScreenWidget/candleChart/candleChart-Widget.dart';
+import 'mainScreenWidget/heatChart/heatChart-Widget.dart';
+import 'mainScreenWidget/treeChart/treeChart-Widget.dart';
 
 class Main_Screen extends StatefulWidget {
   List<Map<String, dynamic>> selectedSettings;
@@ -23,6 +28,7 @@ class Main_Screen extends StatefulWidget {
 }
 
 class _Main_ScreenState extends State<Main_Screen> {
+  int i = 0;
   @override
   void initState() {
     super.initState();
@@ -53,13 +59,27 @@ class _Main_ScreenState extends State<Main_Screen> {
   Widget build(BuildContext context) {
     bool noSelectedItems =
         !widget.selectedSettings.any((item) => item["value"]);
+    final List<Widget> screens = [
+      Main_Screen(selectedSettings: widget.selectedSettings),
+      const AllReport(),
+      const ReportDetails(),
+    ];
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      drawer: AppDrawer(
+        onItemSelected: (index) {
+          setState(() {
+            i = index;
+          });
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => screens[i],
+            ),
+          );
+        },
+      ),
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: const Icon(
-          Icons.line_weight_sharp,
-        ),
         actions: [
           IconButton(
             onPressed: () {

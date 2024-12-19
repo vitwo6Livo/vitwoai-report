@@ -161,20 +161,6 @@ class _BarChartWidgetState extends State<BarChartWidget> {
 
   void _getChartData() {
     _chartData = <_ChartData>[];
-    List<String> months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December"
-    ];
 
     for (int i = 0; i < 12; i++) {
       // Replace 10 with any logic or value you want for the data

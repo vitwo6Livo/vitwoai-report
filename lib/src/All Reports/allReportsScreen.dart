@@ -2,16 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:vitwoai_report/src/All%20Reports/Purches%20Register/product%20Wise/productWiseScreen.dart';
 import 'package:vitwoai_report/src/All%20Reports/Purches%20Register/vendor%20Wise/vendorWiseScreen.dart';
+import 'package:vitwoai_report/src/settings/texts.dart';
 
-class AllReport extends StatelessWidget {
+import '../Report Details/reportDetailsScreen.dart';
+import '../golobal-Widget/bottom-Nav.dart';
+import '../home/presentation/main-Screen.dart';
+import '../settings/colors.dart';
+import '../settings/localJson.dart';
+
+class AllReport extends StatefulWidget {
   const AllReport({super.key});
 
   @override
+  State<AllReport> createState() => _AllReportState();
+}
+
+class _AllReportState extends State<AllReport> {
+  @override
   Widget build(BuildContext context) {
+    int i = 0;
     List<Map<String, dynamic>> listItems = [
       {
-        "image": "assets/json/purchase-product-wise.json",
-        "title": "Product Wise"
+        "image": Localjson.productJson,
+        "title": HandText.productWise,
       },
       {
         "image": "assets/json/purchase-vendor-wise.json",
@@ -32,8 +45,39 @@ class AllReport extends StatelessWidget {
     ];
 
     List<Widget> onClickList = [ProductWiseScreen(), VendorWiseScreen()];
+    final List<Widget> screens = [
+      Main_Screen(selectedSettings: []),
+      const AllReport(),
+      const ReportDetails(),
+    ];
     return Scaffold(
-        backgroundColor: const Color.fromARGB(255, 218, 217, 217),
+        drawer: AppDrawer(
+          onItemSelected: (index) {
+            setState(() {
+              i = index;
+            });
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => screens[i],
+              ),
+            );
+          },
+        ),
+        appBar: AppBar(
+          title: Text(
+            "All Reports",
+            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                  color: AppColor.appbarFont,
+                ),
+          ),
+          actions: [
+            const Padding(
+              padding: EdgeInsets.only(right: 10),
+              child: Icon(Icons.notifications_active),
+            ),
+          ],
+        ),
         body: Expanded(
           child: GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

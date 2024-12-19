@@ -9,4 +9,7 @@ class HandText {
   static String customizeButton = 'Customize your dasboard';
   static const addWidget = 'Add Widget';
   static const chartView = 'Graphical View Settings';
+
+  //////////////////// all report grid view /////////////////
+  static const productWise = "Product Wise";
 }
