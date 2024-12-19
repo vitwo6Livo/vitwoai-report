@@ -33,8 +33,8 @@ class _ProductWiseScreenState extends State<ProductWiseScreen> {
           appBar: AppBar(
             centerTitle: true,
             title: Container(
-              padding: EdgeInsets.symmetric(horizontal: 80),
-              child: DropdownButton<String>(
+              padding: const EdgeInsets.symmetric(horizontal: 80),
+              child: DropdownButton(
                 value: _selectedItem,
                 hint: Text(_items[0],
                     style: const TextStyle(
@@ -46,7 +46,7 @@ class _ProductWiseScreenState extends State<ProductWiseScreen> {
                   color: Colors.white,
                 ),
                 items: _items.map((String item) {
-                  return DropdownMenuItem<String>(
+                  return DropdownMenuItem(
                     value: item,
                     child: Text(
                       item,
