@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 import 'package:vitwoai_report/src/golobal-Widget/customPage-Route.dart';
 import 'package:vitwoai_report/src/home/presentation/mainScreenWidget/pieChart/pieChartDetails.dart';
@@ -9,13 +8,6 @@ class CalendarChartWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<List<dynamic>> chartData = [
-      [40, 'Rent', Colors.blue],
-      [30, 'Food', Colors.green],
-      [20, 'Transportation', Colors.orange],
-      [10, 'Entertainment', Colors.purple],
-    ];
-
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
