@@ -32,84 +32,82 @@ class BoxChartWidget extends StatelessWidget {
       ]),
     ];
 
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Box Chart',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    Text(
-                      'This is box Chart',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodySmall!
-                          .copyWith(fontSize: 10),
-                    ),
-                  ],
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      CustomPageRoute(
-                        child: const PieChartDetails(),
-                        direction: AxisDirection.up,
-                      ),
-                    );
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(1),
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(Radius.circular(8)),
-                      border: Border.all(width: 1, color: Colors.grey),
-                    ),
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.settings,
-                          size: 15,
-                        ),
-                        Text(
-                          'Settings',
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                      ],
-                    ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Box Chart',
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
-                )
-              ],
-            ),
-          ),
-          Card(
-            child: SfTreemap(
-              dataCount: data.length,
-              weightValueMapper: (int index) => data[index].value.toDouble(),
-              levels: [
-                TreemapLevel(
-                  groupMapper: (int index) => data[index].category,
-                  color: Colors.blue.withOpacity(0.5),
-                  labelBuilder: (BuildContext context, TreemapTile tile) {
-                    return Text(tile.group,
-                        style: TextStyle(color: Colors.white));
-                  },
-                  tooltipBuilder: (BuildContext context, TreemapTile tile) {
-                    return Text('${tile.group}: ${tile.weight}');
-                  },
+                  Text(
+                    'This is box Chart',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall!
+                        .copyWith(fontSize: 10),
+                  ),
+                ],
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                    CustomPageRoute(
+                      child: const PieChartDetails(),
+                      direction: AxisDirection.up,
+                    ),
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(1),
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                    border: Border.all(width: 1, color: Colors.grey),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.settings,
+                        size: 15,
+                      ),
+                      Text(
+                        'Settings',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                    ],
+                  ),
                 ),
-              ],
-            ),
+              )
+            ],
           ),
-        ],
-      ),
+        ),
+        Card(
+          child: SfTreemap(
+            dataCount: data.length,
+            weightValueMapper: (int index) => data[index].value.toDouble(),
+            levels: [
+              TreemapLevel(
+                groupMapper: (int index) => data[index].category,
+                color: Colors.blue.withOpacity(0.5),
+                labelBuilder: (BuildContext context, TreemapTile tile) {
+                  return Text(tile.group,
+                      style: TextStyle(color: Colors.white));
+                },
+                tooltipBuilder: (BuildContext context, TreemapTile tile) {
+                  return Text('${tile.group}: ${tile.weight}');
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
