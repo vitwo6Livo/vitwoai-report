@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vitwoai_report/src/home/presentation/mainScreenWidget/barChart/barChart-Widget.dart';
 import 'package:vitwoai_report/src/home/presentation/mainScreenWidget/pieChart/pieChart-Widget.dart';
+import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
 import '../../All Reports/allReportsScreen.dart';
 import '../../Report Details/reportDetailsScreen.dart';
@@ -80,6 +81,11 @@ class _Main_ScreenState extends State<Main_Screen> {
         },
       ),
       appBar: AppBar(
+        title: Text(
+          HandText.dashboardTitle,
+          style: TextStyle(color: AppColor.primaryColor),
+        ),
+        centerTitle: true,
         actions: [
           IconButton(
             onPressed: () {

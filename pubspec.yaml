@@ -18,6 +18,7 @@ dependencies:
   syncfusion_flutter_treemap: ^28.1.33
   graphview: ^1.2.0
   lottie: ^3.2.0
+  dropdown_button2: ^2.3.9
 
 dev_dependencies:
   flutter_test:
