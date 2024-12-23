@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_treemap/treemap.dart';
 import 'package:vitwoai_report/src/golobal-Widget/customPage-Route.dart';
 import 'package:vitwoai_report/src/home/presentation/mainScreenWidget/pieChart/pieChartDetails.dart';
+import 'package:vitwoai_report/src/settings/texts.dart';
 
 class BoxChartWidget extends StatelessWidget {
   const BoxChartWidget({super.key});
@@ -44,11 +45,11 @@ class BoxChartWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Box Chart',
+                    HandText.boxChartTitle,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   Text(
-                    'This is box Chart',
+                    HandText.boxChartSubTitle,
                     style: Theme.of(context)
                         .textTheme
                         .bodySmall!
@@ -78,7 +79,7 @@ class BoxChartWidget extends StatelessWidget {
                         size: 15,
                       ),
                       Text(
-                        'Settings',
+                        HandText.settings,
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ],

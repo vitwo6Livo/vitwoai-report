@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:vitwoai_report/src/golobal-Widget/customPage-Route.dart';
 import 'package:vitwoai_report/src/home/presentation/mainScreenWidget/pieChart/pieChartDetails.dart';
+import 'package:vitwoai_report/src/settings/texts.dart';
 
 class CandileChartWidget extends StatefulWidget {
   const CandileChartWidget({super.key});
@@ -40,11 +41,11 @@ class _CandileChartWidgetState extends State<CandileChartWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Fast Line Chart',
+                    HandText.firstLineChartTitle,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   Text(
-                    'This is Fast Line Chart',
+                    HandText.firstLineChartSubTitle,
                     style: Theme.of(context)
                         .textTheme
                         .bodySmall!
@@ -74,7 +75,7 @@ class _CandileChartWidgetState extends State<CandileChartWidget> {
                         size: 15,
                       ),
                       Text(
-                        'Settings',
+                        HandText.settings,
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ],
