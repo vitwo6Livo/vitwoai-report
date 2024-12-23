@@ -3,7 +3,6 @@ import 'package:lottie/lottie.dart';
 import 'package:vitwoai_report/src/All%20Reports/Purches%20Register/Functional%20Wise/functionalWiseScreen.dart';
 import 'package:vitwoai_report/src/All%20Reports/Purches%20Register/PO%20Wise/poWiseScreen.dart';
 import 'package:vitwoai_report/src/All%20Reports/Purches%20Register/product%20Wise/productWiseScreen.dart';
-import 'package:vitwoai_report/src/All%20Reports/Purches%20Register/vendor%20Wise/vendorWiseScreen.dart';
 import 'package:vitwoai_report/src/All%20Reports/Receiveable/CustomerWise/customerWiseScreen.dart';
 import 'package:vitwoai_report/src/All%20Reports/Receiveable/KamWise/kamWiseScreen.dart';
 import 'package:vitwoai_report/src/All%20Reports/Receiveable/RegionWise/regionWiseScreen.dart';
@@ -11,6 +10,7 @@ import 'package:vitwoai_report/src/All%20Reports/Receiveable/VerticalWise/vertic
 import 'package:vitwoai_report/src/All%20Reports/Receiveable/productWise/productWiseScreen.dart';
 import 'package:vitwoai_report/src/All%20Reports/Sales%20Register/receivableCustomer/receivableCustomer.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
+import 'package:vitwoai_report/src/vendor%20Wise/presentation/vendorWiseScreen.dart';
 
 import '../Report Details/reportDetailsScreen.dart';
 import '../golobal-Widget/bottom-Nav.dart';
