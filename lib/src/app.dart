@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vitwoai_report/src/login/presentation/loginScreen.dart';
 import 'package:vitwoai_report/src/settings/theme.dart';
 import 'routes/routeNames.dart';
 import 'routes/routeNavigation.dart';
@@ -12,7 +13,7 @@ class ReportApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: Styles.themeData(context),
       onGenerateTitle: (BuildContext context) => 'Vitwoai Report',
-      initialRoute: RouteNames.drawer,
+      initialRoute: RouteNames.loginScreen,
       onGenerateRoute: Routes.generateRoute,
     );
   }
