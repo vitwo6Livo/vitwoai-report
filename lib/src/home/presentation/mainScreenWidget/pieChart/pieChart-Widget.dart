@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:vitwoai_report/src/settings/texts.dart';
 import '../../../../golobal-Widget/customPage-Route.dart';
 import 'pieChartDetails.dart';
 
@@ -33,11 +34,11 @@ class _PieChartWidgetState extends State<PieChartWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Pie Chart',
+                    HandText.pieChartTitle,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   Text(
-                    'This is Pie Chart',
+                    HandText.pieChartSubTitle,
                     style: Theme.of(context)
                         .textTheme
                         .bodySmall!
@@ -67,7 +68,7 @@ class _PieChartWidgetState extends State<PieChartWidget> {
                         size: 15,
                       ),
                       Text(
-                        'Settings',
+                        HandText.settings,
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ],

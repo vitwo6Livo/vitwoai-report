@@ -54,10 +54,10 @@ class _AllReportState extends State<AllReport> {
         "image": Localjson.customerJson,
         "title": HandText.customerWise,
       },
-      {
-        "image": Localjson.verticalJson,
-        "title": HandText.verticalWise,
-      },
+      // {
+      //   "image": Localjson.verticalJson,
+      //   "title": HandText.verticalWise,
+      // },
       {
         "image": Localjson.kamJson,
         "title": HandText.kamWise,

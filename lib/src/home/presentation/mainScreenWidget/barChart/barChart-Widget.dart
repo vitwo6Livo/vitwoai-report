@@ -3,6 +3,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:flutter/material.dart';
 import 'package:vitwoai_report/src/golobal-Widget/customPage-Route.dart';
 import 'package:vitwoai_report/src/home/presentation/mainScreenWidget/pieChart/pieChartDetails.dart';
+import 'package:vitwoai_report/src/settings/texts.dart';
 
 class BarChartWidget extends StatefulWidget {
   BarChartWidget({super.key});
@@ -53,11 +54,11 @@ class _BarChartWidgetState extends State<BarChartWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Bar Chart',
+                    HandText.areaChartTitle,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   Text(
-                    'This is Bar Chart',
+                    HandText.areaChartSubTitle,
                     style: Theme.of(context)
                         .textTheme
                         .bodySmall!
@@ -87,7 +88,7 @@ class _BarChartWidgetState extends State<BarChartWidget> {
                         size: 15,
                       ),
                       Text(
-                        'Settings',
+                        HandText.settings,
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ],

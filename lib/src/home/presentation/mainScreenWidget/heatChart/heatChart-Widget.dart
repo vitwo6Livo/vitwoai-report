@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:vitwoai_report/src/golobal-Widget/customPage-Route.dart';
 import 'package:vitwoai_report/src/home/presentation/mainScreenWidget/pieChart/pieChartDetails.dart';
+import 'package:vitwoai_report/src/settings/texts.dart';
 
 class HeatChartWidget extends StatelessWidget {
   const HeatChartWidget({super.key});
@@ -26,11 +27,11 @@ class HeatChartWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Heatmap Chart',
+                    HandText.heatmapChartTitle,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   Text(
-                    'This is Heatmap Chart',
+                    HandText.heatmapChartSubTitle,
                     style: Theme.of(context)
                         .textTheme
                         .bodySmall!
@@ -60,7 +61,7 @@ class HeatChartWidget extends StatelessWidget {
                         size: 15,
                       ),
                       Text(
-                        'Settings',
+                        HandText.settings,
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ],

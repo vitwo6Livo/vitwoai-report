@@ -21,8 +21,8 @@ class _DrawerScreenState extends State<DrawerScreen> {
   Widget build(BuildContext context) {
     final List<Widget> screens = [
       Main_Screen(selectedSettings: widget.selectedSettings),
-      AllReport(),
-      ReportDetails(),
+      const AllReport(),
+      const ReportDetails(),
     ];
 
     return Scaffold(
@@ -60,11 +60,11 @@ class AppDrawer extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CircleAvatar(
-                    radius: 30,
+                    radius: 25,
                     backgroundImage: NetworkImage(
                         'https://imgcdn.stablediffusionweb.com/2024/4/7/a6908dd0-0688-4200-bfa5-fbdcb4b9dc6f.jpg'),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 5),
                   Text(
                     'Sayed Al Mamoon',
                     style: TextStyle(
@@ -73,13 +73,49 @@ class AppDrawer extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Text(
-                    'sayedalmamoon@example.com',
-                    style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 14,
-                    ),
-                  ),
+                  // Text(
+                  //   'sayedalmamoon@example.com',
+                  //   style: TextStyle(
+                  //     color: Colors.white70,
+                  //     fontSize: 14,
+                  //   ),
+                  // ),
+                  Text.rich(TextSpan(
+                    children: [
+                      TextSpan(
+                        text: 'Company name: ',
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 14,
+                        ),
+                      ),
+                      TextSpan(
+                        text: 'Saregama India Limited',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  )),
+                  Text.rich(TextSpan(
+                    children: [
+                      TextSpan(
+                        text: 'Location: ',
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 14,
+                        ),
+                      ),
+                      TextSpan(
+                        text: 'Banglore, India',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  )),
                 ],
               ),
             ),

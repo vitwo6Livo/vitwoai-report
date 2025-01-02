@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:graphview/GraphView.dart';
 import 'package:vitwoai_report/src/golobal-Widget/customPage-Route.dart';
 import 'package:vitwoai_report/src/home/presentation/mainScreenWidget/pieChart/pieChartDetails.dart';
+import 'package:vitwoai_report/src/settings/texts.dart';
 
 class TreeChartWidget extends StatefulWidget {
   const TreeChartWidget({super.key});
@@ -51,11 +52,11 @@ class _TreeChartWidgetState extends State<TreeChartWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Tree Chart',
+                    HandText.treeChartTitle,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   Text(
-                    'This is tree Chart',
+                    HandText.treeChartSubTitle,
                     style: Theme.of(context)
                         .textTheme
                         .bodySmall!
@@ -85,7 +86,7 @@ class _TreeChartWidgetState extends State<TreeChartWidget> {
                         size: 15,
                       ),
                       Text(
-                        'Settings',
+                        HandText.settings,
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ],

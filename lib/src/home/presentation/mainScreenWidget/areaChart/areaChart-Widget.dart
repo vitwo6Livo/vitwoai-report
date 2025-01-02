@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 import 'package:vitwoai_report/src/golobal-Widget/customPage-Route.dart';
 import 'package:vitwoai_report/src/home/presentation/mainScreenWidget/pieChart/pieChartDetails.dart';
+import 'package:vitwoai_report/src/settings/texts.dart';
 
 class AreaChartWidget extends StatelessWidget {
   const AreaChartWidget({super.key});
@@ -20,11 +21,11 @@ class AreaChartWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Area Chart',
+                    HandText.areaChartTitle,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   Text(
-                    'This is Area Chart',
+                    HandText.areaChartSubTitle,
                     style: Theme.of(context)
                         .textTheme
                         .bodySmall!
@@ -54,7 +55,7 @@ class AreaChartWidget extends StatelessWidget {
                         size: 15,
                       ),
                       Text(
-                        'Settings',
+                        HandText.settings,
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ],

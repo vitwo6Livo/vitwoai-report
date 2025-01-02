@@ -10,6 +10,26 @@ class HandText {
   static const addWidget = 'Add Widget';
   static const chartView = 'Graphical View Settings';
   static const dashboardTitle = 'Dashboard';
+  static const areaChartTitle = 'Area Chart';
+  static const areaChartSubTitle = 'This is Area Chart';
+  static const barChartTitle = 'Bar Chart';
+  static const barChartSubTitle = 'This is Bar Chart';
+  static const boxChartTitle = 'Box Chart';
+  static const boxChartSubTitle = 'This is Box Chart';
+  static const stackedChartTitle = 'Stacked line Chart';
+  static const stackedChartSubTitle = 'This is stacked line Chart';
+  static const lineChartTitle = 'Line Chart';
+  static const lineChartSubTitle = 'This is Line Chart';
+  static const firstLineChartTitle = 'Fast Line Chart';
+  static const firstLineChartSubTitle = 'This is Fast Line Chart';
+  static const heatmapChartTitle = 'Heatmap Chart';
+  static const heatmapChartSubTitle = 'This is Heatmap Chart';
+  static const pieChartTitle = 'Pie Chart';
+  static const pieChartSubTitle = 'This is Pie Chart';
+  static const treeChartTitle = 'Tree Chart';
+  static const treeChartSubTitle = 'This is tree Chart';
+
+  static const settings = 'Settings';
 
   //////////////////// all report grid view /////////////////
   static const productWise = "Product Wise";

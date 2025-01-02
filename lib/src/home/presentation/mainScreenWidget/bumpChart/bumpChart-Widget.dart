@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:vitwoai_report/src/golobal-Widget/customPage-Route.dart';
 import 'package:vitwoai_report/src/home/presentation/mainScreenWidget/pieChart/pieChartDetails.dart';
+import 'package:vitwoai_report/src/settings/texts.dart';
 
 class BumpChartWidget extends StatelessWidget {
   const BumpChartWidget({super.key});
@@ -20,11 +21,11 @@ class BumpChartWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Stacked line Chart',
+                    HandText.stackedChartTitle,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   Text(
-                    'This is stacked line Chart',
+                    HandText.stackedChartSubTitle,
                     style: Theme.of(context)
                         .textTheme
                         .bodySmall!
@@ -54,7 +55,7 @@ class BumpChartWidget extends StatelessWidget {
                         size: 15,
                       ),
                       Text(
-                        'Settings',
+                        HandText.settings,
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ],
