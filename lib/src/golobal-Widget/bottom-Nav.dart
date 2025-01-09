@@ -5,6 +5,7 @@ import 'package:lottie/lottie.dart';
 import 'package:vitwoai_report/src/All%20Reports/allReportsScreen.dart';
 import 'package:vitwoai_report/src/Report%20Details/reportDetailsScreen.dart';
 import 'package:vitwoai_report/src/home/presentation/main-Screen.dart';
+import 'package:vitwoai_report/src/profile/presentation/prifileScreen.dart';
 
 class DrawerScreen extends StatefulWidget {
   List<Map<String, dynamic>> selectedSettings;
@@ -23,6 +24,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
       Main_Screen(selectedSettings: widget.selectedSettings),
       const AllReport(),
       const ReportDetails(),
+      const ProfileScreen(),
     ];
 
     return Scaffold(
@@ -151,6 +153,17 @@ class AppDrawer extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               onTap: () => onItemSelected(2),
+            ),
+            ListTile(
+              leading: LottieBuilder.asset(
+                "assets/json/profile.json",
+                height: 30,
+              ),
+              title: Text(
+                'ProFile',
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              onTap: () => onItemSelected(3),
             ),
             ListTile(
               leading: LottieBuilder.asset(

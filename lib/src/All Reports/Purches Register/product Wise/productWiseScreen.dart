@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:vitwoai_report/src/All%20Reports/Purches%20Register/PO%20Wise/poWiseScreen.dart';
+import 'package:vitwoai_report/src/All%20Reports/Purches%20Register/product%20Wise/data/apiCall.dart';
 import 'package:vitwoai_report/src/All%20Reports/Receiveable/CustomerWise/customerWiseScreen.dart';
 import 'package:vitwoai_report/src/All%20Reports/Receiveable/KamWise/kamWiseScreen.dart';
 import 'package:vitwoai_report/src/All%20Reports/Receiveable/RegionWise/regionWiseScreen.dart';
@@ -57,7 +59,8 @@ class _ProductWiseScreenState extends State<ProductWiseScreen> {
     return DefaultTabController(
         length: 5,
         child: Scaffold(
-          backgroundColor: const Color.fromARGB(255, 234, 234, 234),
+          // backgroundColor: const Color.fromARGB(255, 234, 234, 234),
+          backgroundColor: Colors.white,
           appBar: AppBar(
             title: AnimatedDropdown(
               items: _items,
@@ -129,372 +132,129 @@ class _ProductWiseScreenState extends State<ProductWiseScreen> {
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: [
-                                                      Card(
-                                                        child: SfCircularChart(
-                                                          series: [
-                                                            PieSeries(
-                                                              // radius: "30%",
-                                                              dataSource:
-                                                                  chartData,
-                                                              yValueMapper:
-                                                                  (datum, index) =>
-                                                                      datum[0],
-                                                              xValueMapper:
-                                                                  (datum, index) =>
-                                                                      datum[1],
-                                                              explode: true,
-                                                              pointColorMapper:
-                                                                  (datum, index) =>
-                                                                      datum[2],
-                                                              dataLabelMapper: (datum,
-                                                                      index) =>
-                                                                  datum[0]
-                                                                      .toString() +
-                                                                  "%",
-                                                              dataLabelSettings:
-                                                                  const DataLabelSettings(
-                                                                isVisible: true,
-                                                                labelPosition:
-                                                                    ChartDataLabelPosition
-                                                                        .outside,
-                                                              ),
-                                                            )
-                                                          ],
-                                                          legend: const Legend(
-                                                              isVisible: true,
-                                                              position:
-                                                                  LegendPosition
-                                                                      .top),
-                                                        ),
-                                                      ),
+                                                      // Card(
+                                                      //   child: SfCircularChart(
+                                                      //     series: [
+                                                      //       PieSeries(
+                                                      //         // radius: "30%",
+                                                      //         dataSource:
+                                                      //             chartData,
+                                                      //         yValueMapper:
+                                                      //             (datum, index) =>
+                                                      //                 datum[0],
+                                                      //         xValueMapper:
+                                                      //             (datum, index) =>
+                                                      //                 datum[1],
+                                                      //         explode: true,
+                                                      //         pointColorMapper:
+                                                      //             (datum, index) =>
+                                                      //                 datum[2],
+                                                      //         dataLabelMapper: (datum,
+                                                      //                 index) =>
+                                                      //             datum[0]
+                                                      //                 .toString() +
+                                                      //             "%",
+                                                      //         dataLabelSettings:
+                                                      //             const DataLabelSettings(
+                                                      //           isVisible: true,
+                                                      //           labelPosition:
+                                                      //               ChartDataLabelPosition
+                                                      //                   .outside,
+                                                      //         ),
+                                                      //       )
+                                                      //     ],
+                                                      //     legend: const Legend(
+                                                      //         isVisible: true,
+                                                      //         position:
+                                                      //             LegendPosition
+                                                      //                 .top),
+                                                      //   ),
+                                                      // ),
                                                       // const Text("List Of Item",
                                                       //     style: TextStyle(fontWeight: FontWeight.w400)),
-                                                      Expanded(
-                                                        child:
-                                                            SingleChildScrollView(
-                                                          scrollDirection:
-                                                              Axis.vertical,
-                                                          child:
-                                                              SingleChildScrollView(
-                                                            scrollDirection:
-                                                                Axis.horizontal,
-                                                            child: DataTable(
-                                                              showCheckboxColumn:
-                                                                  true,
-                                                              columns: [
-                                                                DataColumn(
-                                                                    label: Text(
-                                                                        "Item Name",
-                                                                        style: Theme.of(context)
-                                                                            .textTheme
-                                                                            .bodyMedium)),
-                                                                DataColumn(
-                                                                    label: Text(
-                                                                        "Item Quantity",
-                                                                        style: Theme.of(context)
-                                                                            .textTheme
-                                                                            .bodyMedium)),
-                                                                DataColumn(
-                                                                    label: Text(
-                                                                        "Item Total Amount",
-                                                                        style: Theme.of(context)
-                                                                            .textTheme
-                                                                            .bodyMedium)),
-                                                                DataColumn(
-                                                                    label: Text(
-                                                                        "GRN Number",
-                                                                        style: Theme.of(context)
-                                                                            .textTheme
-                                                                            .bodyMedium)),
-                                                                DataColumn(
-                                                                    label: Text(
-                                                                        "Item Moving Weighted Price",
-                                                                        style: Theme.of(context)
-                                                                            .textTheme
-                                                                            .bodyMedium)),
-                                                                DataColumn(
-                                                                    label: Text(
-                                                                        "GRN Due Date",
-                                                                        style: Theme.of(context)
-                                                                            .textTheme
-                                                                            .bodyMedium)),
-                                                                DataColumn(
-                                                                    label: Text(
-                                                                        "GRN Created By",
-                                                                        style: Theme.of(context)
-                                                                            .textTheme
-                                                                            .bodyMedium))
-                                                              ],
-                                                              rows: [
-                                                                DataRow(cells: [
-                                                                  DataCell(Text(
-                                                                      "Carvaan Mini Legends kannada ",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "441.7",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "744660.82",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "GRN1697386960642",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "6.2237",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "2023-07-08",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "Salim",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall))
-                                                                ]),
-                                                                DataRow(cells: [
-                                                                  DataCell(Text(
-                                                                      "Carvaan Mini Legends kannada ",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "441.7",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "744660.82",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "GRN1697386960642",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "6.2237",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "2023-07-08",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "Salim",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall))
-                                                                ]),
-                                                                DataRow(cells: [
-                                                                  DataCell(Text(
-                                                                      "Carvaan Mini Legends kannada ",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "441.7",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "744660.82",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "GRN1697386960642",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "6.2237",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "2023-07-08",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "Salim",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall))
-                                                                ]),
-                                                                DataRow(cells: [
-                                                                  DataCell(Text(
-                                                                      "Carvaan Mini Legends kannada ",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "441.7",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "744660.82",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "GRN1697386960642",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "6.2237",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "2023-07-08",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "Salim",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall))
-                                                                ]),
-                                                                DataRow(cells: [
-                                                                  DataCell(Text(
-                                                                      "Carvaan Mini Legends kannada ",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "441.7",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "744660.82",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "GRN1697386960642",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "6.2237",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "2023-07-08",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "Salim",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall))
-                                                                ]),
-                                                                DataRow(cells: [
-                                                                  DataCell(Text(
-                                                                      "Carvaan Mini Legends kannada ",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "441.7",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "744660.82",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "GRN1697386960642",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "6.2237",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "2023-07-08",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "Salim",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall))
-                                                                ]),
-                                                              ],
+                                                      Consumer(builder:
+                                                          (context, ref,
+                                                              child) {
+                                                        final apiResponse = ref
+                                                            .watch(apiProvider);
+
+                                                        return apiResponse.when(
+                                                          data: (data) {
+                                                            return Expanded(
+                                                                child: ListView
+                                                                    .builder(
+                                                                        itemCount:
+                                                                            data['content']
+                                                                                .length,
+                                                                        itemBuilder:
+                                                                            (context,
+                                                                                index) {
+                                                                          return Card(
+                                                                            child:
+                                                                                ListTile(
+                                                                              title: Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                children: [
+                                                                                  Text(
+                                                                                    data["content"][index]['grnCreatedBy'],
+                                                                                    style: const TextStyle(fontSize: 14),
+                                                                                    overflow: TextOverflow.ellipsis,
+                                                                                    maxLines: 1,
+                                                                                  ),
+                                                                                  Row(
+                                                                                    children: [
+                                                                                      const Icon(Icons.shopping_cart),
+                                                                                      Text(
+                                                                                        double.parse(data["content"][index]['SUM(items.receivedQty)'].toString()).toInt().toString(),
+                                                                                        style: const TextStyle(fontSize: 20),
+                                                                                      )
+                                                                                    ],
+                                                                                  )
+                                                                                ],
+                                                                              ),
+                                                                              subtitle: Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                children: [
+                                                                                  // Text("Item Quantity: 441.7"),
+                                                                                  // Text("Item Total Amount: 744660.82"),
+                                                                                  // Text("GRN Number: GRN1697386960642"),
+                                                                                  // Text("Item Moving Weighted Price: 6.2237"),
+                                                                                  Row(
+                                                                                    children: [
+                                                                                      const Icon(Icons.calendar_month),
+                                                                                      const SizedBox(
+                                                                                        width: 2,
+                                                                                      ),
+                                                                                      Text(
+                                                                                        DateFormat('yyyy-MM-dd').format(
+                                                                                          DateTime.parse(data["content"][index]['grnCreatedAt']),
+                                                                                        ),
+                                                                                      )
+                                                                                    ],
+                                                                                  ),
+                                                                                  Text("₹${data["content"][index]['SUM(grnInvoice.grnTotalCgst)'].toString()}", style: TextStyle(color: Colors.green, fontSize: 18)),
+                                                                                  // Text("GRN Created By: Salim"),
+                                                                                ],
+                                                                              ),
+                                                                            ),
+                                                                          );
+                                                                        }));
+                                                          },
+                                                          error:
+                                                              (error, stack) =>
+                                                                  Center(
+                                                            child: Text(
+                                                              'Error: $error',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .red),
                                                             ),
                                                           ),
-                                                        ),
-                                                      )
+                                                          loading: () => Center(
+                                                              child:
+                                                                  CircularProgressIndicator()),
+                                                        );
+                                                      })
                                                     ],
                                                   ),
                                                   Column(
@@ -502,381 +262,230 @@ class _ProductWiseScreenState extends State<ProductWiseScreen> {
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: [
-                                                      Card(
-                                                        child: SfCircularChart(
-                                                          series: [
-                                                            PieSeries(
-                                                              // radius: "30%",
-                                                              dataSource:
-                                                                  chartData,
-                                                              yValueMapper:
-                                                                  (datum, index) =>
-                                                                      datum[0],
-                                                              xValueMapper:
-                                                                  (datum, index) =>
-                                                                      datum[1],
-                                                              explode: true,
-                                                              pointColorMapper:
-                                                                  (datum, index) =>
-                                                                      datum[2],
-                                                              dataLabelMapper: (datum,
-                                                                      index) =>
-                                                                  datum[0]
-                                                                      .toString() +
-                                                                  "%",
-                                                              dataLabelSettings:
-                                                                  const DataLabelSettings(
-                                                                isVisible: true,
-                                                                labelPosition:
-                                                                    ChartDataLabelPosition
-                                                                        .outside,
-                                                              ),
-                                                            )
-                                                          ],
-                                                          legend: const Legend(
-                                                              isVisible: true,
-                                                              position:
-                                                                  LegendPosition
-                                                                      .top),
-                                                        ),
-                                                      ),
+                                                      // Card(
+                                                      //   child: SfCircularChart(
+                                                      //     series: [
+                                                      //       PieSeries(
+                                                      //         // radius: "30%",
+                                                      //         dataSource:
+                                                      //             chartData,
+                                                      //         yValueMapper:
+                                                      //             (datum, index) =>
+                                                      //                 datum[0],
+                                                      //         xValueMapper:
+                                                      //             (datum, index) =>
+                                                      //                 datum[1],
+                                                      //         explode: true,
+                                                      //         pointColorMapper:
+                                                      //             (datum, index) =>
+                                                      //                 datum[2],
+                                                      //         dataLabelMapper: (datum,
+                                                      //                 index) =>
+                                                      //             datum[0]
+                                                      //                 .toString() +
+                                                      //             "%",
+                                                      //         dataLabelSettings:
+                                                      //             const DataLabelSettings(
+                                                      //           isVisible: true,
+                                                      //           labelPosition:
+                                                      //               ChartDataLabelPosition
+                                                      //                   .outside,
+                                                      //         ),
+                                                      //       )
+                                                      //     ],
+                                                      //     legend: const Legend(
+                                                      //         isVisible: true,
+                                                      //         position:
+                                                      //             LegendPosition
+                                                      //                 .top),
+                                                      //   ),
+                                                      // ),
                                                       // const Text("List Of Item",
                                                       //     style: TextStyle(fontWeight: FontWeight.w400)),
                                                       Expanded(
-                                                        child:
-                                                            SingleChildScrollView(
-                                                          scrollDirection:
-                                                              Axis.vertical,
                                                           child:
-                                                              SingleChildScrollView(
-                                                            scrollDirection:
-                                                                Axis.horizontal,
-                                                            child: DataTable(
-                                                              showCheckboxColumn:
-                                                                  true,
-                                                              columns: [
-                                                                DataColumn(
-                                                                    label: Text(
-                                                                        "Item Name",
-                                                                        style: Theme.of(context)
-                                                                            .textTheme
-                                                                            .bodyMedium)),
-                                                                DataColumn(
-                                                                    label: Text(
-                                                                        "Item Quantity",
-                                                                        style: Theme.of(context)
-                                                                            .textTheme
-                                                                            .bodyMedium)),
-                                                                DataColumn(
-                                                                    label: Text(
-                                                                        "Item Total Amount",
-                                                                        style: Theme.of(context)
-                                                                            .textTheme
-                                                                            .bodyMedium)),
-                                                                DataColumn(
-                                                                    label: Text(
-                                                                        "GRN Number",
-                                                                        style: Theme.of(context)
-                                                                            .textTheme
-                                                                            .bodyMedium)),
-                                                                DataColumn(
-                                                                    label: Text(
-                                                                        "Item Moving Weighted Price",
-                                                                        style: Theme.of(context)
-                                                                            .textTheme
-                                                                            .bodyMedium)),
-                                                                DataColumn(
-                                                                    label: Text(
-                                                                        "GRN Due Date",
-                                                                        style: Theme.of(context)
-                                                                            .textTheme
-                                                                            .bodyMedium)),
-                                                                DataColumn(
-                                                                    label: Text(
-                                                                        "GRN Created By",
-                                                                        style: Theme.of(context)
-                                                                            .textTheme
-                                                                            .bodyMedium))
-                                                              ],
-                                                              rows: [
-                                                                DataRow(cells: [
-                                                                  DataCell(Text(
-                                                                      "Carvaan Mini Legends kannada ",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "441.7",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "744660.82",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "GRN1697386960642",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "6.2237",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "2023-07-08",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "Salim",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall))
-                                                                ]),
-                                                                DataRow(cells: [
-                                                                  DataCell(Text(
-                                                                      "Carvaan Mini Legends kannada ",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "441.7",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "744660.82",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "GRN1697386960642",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "6.2237",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "2023-07-08",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "Salim",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall))
-                                                                ]),
-                                                                DataRow(cells: [
-                                                                  DataCell(Text(
-                                                                      "Carvaan Mini Legends kannada ",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "441.7",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "744660.82",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "GRN1697386960642",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "6.2237",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "2023-07-08",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "Salim",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall))
-                                                                ]),
-                                                                DataRow(cells: [
-                                                                  DataCell(Text(
-                                                                      "Carvaan Mini Legends kannada ",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "441.7",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "744660.82",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "GRN1697386960642",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "6.2237",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "2023-07-08",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "Salim",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall))
-                                                                ]),
-                                                                DataRow(cells: [
-                                                                  DataCell(Text(
-                                                                      "Carvaan Mini Legends kannada ",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "441.7",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "744660.82",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "GRN1697386960642",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "6.2237",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "2023-07-08",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "Salim",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall))
-                                                                ]),
-                                                                DataRow(cells: [
-                                                                  DataCell(Text(
-                                                                      "Carvaan Mini Legends kannada ",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "441.7",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "744660.82",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "GRN1697386960642",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "6.2237",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "2023-07-08",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall)),
-                                                                  DataCell(Text(
-                                                                      "Salim",
-                                                                      style: Theme.of(
-                                                                              context)
-                                                                          .textTheme
-                                                                          .bodySmall))
-                                                                ]),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      )
+                                                              ListView.builder(
+                                                                  itemCount: 10,
+                                                                  itemBuilder:
+                                                                      (context,
+                                                                          index) {
+                                                                    return const Card(
+                                                                      child:
+                                                                          ListTile(
+                                                                        title:
+                                                                            Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.spaceBetween,
+                                                                          children: [
+                                                                            Text(
+                                                                              "Carvaan Mini Legends kannada",
+                                                                              style: TextStyle(fontSize: 14),
+                                                                            ),
+                                                                            Row(
+                                                                              children: [
+                                                                                Icon(Icons.shopping_cart),
+                                                                                Text(
+                                                                                  "4",
+                                                                                  style: TextStyle(fontSize: 20),
+                                                                                ),
+                                                                              ],
+                                                                            )
+                                                                          ],
+                                                                        ),
+                                                                        subtitle:
+                                                                            Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.spaceBetween,
+                                                                          children: [
+                                                                            // Text("Item Quantity: 441.7"),
+                                                                            // Text("Item Total Amount: 744660.82"),
+                                                                            // Text("GRN Number: GRN1697386960642"),
+                                                                            // Text("Item Moving Weighted Price: 6.2237"),
+                                                                            Row(
+                                                                              children: [
+                                                                                Icon(Icons.calendar_month),
+                                                                                SizedBox(
+                                                                                  width: 2,
+                                                                                ),
+                                                                                Text("2023-07-08"),
+                                                                              ],
+                                                                            ),
+                                                                            Text("₹200",
+                                                                                style: TextStyle(color: Colors.green, fontSize: 18)),
+                                                                            // Text("GRN Created By: Salim"),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    );
+                                                                  }))
                                                     ],
                                                   ),
-                                                  const Center(
-                                                    child: Text("QuaTar Data"),
-                                                  ),
-                                                  const Center(
-                                                    child:
-                                                        Text("year Wise Data"),
-                                                  ),
+                                                  Expanded(
+                                                      child: ListView.builder(
+                                                          itemCount: 10,
+                                                          itemBuilder:
+                                                              (context, index) {
+                                                            return const Card(
+                                                              child: ListTile(
+                                                                title: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    Text(
+                                                                      "Carvaan Mini Legends kannada",
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              14),
+                                                                    ),
+                                                                    Row(
+                                                                      children: [
+                                                                        Icon(Icons
+                                                                            .shopping_cart),
+                                                                        Text(
+                                                                          "4",
+                                                                          style:
+                                                                              TextStyle(fontSize: 20),
+                                                                        ),
+                                                                      ],
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                subtitle: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    // Text("Item Quantity: 441.7"),
+                                                                    // Text("Item Total Amount: 744660.82"),
+                                                                    // Text("GRN Number: GRN1697386960642"),
+                                                                    // Text("Item Moving Weighted Price: 6.2237"),
+                                                                    Row(
+                                                                      children: [
+                                                                        Icon(Icons
+                                                                            .calendar_month),
+                                                                        SizedBox(
+                                                                          width:
+                                                                              2,
+                                                                        ),
+                                                                        Text(
+                                                                            "2023-07-08"),
+                                                                      ],
+                                                                    ),
+                                                                    Text("₹200",
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                Colors.green,
+                                                                            fontSize: 18)),
+                                                                    // Text("GRN Created By: Salim"),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            );
+                                                          })),
+                                                  Expanded(
+                                                      child: ListView.builder(
+                                                          itemCount: 10,
+                                                          itemBuilder:
+                                                              (context, index) {
+                                                            return const Card(
+                                                              child: ListTile(
+                                                                title: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    Text(
+                                                                      "Carvaan Mini Legends kannada",
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              14),
+                                                                    ),
+                                                                    Row(
+                                                                      children: [
+                                                                        Icon(Icons
+                                                                            .shopping_cart),
+                                                                        Text(
+                                                                          "4",
+                                                                          style:
+                                                                              TextStyle(fontSize: 20),
+                                                                        ),
+                                                                      ],
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                subtitle: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    // Text("Item Quantity: 441.7"),
+                                                                    // Text("Item Total Amount: 744660.82"),
+                                                                    // Text("GRN Number: GRN1697386960642"),
+                                                                    // Text("Item Moving Weighted Price: 6.2237"),
+                                                                    Row(
+                                                                      children: [
+                                                                        Icon(Icons
+                                                                            .calendar_month),
+                                                                        SizedBox(
+                                                                          width:
+                                                                              2,
+                                                                        ),
+                                                                        Text(
+                                                                            "2023-07-08"),
+                                                                      ],
+                                                                    ),
+                                                                    Text("₹200",
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                Colors.green,
+                                                                            fontSize: 18)),
+                                                                    // Text("GRN Created By: Salim"),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            );
+                                                          })),
                                                   Column(
                                                     children: [
                                                       InkWell(
@@ -1007,7 +616,63 @@ class _ProductWiseScreenState extends State<ProductWiseScreen> {
                                                             ],
                                                           ),
                                                         ),
-                                                      )
+                                                      ),
+                                                      Expanded(
+                                                          child:
+                                                              ListView.builder(
+                                                                  itemCount: 10,
+                                                                  itemBuilder:
+                                                                      (context,
+                                                                          index) {
+                                                                    return const Card(
+                                                                      child:
+                                                                          ListTile(
+                                                                        title:
+                                                                            Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.spaceBetween,
+                                                                          children: [
+                                                                            Text(
+                                                                              "Carvaan Mini Legends kannada",
+                                                                              style: TextStyle(fontSize: 14),
+                                                                            ),
+                                                                            Row(
+                                                                              children: [
+                                                                                Icon(Icons.shopping_cart),
+                                                                                Text(
+                                                                                  "4",
+                                                                                  style: TextStyle(fontSize: 20),
+                                                                                ),
+                                                                              ],
+                                                                            )
+                                                                          ],
+                                                                        ),
+                                                                        subtitle:
+                                                                            Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.spaceBetween,
+                                                                          children: [
+                                                                            // Text("Item Quantity: 441.7"),
+                                                                            // Text("Item Total Amount: 744660.82"),
+                                                                            // Text("GRN Number: GRN1697386960642"),
+                                                                            // Text("Item Moving Weighted Price: 6.2237"),
+                                                                            Row(
+                                                                              children: [
+                                                                                Icon(Icons.calendar_month),
+                                                                                SizedBox(
+                                                                                  width: 2,
+                                                                                ),
+                                                                                Text("2023-07-08"),
+                                                                              ],
+                                                                            ),
+                                                                            Text("₹200",
+                                                                                style: TextStyle(color: Colors.green, fontSize: 18)),
+                                                                            // Text("GRN Created By: Salim"),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    );
+                                                                  }))
                                                     ],
                                                   )
                                                 ]),
