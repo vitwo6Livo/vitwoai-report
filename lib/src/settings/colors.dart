@@ -19,4 +19,10 @@ class AppColor {
   static Color dasboardWigetColor = const Color.fromARGB(255, 223, 241, 247);
   static Color switchColor = const Color(0xfff003060);
   //  const Color(0xfff00aff0);
+
+//////////////////////////// all report /////////////
+  static Color splashColor = const Color.fromARGB(255, 235, 242, 252);
+
+  static Color reportIconColor = Colors.white;
+  static Color reportCardColor = Colors.white;
 }

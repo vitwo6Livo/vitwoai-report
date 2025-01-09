@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 import 'package:vitwoai_report/src/All%20Reports/Purches%20Register/Functional%20Wise/functionalWiseScreen.dart';
 import 'package:vitwoai_report/src/All%20Reports/Purches%20Register/PO%20Wise/poWiseScreen.dart';
 import 'package:vitwoai_report/src/All%20Reports/Purches%20Register/product%20Wise/productWiseScreen.dart';
@@ -9,14 +8,12 @@ import 'package:vitwoai_report/src/All%20Reports/Receiveable/RegionWise/regionWi
 import 'package:vitwoai_report/src/All%20Reports/Receiveable/VerticalWise/verticalWiseScreen.dart';
 import 'package:vitwoai_report/src/All%20Reports/Receiveable/productWise/productWiseScreen.dart';
 import 'package:vitwoai_report/src/All%20Reports/Sales%20Register/receivableCustomer/receivableCustomer.dart';
-import 'package:vitwoai_report/src/settings/texts.dart';
 import 'package:vitwoai_report/src/vendor%20Wise/presentation/vendorWiseScreen.dart';
 
 import '../Report Details/reportDetailsScreen.dart';
 import '../golobal-Widget/bottom-Nav.dart';
 import '../home/presentation/main-Screen.dart';
 import '../settings/colors.dart';
-import '../settings/localJson.dart';
 
 class AllReport extends StatefulWidget {
   const AllReport({super.key});
@@ -29,77 +26,20 @@ class _AllReportState extends State<AllReport> {
   @override
   Widget build(BuildContext context) {
     int i = 0;
-    List<Map<String, dynamic>> listItems = [
-      {
-        "image": Localjson.productJson,
-        "title": HandText.productWise,
-      },
-      {
-        "image": Localjson.vendorJson,
-        "title": HandText.vendorWise,
-      },
-      {
-        "image": Localjson.poJson,
-        "title": HandText.poWise,
-      },
-      {
-        "image": Localjson.functionalJson,
-        "title": HandText.functionalWise,
-      },
-      {
-        "image": Localjson.productWiseJson,
-        "title": HandText.receivableProductWise,
-      },
-      {
-        "image": Localjson.customerJson,
-        "title": HandText.customerWise,
-      },
-      // {
-      //   "image": Localjson.verticalJson,
-      //   "title": HandText.verticalWise,
-      // },
-      {
-        "image": Localjson.kamJson,
-        "title": HandText.kamWise,
-      },
-      {
-        "image": Localjson.regionJson,
-        "title": HandText.regionWise,
-      },
-      {
-        "image": Localjson.receivableJson,
-        "title": HandText.receivableCustomer,
-      },
-      // {
-      //   "image": "assets/json/purchase-vendor-wise.json",
-      //   "title": "Vendor Wise"
-      // },
-      // {"image": "assets/json/purchase-po-wise.json", "title": "PO Wise"},
-      // {
-      //   "image": "assets/json/purchase-po-wise.json",
-      //   "title": "Functional Wise"
-      // },
-      // {"image": "assets/json/sales-product-wise.json", "title": "Product Wise"},
-      // {"image": "assets/json/PO Wise.json", "title": "Customer Wise"},
-      // {"image": "assets/json/sales-so-wise.json", "title": "Vertical Wise"},
-      // // {"image": "assets/json/sales-vertical-wise.json", "title": "SO Wise"},
-      // {"image": "assets/json/Product Wise.json", "title": "Kam Wise"},
-      // {"image": "assets/json/sales-region-wise.json", "title": "Region Wise"},
-      // {"image": "assets/json/Vendor Wise.json", "title": "Receivable Customer"}
-    ];
 
-    List<Widget> onClickList = [
-      const ProductWiseScreen(),
-      const VendorWiseScreen(),
-      const PoWiseScreen(),
-      const FunctionalWiseScreen(),
-      const ProductWiseReceiveableScreen(),
-      const CustomerWiseScreen(),
-      const VerticalWiseScreen(),
-      const KamWiseScreen(),
-      const RegionWiseScreen(),
-      const ReceivableCustomerScreen()
-    ];
+    // List<Widget> onClickList = [
+    //   const ProductWiseScreen(),
+    //   const VendorWiseScreen(),
+    //   const PoWiseScreen(),
+    //   const FunctionalWiseScreen(),
+    //   const ProductWiseReceiveableScreen(),
+    //   const CustomerWiseScreen(),
+    //   const VerticalWiseScreen(),
+    //   const KamWiseScreen(),
+    //   const RegionWiseScreen(),
+    //   const ReceivableCustomerScreen()
+    // ];
+
     final List<Widget> screens = [
       Main_Screen(selectedSettings: []),
       const AllReport(),
@@ -133,38 +73,159 @@ class _AllReportState extends State<AllReport> {
           ),
         ],
       ),
-      body: GridView.builder(
-        gridDelegate:
-            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-        itemCount: listItems.length,
-        itemBuilder: (context, index) {
-          return InkWell(
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => onClickList[index]));
-            },
-            child: Container(
-              margin: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(10)),
-              child: Card(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                        height: 140,
-                        width: 120,
-                        child: LottieBuilder.asset(listItems[index]["image"])),
-                    Text(
-                      listItems[index]["title"],
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    )
-                  ],
-                ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Ageing Section
+            Card(
+              elevation: 2,
+              color: AppColor.reportCardColor,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      'Ageing',
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                  ),
+                  GridView.count(
+                    crossAxisCount: 4,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: const EdgeInsets.all(8),
+                    crossAxisSpacing: 8,
+                    mainAxisSpacing: 8,
+                    children: [
+                      _buildGridItem(
+                          Icons.assessment, 'Receivable', Colors.purple, () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProductWiseScreen(),
+                          ),
+                        );
+                      }),
+                    ],
+                  ),
+                ],
               ),
             ),
-          );
-        },
+            // Purchase Section
+            Card(
+              elevation: 2,
+              color: AppColor.reportCardColor,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      'Purchase Register',
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                  ),
+                  GridView.count(
+                    crossAxisCount: 4,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: const EdgeInsets.all(8),
+                    crossAxisSpacing: 8,
+                    mainAxisSpacing: 8,
+                    children: [
+                      _buildGridItem(
+                          Icons.blinds, 'Product', Colors.indigo, () {}),
+                      _buildGridItem(Icons.baby_changing_station, 'Vendor',
+                          Colors.amber, () {}),
+                      _buildGridItem(
+                          Icons.bar_chart, 'Purchase Po', Colors.green, () {}),
+                      _buildGridItem(Icons.table_chart, 'Functional Area',
+                          Colors.blue, () {}),
+                      _buildGridItem(Icons.store_mall_directory,
+                          'Storage Location', Colors.cyan, () {}),
+                      _buildGridItem(Icons.on_device_training, 'Cost Center',
+                          Colors.deepOrangeAccent, () {}),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            // Sales Section
+            Card(
+              elevation: 2,
+              color: AppColor.reportCardColor,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      'Sales Register',
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                  ),
+                  GridView.count(
+                    crossAxisCount: 4,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: const EdgeInsets.all(8),
+                    crossAxisSpacing: 8,
+                    mainAxisSpacing: 8,
+                    children: [
+                      _buildGridItem(Icons.production_quantity_limits,
+                          'Sales Product', Colors.indigo, () {}),
+                      _buildGridItem(
+                          Icons.support_agent, 'Customer', Colors.amber, () {}),
+                      _buildGridItem(Icons.vertical_split, 'Vertical',
+                          Colors.green, () {}),
+                      _buildGridItem(Icons.business_center, 'Sales Order',
+                          Colors.blue, () {}),
+                      _buildGridItem(Icons.contact_mail, 'Key Account Manager',
+                          Colors.cyan, () {}),
+                      _buildGridItem(
+                          Icons.map, 'Regoin', Colors.deepPurple, () {}),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGridItem(
+      IconData icon, String label, Color color, VoidCallback onPressed) {
+    return InkWell(
+      splashColor: AppColor.splashColor,
+      onTap: onPressed,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CircleAvatar(
+            backgroundColor: color,
+            child: Icon(icon, color: AppColor.reportIconColor),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            label,
+            textAlign: TextAlign.center,
+            style:
+                Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 12),
+          ),
+        ],
       ),
     );
   }
