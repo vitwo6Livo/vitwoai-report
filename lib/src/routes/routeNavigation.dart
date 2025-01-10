@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vitwoai_report/src/login/presentation/loginScreen.dart';
-import '../golobal-Widget/bottom-Nav.dart';
+import '../../golobal-Widget/bottom-Nav.dart';
 import '../home/presentation/main-Screen.dart';
 import '../splash/presentation/intro-Screen.dart';
 import 'routeNames.dart';

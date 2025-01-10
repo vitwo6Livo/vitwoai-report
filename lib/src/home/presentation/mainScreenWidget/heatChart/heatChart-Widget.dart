@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:vitwoai_report/src/golobal-Widget/customPage-Route.dart';
+import 'package:vitwoai_report/golobal-Widget/customPage-Route.dart';
 import 'package:vitwoai_report/src/home/presentation/mainScreenWidget/pieChart/pieChartDetails.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
 

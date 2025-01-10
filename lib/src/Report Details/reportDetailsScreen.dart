@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:vitwoai_report/src/profile/presentation/prifileScreen.dart';
+import '../../golobal-Widget/bottom-Nav.dart';
 import '../All Reports/allReportsScreen.dart';
-import '../golobal-Widget/bottom-Nav.dart';
 import '../home/presentation/main-Screen.dart';
 import '../settings/colors.dart';
 
@@ -19,6 +20,7 @@ class _ReportDetailsState extends State<ReportDetails> {
       Main_Screen(selectedSettings: []),
       const AllReport(),
       const ReportDetails(),
+      const ProfileScreen(),
     ];
     return Scaffold(
         drawer: AppDrawer(
@@ -48,7 +50,7 @@ class _ReportDetailsState extends State<ReportDetails> {
             ),
           ],
         ),
-        body: Center(
+        body: const Center(
           child: Text("Reports Details"),
         ));
   }

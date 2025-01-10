@@ -5,13 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vitwoai_report/src/home/presentation/mainScreenWidget/barChart/barChart-Widget.dart';
 import 'package:vitwoai_report/src/home/presentation/mainScreenWidget/pieChart/pieChart-Widget.dart';
+import 'package:vitwoai_report/src/profile/presentation/prifileScreen.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
 import '../../All Reports/allReportsScreen.dart';
 import '../../Report Details/reportDetailsScreen.dart';
-import '../../golobal-Widget/bottom-Nav.dart';
-import '../../golobal-Widget/customPage-Route.dart';
-import '../../golobal-Widget/dasboardChartCard-Widget.dart';
+import '../../../golobal-Widget/bottom-Nav.dart';
+import '../../../golobal-Widget/customPage-Route.dart';
+import '../../../golobal-Widget/dasboardChartCard-Widget.dart';
 import 'addWidget-Screen.dart';
 import 'mainScreenWidget/areaChart/areaChart-Widget.dart';
 import 'mainScreenWidget/boxChart/boxChart-Widget.dart';
@@ -64,6 +65,7 @@ class _Main_ScreenState extends State<Main_Screen> {
       Main_Screen(selectedSettings: widget.selectedSettings),
       const AllReport(),
       const ReportDetails(),
+      const ProfileScreen(),
     ];
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,

@@ -25,4 +25,5 @@ class AppColor {
 
   static Color reportIconColor = Colors.white;
   static Color reportCardColor = Colors.white;
+  static Color cursorColor = Colors.blue;
 }

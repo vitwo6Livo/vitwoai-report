@@ -42,4 +42,7 @@ class HandText {
   static const kamWise = " KAM Wise";
   static const regionWise = "Region Wise";
   static const receivableCustomer = "Receivable Customer";
+
+  ////////////////////// ageing////////////////////////////////
+  static const receivaleTitle = 'Receivable Customer';
 }

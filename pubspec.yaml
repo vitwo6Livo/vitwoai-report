@@ -1,6 +1,6 @@
 name: vitwoai_report
 description: "A new Flutter project."
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # of the product and file versions while build-number is used as the build suffix.
 version: 1.0.0+1
@@ -12,13 +12,14 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
-  shared_preferences:
-  fl_chart:
-  syncfusion_flutter_charts: ^28.1.33
-  syncfusion_flutter_treemap: ^28.1.33
-  graphview: ^1.2.0
-  lottie: ^3.2.0
-  dropdown_button2: ^2.3.9
+  shared_preferences: #Local data store
+  fl_chart: #pie, bar, etc chart
+  syncfusion_flutter_charts: ^28.1.33 #column chart
+  syncfusion_flutter_treemap: ^28.1.33 #box chart
+  graphview: ^1.2.0 #tree chart widget used
+  lottie: #animation
+  flutter_riverpod: ^2.6.1 #State management
+  http: #url network
 
 dev_dependencies:
   flutter_test:

@@ -1,19 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:vitwoai_report/src/All%20Reports/Purches%20Register/Functional%20Wise/functionalWiseScreen.dart';
-import 'package:vitwoai_report/src/All%20Reports/Purches%20Register/PO%20Wise/poWiseScreen.dart';
-import 'package:vitwoai_report/src/All%20Reports/Purches%20Register/product%20Wise/productWiseScreen.dart';
-import 'package:vitwoai_report/src/All%20Reports/Receiveable/CustomerWise/customerWiseScreen.dart';
-import 'package:vitwoai_report/src/All%20Reports/Receiveable/KamWise/kamWiseScreen.dart';
-import 'package:vitwoai_report/src/All%20Reports/Receiveable/RegionWise/regionWiseScreen.dart';
-import 'package:vitwoai_report/src/All%20Reports/Receiveable/VerticalWise/verticalWiseScreen.dart';
-import 'package:vitwoai_report/src/All%20Reports/Receiveable/productWise/productWiseScreen.dart';
-import 'package:vitwoai_report/src/All%20Reports/Sales%20Register/receivableCustomer/receivableCustomer.dart';
-import 'package:vitwoai_report/src/vendor%20Wise/presentation/vendorWiseScreen.dart';
+// ignore_for_file: file_names
 
+import 'package:flutter/material.dart';
 import '../Report Details/reportDetailsScreen.dart';
-import '../golobal-Widget/bottom-Nav.dart';
+import '../../golobal-Widget/bottom-Nav.dart';
 import '../home/presentation/main-Screen.dart';
 import '../settings/colors.dart';
+import 'Purches Register/product Wise/presentation/purchaseProduct_screen.dart';
+import 'Purches Register/vendor Wise/purchaseVendor_screen.dart';
+import 'ageing/receivableCustomer/presentation/receivableScreen.dart';
 
 class AllReport extends StatefulWidget {
   const AllReport({super.key});
@@ -41,7 +35,7 @@ class _AllReportState extends State<AllReport> {
     // ];
 
     final List<Widget> screens = [
-      Main_Screen(selectedSettings: []),
+      Main_Screen(selectedSettings: const []),
       const AllReport(),
       const ReportDetails(),
     ];
@@ -103,14 +97,18 @@ class _AllReportState extends State<AllReport> {
                     mainAxisSpacing: 8,
                     children: [
                       _buildGridItem(
-                          Icons.assessment, 'Receivable', Colors.purple, () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ProductWiseScreen(),
-                          ),
-                        );
-                      }),
+                        Icons.assessment,
+                        'Receivable',
+                        Colors.purple,
+                        () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ReceivableScreen(),
+                            ),
+                          );
+                        },
+                      ),
                     ],
                   ),
                 ],
@@ -142,9 +140,33 @@ class _AllReportState extends State<AllReport> {
                     mainAxisSpacing: 8,
                     children: [
                       _buildGridItem(
-                          Icons.blinds, 'Product', Colors.indigo, () {}),
-                      _buildGridItem(Icons.baby_changing_station, 'Vendor',
-                          Colors.amber, () {}),
+                        Icons.blinds,
+                        'Product',
+                        Colors.indigo,
+                        () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const PurchaseProduct_SCreen(),
+                            ),
+                          );
+                        },
+                      ),
+                      _buildGridItem(
+                        Icons.baby_changing_station,
+                        'Vendor',
+                        Colors.amber,
+                        () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const PurchaseVendor_Screen(),
+                            ),
+                          );
+                        },
+                      ),
                       _buildGridItem(
                           Icons.bar_chart, 'Purchase Po', Colors.green, () {}),
                       _buildGridItem(Icons.table_chart, 'Functional Area',

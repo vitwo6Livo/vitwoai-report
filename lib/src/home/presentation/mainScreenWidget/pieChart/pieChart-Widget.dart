@@ -2,7 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
-import '../../../../golobal-Widget/customPage-Route.dart';
+import '../../../../../golobal-Widget/customPage-Route.dart';
 import 'pieChartDetails.dart';
 
 class PieChartWidget extends StatefulWidget {
