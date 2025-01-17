@@ -14,23 +14,17 @@ class Routes {
         );
       case RouteNames.loginScreen:
         return MaterialPageRoute(
-          builder: (BuildContext context) => LoginScreen(),
+          builder: (BuildContext context) => const LoginScreen(),
         );
 
-      case RouteNames.drawer:
+      case RouteNames.bottomnav:
         return MaterialPageRoute(
-          builder: (BuildContext context) => DrawerScreen(
-            selectedSettings:
-                (settings.arguments as List<Map<String, dynamic>>?) ?? [],
-          ),
+          builder: (BuildContext context) => const Bottomnav(),
         );
 
       case RouteNames.mainScrren:
         return MaterialPageRoute(
-          builder: (BuildContext context) => Main_Screen(
-            selectedSettings:
-                (settings.arguments as List<Map<String, dynamic>>?) ?? [],
-          ),
+          builder: (BuildContext context) => const Main_Screen(),
         );
 
       default:

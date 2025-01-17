@@ -20,6 +20,8 @@ dependencies:
   lottie: #animation
   flutter_riverpod: ^2.6.1 #State management
   http: #url network
+  table_calendar: #calendar used
+  sizer:
 
 dev_dependencies:
   flutter_test:

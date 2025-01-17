@@ -2,40 +2,60 @@
 
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:vitwoai_report/src/All%20Reports/allReportsScreen.dart';
-import 'package:vitwoai_report/src/Report%20Details/reportDetailsScreen.dart';
-import 'package:vitwoai_report/src/home/presentation/main-Screen.dart';
-import 'package:vitwoai_report/src/profile/presentation/prifileScreen.dart';
+import '../src/home/presentation/main-Screen.dart';
 
-class DrawerScreen extends StatefulWidget {
-  List<Map<String, dynamic>> selectedSettings;
-  DrawerScreen({required this.selectedSettings});
+class Bottomnav extends StatefulWidget {
+  const Bottomnav({super.key});
 
   @override
-  State<DrawerScreen> createState() => _DrawerScreenState();
+  State<Bottomnav> createState() => _BottomnavState();
 }
 
-class _DrawerScreenState extends State<DrawerScreen> {
-  int i = 0;
+class _BottomnavState extends State<Bottomnav> {
+  int _currentIndex = 0;
+  final PageController _pageController = PageController();
+
+  final List<Widget> _screens = [
+    const Main_Screen(),
+    const Main_Screen(),
+    const Main_Screen(),
+    const Main_Screen(),
+    const Main_Screen(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+    _pageController.jumpToPage(index);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> screens = [
-      Main_Screen(selectedSettings: widget.selectedSettings),
-      const AllReport(),
-      const ReportDetails(),
-      const ProfileScreen(),
-    ];
-
     return Scaffold(
-      body: screens[i],
-      drawer: AppDrawer(
-        onItemSelected: (index) {
+      backgroundColor: const Color.fromARGB(255, 167, 215, 255),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: _onItemTapped,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.receipt), label: 'Ageing'),
+          BottomNavigationBarItem(icon: Icon(Icons.shopping_bag), label: 'PR'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.payments), label: 'Sales Register'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        ],
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
+      ),
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (index) {
           setState(() {
-            i = index;
+            _currentIndex = index;
           });
-          Navigator.pop(context);
         },
+        children: _screens,
       ),
     );
   }
@@ -154,17 +174,17 @@ class AppDrawer extends StatelessWidget {
               ),
               onTap: () => onItemSelected(2),
             ),
-            ListTile(
-              leading: LottieBuilder.asset(
-                "assets/json/profile.json",
-                height: 30,
-              ),
-              title: Text(
-                'ProFile',
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              onTap: () => onItemSelected(3),
-            ),
+            // ListTile(
+            //   leading: LottieBuilder.asset(
+            //     "assets/json/profile.json",
+            //     height: 30,
+            //   ),
+            //   title: Text(
+            //     'ProFile',
+            //     style: Theme.of(context).textTheme.bodyLarge,
+            //   ),
+            //   onTap: () => onItemSelected(3),
+            // ),
             ListTile(
               leading: LottieBuilder.asset(
                 "assets/json/logout.json",

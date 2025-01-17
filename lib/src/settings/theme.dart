@@ -7,10 +7,6 @@ class Styles {
   static ThemeData themeData(BuildContext context) {
     return ThemeData(
       scaffoldBackgroundColor: AppColor.screenBg,
-      appBarTheme: AppBarTheme(
-        backgroundColor: AppColor.appBarColor,
-        iconTheme: IconThemeData(color: AppColor.appBarIcon),
-      ),
       textTheme: ThemeData.light().textTheme.copyWith(
             bodyLarge: TextStyle(
               fontFamily: 'Lora-SemiBold',
