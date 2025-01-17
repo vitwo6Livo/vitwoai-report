@@ -24,12 +24,13 @@ class ProductWidget extends StatelessWidget {
                   .copyWith(fontSize: 18),
             ),
             const SizedBox(height: 16),
-            const ListTile(
-              leading: CircleAvatar(
+            ListTile(
+              leading: const CircleAvatar(
                 backgroundColor: Colors.blue,
                 radius: 8,
               ),
-              title: Text('Net Pay'),
+              title: Text('Net Pay',
+                  style: Theme.of(context).textTheme.bodyMedium!),
               trailing: Text('93562'),
             ),
             const Divider(

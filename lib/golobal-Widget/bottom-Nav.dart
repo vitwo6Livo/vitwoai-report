@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:vitwoai_report/src/ageing/presentation/agineScreen.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/PRScreen.dart';
 import '../src/home/presentation/main-Screen.dart';
 
 class Bottomnav extends StatefulWidget {
@@ -17,8 +19,8 @@ class _BottomnavState extends State<Bottomnav> {
 
   final List<Widget> _screens = [
     const Main_Screen(),
-    const Main_Screen(),
-    const Main_Screen(),
+    SalesAnalyticsScreen(),
+    const PurchesRegister(),
     const Main_Screen(),
     const Main_Screen(),
   ];

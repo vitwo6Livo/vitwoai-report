@@ -142,7 +142,7 @@ class _Main_ScreenState extends State<Main_Screen> {
                         HandText.item,
                         style: Theme.of(context)
                             .textTheme
-                            .bodyMedium!
+                            .bodySmall!
                             .copyWith(color: AppColor.lightFontCpy),
                       ),
                       trailing: Icon(Icons.edit, color: AppColor.appBarIcon),
