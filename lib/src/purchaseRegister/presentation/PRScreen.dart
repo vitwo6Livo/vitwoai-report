@@ -1,7 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/cardwidget.dart';
+import 'package:vitwoai_report/src/settings/colors.dart';
 
-class PurchesRegister extends StatelessWidget {
+class PurchesRegister extends StatefulWidget {
   const PurchesRegister({super.key});
+
+  @override
+  State<PurchesRegister> createState() => _PurchesRegisterState();
+}
+
+class _PurchesRegisterState extends State<PurchesRegister> {
+  String? selectedCard;
+  List listOfCatagory = [
+    "Product",
+    "Vendor",
+    "Purchase Order",
+    "Functional Area",
+    "Storage Location",
+    "Cost Center"
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +55,25 @@ class PurchesRegister extends StatelessWidget {
                                   TextStyle(fontSize: 24, color: Colors.white),
                             ),
                             IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: const Text("Settings"),
+                                          content:
+                                              const Text("Settings content"),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const Text("Close"),
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                },
                                 icon: const Icon(
                                   Icons.settings,
                                   color: Colors.white,
@@ -117,255 +152,262 @@ class PurchesRegister extends StatelessWidget {
                 ],
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Text(
-                "Add",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Card(
-                    color: Colors.white,
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.add,
-                            color: Color(0xfff564d9c),
-                          ),
-                          Text("Product")
-                        ],
-                      ),
-                    ),
+            Container(
+              height: 50,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 3),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: const [
+                  BoxShadow(
+                    blurRadius: 10,
+                    blurStyle: BlurStyle.outer,
+                    color: Colors.grey,
+                    offset: Offset(4, 2),
+                    spreadRadius: 2.0,
                   ),
-                  Card(
-                    color: Colors.white,
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.add,
-                            color: Color(0xfff564d9c),
-                          ),
-                          Text("Vendor")
-                        ],
-                      ),
-                    ),
-                  ),
-                  Card(
-                    color: Colors.white,
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.add,
-                            color: Color(0xfff564d9c),
-                          ),
-                          Text("Purchase Order")
-                        ],
-                      ),
-                    ),
-                  )
                 ],
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.white.withOpacity(0.6)),
               ),
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Card(
-                    color: Colors.white,
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.add,
-                            color: Color(0xfff564d9c),
-                          ),
-                          Text("Functional Area")
-                        ],
+                  Expanded(
+                    child: TextField(
+                      cursorColor: Colors.blue,
+                      decoration: InputDecoration(
+                        hintText: 'SEARCH',
+                        hintStyle: Theme.of(context)
+                            .textTheme
+                            .bodySmall!
+                            .copyWith(color: Colors.grey),
+                        border: InputBorder.none,
                       ),
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ),
-                  Card(
-                    color: Colors.white,
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.add,
-                            color: Color(0xfff564d9c),
-                          ),
-                          Text("Storage Location")
-                        ],
-                      ),
-                    ),
+                  IconButton(
+                    splashColor: AppColor.splashColor,
+                    onPressed: () {},
+                    icon: const Icon(Icons.search, color: Colors.brown),
                   ),
                 ],
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8),
-              child: SizedBox(
-                width: 150,
-                child: Card(
-                  color: Color(0xfff626abb),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                    child: Row(
+            const SizedBox(
+              height: 10,
+            ),
+            Flexible(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Text(
+                      "Add",
+                      style:
+                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Wrap(
+                      spacing: 2.0,
+                      runSpacing: 8.0,
                       children: [
-                        Icon(
-                          Icons.add,
-                          color: Colors.white,
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              selectedCard = "Product";
+                            });
+                          },
+                          child: CasCard(
+                            isActive: selectedCard == "Product",
+                            cardName: "Product",
+                          ),
                         ),
-                        Text(
-                          "Cost Center",
-                          style: TextStyle(color: Colors.white),
-                        )
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              selectedCard = "Vendor";
+                            });
+                          },
+                          child: CasCard(
+                            isActive: selectedCard == "Vendor",
+                            cardName: "Vendor",
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              selectedCard = "Cost Center";
+                            });
+                          },
+                          child: CasCard(
+                            isActive: selectedCard == "Cost Center",
+                            cardName: "Cost Center",
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              selectedCard = "Functional Area";
+                            });
+                          },
+                          child: CasCard(
+                            isActive: selectedCard == "Functional Area",
+                            cardName: "Functional Area",
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              selectedCard = "Storage Location";
+                            });
+                          },
+                          child: CasCard(
+                            isActive: selectedCard == "Storage Location",
+                            cardName: "Storage Location",
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              selectedCard = "Purchase Order";
+                            });
+                          },
+                          child: CasCard(
+                            isActive: selectedCard == "Purchase Order",
+                            cardName: "Purchase Order",
+                          ),
+                        ),
                       ],
                     ),
                   ),
-                ),
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 5),
-              child: Text(
-                "List Of items",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Expanded(
-              child: ListView(
-                children: [
-                  Card(
-                    color: Colors.white,
-                    child: ListTile(
-                      leading: const CircleAvatar(
-                        child: Icon(Icons.widgets),
-                      ),
-                      title: Text("Carvaan Mobile Don Lite M23 Kan..",
-                          style: Theme.of(context).textTheme.bodySmall),
-                      trailing: Icon(
-                        Icons.arrow_forward,
-                        color: Colors.amber,
-                      ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                    child: Text(
+                      "List Of items",
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  Card(
-                    color: Colors.white,
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        child: Icon(Icons.widgets),
+                  Column(
+                    children: [
+                      Card(
+                        color: Colors.white,
+                        child: ListTile(
+                          leading: const CircleAvatar(
+                            child: Icon(Icons.widgets),
+                          ),
+                          title: Text("Carvaan Mobile Don Lite M23 Kan..",
+                              style: Theme.of(context).textTheme.bodySmall),
+                          trailing: const Icon(
+                            Icons.arrow_forward,
+                            color: Colors.amber,
+                          ),
+                        ),
                       ),
-                      title: Text("Carvaan Mobile Don Lite M23 Kan..",
-                          style: Theme.of(context).textTheme.bodySmall),
-                      trailing: Icon(
-                        Icons.arrow_forward,
-                        color: Colors.amber,
+                      Card(
+                        color: Colors.white,
+                        child: ListTile(
+                          leading: const CircleAvatar(
+                            child: Icon(Icons.widgets),
+                          ),
+                          title: Text("Carvaan Mobile Don Lite M23 Kan..",
+                              style: Theme.of(context).textTheme.bodySmall),
+                          trailing: const Icon(
+                            Icons.arrow_forward,
+                            color: Colors.amber,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  Card(
-                    color: Colors.white,
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        child: Icon(Icons.widgets),
+                      Card(
+                        color: Colors.white,
+                        child: ListTile(
+                          leading: const CircleAvatar(
+                            child: Icon(Icons.widgets),
+                          ),
+                          title: Text("Carvaan Mobile Don Lite M23 Kan..",
+                              style: Theme.of(context).textTheme.bodySmall),
+                          trailing: const Icon(
+                            Icons.arrow_forward,
+                            color: Colors.amber,
+                          ),
+                        ),
                       ),
-                      title: Text("Carvaan Mobile Don Lite M23 Kan..",
-                          style: Theme.of(context).textTheme.bodySmall),
-                      trailing: Icon(
-                        Icons.arrow_forward,
-                        color: Colors.amber,
+                      Card(
+                        color: Colors.white,
+                        child: ListTile(
+                          leading: const CircleAvatar(
+                            child: Icon(Icons.widgets),
+                          ),
+                          title: Text("Carvaan Mobile Don Lite M23 Kan..",
+                              style: Theme.of(context).textTheme.bodySmall),
+                          trailing: const Icon(
+                            Icons.arrow_forward,
+                            color: Colors.amber,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  Card(
-                    color: Colors.white,
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        child: Icon(Icons.widgets),
+                      Card(
+                        color: Colors.white,
+                        child: ListTile(
+                          leading: const CircleAvatar(
+                            child: Icon(Icons.widgets),
+                          ),
+                          title: Text("Carvaan Mobile Don Lite M23 Kan..",
+                              style: Theme.of(context).textTheme.bodySmall),
+                          trailing: const Icon(
+                            Icons.arrow_forward,
+                            color: Colors.amber,
+                          ),
+                        ),
                       ),
-                      title: Text("Carvaan Mobile Don Lite M23 Kan..",
-                          style: Theme.of(context).textTheme.bodySmall),
-                      trailing: Icon(
-                        Icons.arrow_forward,
-                        color: Colors.amber,
+                      Card(
+                        color: Colors.white,
+                        child: ListTile(
+                          leading: const CircleAvatar(
+                            child: Icon(Icons.widgets),
+                          ),
+                          title: Text("Carvaan Mobile Don Lite M23 Kan..",
+                              style: Theme.of(context).textTheme.bodySmall),
+                          trailing: const Icon(
+                            Icons.arrow_forward,
+                            color: Colors.amber,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  Card(
-                    color: Colors.white,
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        child: Icon(Icons.widgets),
+                      Card(
+                        color: Colors.white,
+                        child: ListTile(
+                          leading: const CircleAvatar(
+                            child: Icon(Icons.widgets),
+                          ),
+                          title: Text("Carvaan Mobile Don Lite M23 Kan..",
+                              style: Theme.of(context).textTheme.bodySmall),
+                          trailing: const Icon(
+                            Icons.arrow_forward,
+                            color: Colors.amber,
+                          ),
+                        ),
                       ),
-                      title: Text("Carvaan Mobile Don Lite M23 Kan..",
-                          style: Theme.of(context).textTheme.bodySmall),
-                      trailing: Icon(
-                        Icons.arrow_forward,
-                        color: Colors.amber,
+                      Card(
+                        color: Colors.white,
+                        child: ListTile(
+                          leading: const CircleAvatar(
+                            child: Icon(Icons.widgets),
+                          ),
+                          title: Text("Carvaan Mobile Don Lite M23 Kan..",
+                              style: Theme.of(context).textTheme.bodySmall),
+                          trailing: const Icon(
+                            Icons.arrow_forward,
+                            color: Colors.amber,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  Card(
-                    color: Colors.white,
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        child: Icon(Icons.widgets),
-                      ),
-                      title: Text("Carvaan Mobile Don Lite M23 Kan..",
-                          style: Theme.of(context).textTheme.bodySmall),
-                      trailing: Icon(
-                        Icons.arrow_forward,
-                        color: Colors.amber,
-                      ),
-                    ),
-                  ),
-                  Card(
-                    color: Colors.white,
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        child: Icon(Icons.widgets),
-                      ),
-                      title: Text("Carvaan Mobile Don Lite M23 Kan..",
-                          style: Theme.of(context).textTheme.bodySmall),
-                      trailing: Icon(
-                        Icons.arrow_forward,
-                        color: Colors.amber,
-                      ),
-                    ),
-                  ),
-                  Card(
-                    color: Colors.white,
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        child: Icon(Icons.widgets),
-                      ),
-                      title: Text("Carvaan Mobile Don Lite M23 Kan..",
-                          style: Theme.of(context).textTheme.bodySmall),
-                      trailing: Icon(
-                        Icons.arrow_forward,
-                        color: Colors.amber,
-                      ),
-                    ),
-                  ),
+                    ],
+                  )
                 ],
               ),
             )

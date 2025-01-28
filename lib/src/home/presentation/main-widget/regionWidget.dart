@@ -17,7 +17,10 @@ class RegionWidget extends StatelessWidget {
           children: [
             Text(
               'Tranding Region',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyLarge!
+                  .copyWith(fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 16),
             ListTile(
@@ -25,8 +28,10 @@ class RegionWidget extends StatelessWidget {
                 backgroundColor: Colors.blue,
                 radius: 8,
               ),
-              title: Text('Kolkata'),
-              trailing: Text('93562'),
+              title: Text('Kolkata',
+                  style: Theme.of(context).textTheme.bodyMedium!),
+              trailing:
+                  Text('93562', style: Theme.of(context).textTheme.bodySmall!),
             ),
             Divider(
               height: 1,
@@ -37,8 +42,10 @@ class RegionWidget extends StatelessWidget {
                 backgroundColor: Colors.purple,
                 radius: 8,
               ),
-              title: Text('Mumbai'),
-              trailing: Text('6517'),
+              title: Text('Mumbai',
+                  style: Theme.of(context).textTheme.bodyMedium!),
+              trailing:
+                  Text('6517', style: Theme.of(context).textTheme.bodySmall!),
             ),
             Divider(
               height: 1,
@@ -49,8 +56,10 @@ class RegionWidget extends StatelessWidget {
                 backgroundColor: Colors.purple,
                 radius: 8,
               ),
-              title: Text('Banglore'),
-              trailing: Text('6517'),
+              title: Text('Banglore',
+                  style: Theme.of(context).textTheme.bodyMedium!),
+              trailing:
+                  Text('6517', style: Theme.of(context).textTheme.bodySmall!),
             ),
             Divider(
               height: 1,
@@ -61,8 +70,10 @@ class RegionWidget extends StatelessWidget {
                 backgroundColor: Colors.purple,
                 radius: 8,
               ),
-              title: Text('Pune'),
-              trailing: Text('6517'),
+              title:
+                  Text('Pune', style: Theme.of(context).textTheme.bodyMedium!),
+              trailing:
+                  Text('6517', style: Theme.of(context).textTheme.bodySmall!),
             ),
           ],
         ),

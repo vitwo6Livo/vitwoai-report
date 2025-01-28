@@ -1,20 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:vitwoai_report/golobal-Widget/dayCalendar.dart';
+import 'package:vitwoai_report/src/sales_Register/presentation/detailsScreen.dart';
 
-class SalesAnalyticsScreen extends StatelessWidget {
+class SalesAnalyticsScreen extends StatefulWidget {
+  @override
+  State<SalesAnalyticsScreen> createState() => _SalesAnalyticsScreenState();
+}
+
+class _SalesAnalyticsScreenState extends State<SalesAnalyticsScreen> {
+  final fromDate = null;
+  void showDateDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => DayCalendarPickerDialog(
+        initialFromDate: fromDate ?? DateTime.now(),
+        onSave: (fromDate) {},
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Color(0xffff2f2f2),
-      backgroundColor: const Color.fromARGB(255, 215, 229, 239),
+      backgroundColor: Color(0xffff9f9f9),
+      // backgroundColor: const Color.fromARGB(255, 215, 229, 239),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Header Section
             Container(
               padding: EdgeInsets.all(16.0),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
                     colors: [Color(0xfff759bec), Color(0xfff4e3986)],
                     begin: Alignment.topLeft,
@@ -30,7 +47,7 @@ class SalesAnalyticsScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         'Receivable Analytics',
                         style: TextStyle(
                           color: Colors.white,
@@ -38,14 +55,18 @@ class SalesAnalyticsScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Icon(
-                        Icons.settings,
-                        color: Colors.white,
-                      )
+                      IconButton(
+                          onPressed: () {
+                            showDateDialog();
+                          },
+                          icon: const Icon(
+                            Icons.settings,
+                            color: Colors.white,
+                          ))
                     ],
                   ),
-                  SizedBox(height: 16),
-                  Text(
+                  const SizedBox(height: 16),
+                  const Text(
                     '\$54,431.32',
                     style: TextStyle(
                       color: Colors.white,
@@ -53,8 +74,8 @@ class SalesAnalyticsScreen extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 8),
-                  Row(
+                  const SizedBox(height: 8),
+                  const Row(
                     children: [
                       Text(
                         'Total Revenue',
@@ -70,7 +91,7 @@ class SalesAnalyticsScreen extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 5,
             ),
             Flexible(
@@ -78,7 +99,7 @@ class SalesAnalyticsScreen extends StatelessWidget {
                 children: [
                   Card(
                     color: Colors.white,
-                    shape: RoundedRectangleBorder(
+                    shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(16),
                           topRight: Radius.circular(16)),
@@ -88,18 +109,18 @@ class SalesAnalyticsScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             'Summary Report',
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Column(
+                              const Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
@@ -126,7 +147,7 @@ class SalesAnalyticsScreen extends StatelessWidget {
                                 width: 100,
                                 color: Colors.teal.shade200,
                                 alignment: Alignment.center,
-                                child: Text('Bar Chart'),
+                                child: const Text('Bar Chart'),
                               ),
                             ],
                           ),
@@ -173,60 +194,92 @@ class SalesAnalyticsScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Card(
-                    color: Colors.white,
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        child: Icon(Icons.person),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DetailsScreen()));
+                    },
+                    child: Card(
+                      color: Colors.white,
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          child: Icon(Icons.person),
+                        ),
+                        title: Text("Customer"),
+                        subtitle: Text(
+                          "21/10/2022 - 30/08/2024",
+                          style: TextStyle(fontSize: 12),
+                        ),
+                        trailing: Text("150"),
                       ),
-                      title: Text("Customer"),
-                      subtitle: Text(
-                        "21/10/2022 - 30/08/2024",
-                        style: TextStyle(fontSize: 12),
-                      ),
-                      trailing: Text("150"),
                     ),
                   ),
-                  Card(
-                    color: Colors.white,
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        child: Icon(Icons.multiline_chart),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DetailsScreen()));
+                    },
+                    child: Card(
+                      color: Colors.white,
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          child: Icon(Icons.multiline_chart),
+                        ),
+                        title: Text("Total Due"),
+                        subtitle: Text(
+                          "21/10/2022 - 30/08/2024",
+                          style: TextStyle(fontSize: 12),
+                        ),
+                        trailing: Text("₹35400.00"),
                       ),
-                      title: Text("Total Due"),
-                      subtitle: Text(
-                        "21/10/2022 - 30/08/2024",
-                        style: TextStyle(fontSize: 12),
-                      ),
-                      trailing: Text("₹35400.00"),
                     ),
                   ),
-                  Card(
-                    color: Colors.white,
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        child: Icon(Icons.equalizer),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DetailsScreen()));
+                    },
+                    child: Card(
+                      color: Colors.white,
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          child: Icon(Icons.equalizer),
+                        ),
+                        title: Text("On Account Due"),
+                        subtitle: Text(
+                          "21/10/2022 - 30/08/2024",
+                          style: TextStyle(fontSize: 12),
+                        ),
+                        trailing: Text("₹750000.0"),
                       ),
-                      title: Text("On Account Due"),
-                      subtitle: Text(
-                        "21/10/2022 - 30/08/2024",
-                        style: TextStyle(fontSize: 12),
-                      ),
-                      trailing: Text("₹750000.0"),
                     ),
                   ),
-                  Card(
-                    color: Colors.white,
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        child: Icon(Icons.query_stats),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DetailsScreen()));
+                    },
+                    child: Card(
+                      color: Colors.white,
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          child: Icon(Icons.query_stats),
+                        ),
+                        title: Text("Net Due"),
+                        subtitle: Text(
+                          "21/10/2022 - 30/08/2024",
+                          style: TextStyle(fontSize: 12),
+                        ),
+                        trailing: Text("₹15000.20"),
                       ),
-                      title: Text("Net Due"),
-                      subtitle: Text(
-                        "21/10/2022 - 30/08/2024",
-                        style: TextStyle(fontSize: 12),
-                      ),
-                      trailing: Text("₹15000.20"),
                     ),
                   )
                 ],
