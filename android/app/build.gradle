@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.vitwoai_report"
+    namespace = "com.example.vitwoai_report_dev"
     compileSdk = 34
     ndkVersion = flutter.ndkVersion
 

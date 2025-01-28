@@ -18,6 +18,7 @@ class _Main_ScreenState extends State<Main_Screen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffff9f9f9),
       body: ListView(
         children: [
           SizedBox(
@@ -48,7 +49,27 @@ class _Main_ScreenState extends State<Main_Screen> {
                               .bodyMedium!
                               .copyWith(color: AppColor.appbarFont),
                         ),
-                        Icon(Icons.settings, color: AppColor.appBarIcon),
+                        IconButton(
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: const Text("Settings"),
+                                      content: const Text("Settings content"),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text("Close"),
+                                        ),
+                                      ],
+                                    );
+                                  });
+                            },
+                            icon: Icon(Icons.settings,
+                                color: AppColor.appBarIcon)),
                       ],
                     ),
                   ),
@@ -142,7 +163,7 @@ class _Main_ScreenState extends State<Main_Screen> {
                         HandText.item,
                         style: Theme.of(context)
                             .textTheme
-                            .bodyMedium!
+                            .bodySmall!
                             .copyWith(color: AppColor.lightFontCpy),
                       ),
                       trailing: Icon(Icons.edit, color: AppColor.appBarIcon),

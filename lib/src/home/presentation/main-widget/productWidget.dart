@@ -16,65 +16,73 @@ class ProductWidget extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
         child: Column(
           children: [
-            Text(
-              HandText.product,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyMedium!
-                  .copyWith(fontSize: 18),
-            ),
+            Text(HandText.product,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge!
+                    .copyWith(fontWeight: FontWeight.bold)),
             const SizedBox(height: 16),
-            const ListTile(
-              leading: CircleAvatar(
+            ListTile(
+              leading: const CircleAvatar(
                 backgroundColor: Colors.blue,
                 radius: 8,
               ),
-              title: Text('Net Pay'),
-              trailing: Text('93562'),
+              title: Text('Net Pay',
+                  style: Theme.of(context).textTheme.bodyMedium!),
+              trailing:
+                  Text('93562', style: Theme.of(context).textTheme.bodySmall!),
             ),
             const Divider(
               height: 1,
               thickness: 0,
             ),
-            const ListTile(
-              leading: CircleAvatar(
+            ListTile(
+              leading: const CircleAvatar(
                 backgroundColor: Colors.purple,
                 radius: 8,
               ),
-              title: Text('Bettry'),
-              trailing: Text('6517'),
+              title: Text('Bettry',
+                  style: Theme.of(context).textTheme.bodyMedium!),
+              trailing:
+                  Text('6517', style: Theme.of(context).textTheme.bodySmall!),
             ),
             const Divider(
               height: 1,
               thickness: 0,
             ),
-            const ListTile(
-              leading: CircleAvatar(
+            ListTile(
+              leading: const CircleAvatar(
                 backgroundColor: Colors.purple,
                 radius: 8,
               ),
-              title: Text('juice'),
-              trailing: Text('6517'),
+              title:
+                  Text('juice', style: Theme.of(context).textTheme.bodyMedium!),
+              trailing:
+                  Text('6517', style: Theme.of(context).textTheme.bodySmall!),
             ),
             const Divider(
               height: 1,
               thickness: 0,
             ),
-            const ListTile(
-              leading: CircleAvatar(
+            ListTile(
+              leading: const CircleAvatar(
                 backgroundColor: Colors.purple,
                 radius: 8,
               ),
-              title: Text('car'),
-              trailing: Text('6517'),
+              title:
+                  Text('Car', style: Theme.of(context).textTheme.bodyMedium!),
+              trailing:
+                  Text('6517', style: Theme.of(context).textTheme.bodySmall!),
             ),
-            const ListTile(
-              leading: CircleAvatar(
+            ListTile(
+              leading: const CircleAvatar(
                 backgroundColor: Colors.purple,
                 radius: 8,
               ),
-              title: Text('Bike'),
-              trailing: Text('6517'),
+              title:
+                  Text('Bike', style: Theme.of(context).textTheme.bodyMedium!),
+              trailing:
+                  Text('6517', style: Theme.of(context).textTheme.bodySmall!),
             ),
           ],
         ),
