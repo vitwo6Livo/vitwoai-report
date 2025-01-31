@@ -30,8 +30,10 @@ class CircularChart extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(label, style: const TextStyle(fontSize: 14)),
-        Text('$availed | $balance',
-            style: const TextStyle(fontSize: 12, color: Colors.grey)),
+        Text(
+          '$availed | $balance',
+          style: const TextStyle(fontSize: 12, color: Colors.grey),
+        ),
       ],
     );
   }

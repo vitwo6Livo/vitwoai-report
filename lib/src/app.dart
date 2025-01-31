@@ -12,7 +12,7 @@ class ReportApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: Styles.themeData(context),
       onGenerateTitle: (BuildContext context) => 'Vitwoai Report',
-      initialRoute: RouteNames.loginScreen,
+      initialRoute: RouteNames.bottomnav,
       onGenerateRoute: Routes.generateRoute,
     );
   }

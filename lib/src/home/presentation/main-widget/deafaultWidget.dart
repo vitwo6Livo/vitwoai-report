@@ -32,7 +32,15 @@ class Deafaultwidget extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Icon(Icons.menu, color: AppColor.appBarIcon),
+                      Builder(
+                        builder: (context) => InkWell(
+                          onTap: () {
+                            print("jhsavdjchvjhvcsjd");
+                            Scaffold.of(context).openDrawer();
+                          },
+                          child: Icon(Icons.menu, color: AppColor.appBarIcon),
+                        ),
+                      ),
                       Text(
                         HandText.welcome,
                         style: Theme.of(context)
@@ -41,26 +49,29 @@ class Deafaultwidget extends StatelessWidget {
                             .copyWith(color: AppColor.appbarFont),
                       ),
                       IconButton(
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: const Text("Settings"),
-                                    content: const Text("Settings content"),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: const Text("Close"),
-                                      ),
-                                    ],
-                                  );
-                                });
-                          },
-                          icon:
-                              Icon(Icons.settings, color: AppColor.appBarIcon)),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: const Text("Settings"),
+                                  content: const Text("Settings content"),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text("Close"),
+                                    ),
+                                  ],
+                                );
+                              });
+                        },
+                        icon: Icon(
+                          Icons.settings,
+                          color: AppColor.appBarIcon,
+                        ),
+                      ),
                     ],
                   ),
                 ),
