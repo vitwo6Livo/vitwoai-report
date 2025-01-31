@@ -25,7 +25,7 @@ class Routes {
 
       case RouteNames.mainScrren:
         return MaterialPageRoute(
-          builder: (BuildContext context) => const Main_Screen(),
+          builder: (BuildContext context) => const MainScreen(),
         );
 
       default:

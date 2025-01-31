@@ -1,27 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/cardwidget.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 
-class PurchesRegister extends StatefulWidget {
+final isClickedProviderPurschese = StateProvider<bool>((ref) => false);
+
+class PurchesRegister extends ConsumerWidget {
   const PurchesRegister({super.key});
 
   @override
-  State<PurchesRegister> createState() => _PurchesRegisterState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isClicked = ref.watch(isClickedProviderPurschese);
+    final isClickedNotifier = ref.read(isClickedProviderPurschese.notifier);
 
-class _PurchesRegisterState extends State<PurchesRegister> {
-  String? selectedCard;
-  List listOfCatagory = [
-    "Product",
-    "Vendor",
-    "Purchase Order",
-    "Functional Area",
-    "Storage Location",
-    "Cost Center"
-  ];
+    String? selectedCard;
+    // List listOfCatagory = [
+    //   "Product",
+    //   "Vendor",
+    //   "Purchase Order",
+    //   "Functional Area",
+    //   "Storage Location",
+    //   "Cost Center"
+    // ];
 
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color(0xffff9f9f9),
         body: Column(
@@ -54,30 +55,48 @@ class _PurchesRegisterState extends State<PurchesRegister> {
                               style:
                                   TextStyle(fontSize: 24, color: Colors.white),
                             ),
-                            IconButton(
-                                onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          title: const Text("Settings"),
-                                          content:
-                                              const Text("Settings content"),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text("Close"),
-                                            ),
-                                          ],
-                                        );
-                                      });
-                                },
-                                icon: const Icon(
-                                  Icons.settings,
-                                  color: Colors.white,
-                                ))
+                            Row(
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    isClickedNotifier.state =
+                                        !isClickedNotifier.state;
+                                  },
+                                  child: CircleAvatar(
+                                    backgroundColor:
+                                        isClicked ? Colors.amber : Colors.white,
+                                    child: Icon(
+                                      Icons.push_pin,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                                IconButton(
+                                    onPressed: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              title: const Text("Settings"),
+                                              content: const Text(
+                                                  "Settings content"),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: const Text("Close"),
+                                                ),
+                                              ],
+                                            );
+                                          });
+                                    },
+                                    icon: const Icon(
+                                      Icons.settings,
+                                      color: Colors.white,
+                                    ))
+                              ],
+                            )
                           ],
                         )),
                   ),
@@ -217,9 +236,7 @@ class _PurchesRegisterState extends State<PurchesRegister> {
                       children: [
                         InkWell(
                           onTap: () {
-                            setState(() {
-                              selectedCard = "Product";
-                            });
+                            selectedCard = "Product";
                           },
                           child: CasCard(
                             isActive: selectedCard == "Product",
@@ -228,9 +245,7 @@ class _PurchesRegisterState extends State<PurchesRegister> {
                         ),
                         InkWell(
                           onTap: () {
-                            setState(() {
-                              selectedCard = "Vendor";
-                            });
+                            selectedCard = "Vendor";
                           },
                           child: CasCard(
                             isActive: selectedCard == "Vendor",
@@ -239,9 +254,7 @@ class _PurchesRegisterState extends State<PurchesRegister> {
                         ),
                         InkWell(
                           onTap: () {
-                            setState(() {
-                              selectedCard = "Cost Center";
-                            });
+                            selectedCard = "Cost Center";
                           },
                           child: CasCard(
                             isActive: selectedCard == "Cost Center",
@@ -250,9 +263,7 @@ class _PurchesRegisterState extends State<PurchesRegister> {
                         ),
                         InkWell(
                           onTap: () {
-                            setState(() {
-                              selectedCard = "Functional Area";
-                            });
+                            selectedCard = "Functional Area";
                           },
                           child: CasCard(
                             isActive: selectedCard == "Functional Area",
@@ -261,9 +272,7 @@ class _PurchesRegisterState extends State<PurchesRegister> {
                         ),
                         InkWell(
                           onTap: () {
-                            setState(() {
-                              selectedCard = "Storage Location";
-                            });
+                            selectedCard = "Storage Location";
                           },
                           child: CasCard(
                             isActive: selectedCard == "Storage Location",
@@ -272,9 +281,7 @@ class _PurchesRegisterState extends State<PurchesRegister> {
                         ),
                         InkWell(
                           onTap: () {
-                            setState(() {
-                              selectedCard = "Purchase Order";
-                            });
+                            selectedCard = "Purchase Order";
                           },
                           child: CasCard(
                             isActive: selectedCard == "Purchase Order",

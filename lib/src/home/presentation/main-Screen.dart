@@ -1,184 +1,123 @@
-// ignore_for_file: camel_case_types, must_be_immutable
-
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:vitwoai_report/src/ageing/presentation/agineScreen.dart';
+import 'package:vitwoai_report/src/home/presentation/main-widget/cardDesignPurches.dart';
+import 'package:vitwoai_report/src/home/presentation/main-widget/cardDesignReceivable.dart';
+import 'package:vitwoai_report/src/home/presentation/main-widget/cardDesignSales.dart';
+import 'package:vitwoai_report/src/home/presentation/main-widget/deafaultWidget.dart';
+import 'package:vitwoai_report/src/home/presentation/main-widget/progresWidget.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/PRScreen.dart';
+import 'package:vitwoai_report/src/sales_Register/presentation/salesRegister.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
-import 'package:vitwoai_report/src/settings/texts.dart';
-import 'main-widget/productWidget.dart';
-import 'main-widget/progresWidget.dart';
-import 'main-widget/regionWidget.dart';
 
-class Main_Screen extends StatefulWidget {
-  const Main_Screen({super.key});
+class MainScreen extends ConsumerWidget {
+  const MainScreen({super.key});
 
   @override
-  State<Main_Screen> createState() => _Main_ScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Access the states
+    final isReceivableClicked = ref.watch(isClickedProviderReceivable);
+    final isPurchaseClicked = ref.watch(isClickedProviderPurschese);
+    final isSalesClicked = ref.watch(isClickedProviderSales);
 
-class _Main_ScreenState extends State<Main_Screen> {
-  @override
-  Widget build(BuildContext context) {
+    // Build a list of body widgets based on the state
+    List<Widget> bodyWidgets = [];
+
+    if (isReceivableClicked) {
+      bodyWidgets.add(const Padding(
+        padding: EdgeInsets.all(8.0),
+        child: CardDesignReceivable(
+          title: 'Receivable Overview',
+          totalSales: '1,00,000',
+          totalCollections: '90,000',
+          revenue: '80,000',
+          growth: '34',
+        ),
+      ));
+    }
+    if (isPurchaseClicked) {
+      bodyWidgets.add(const Padding(
+          padding: EdgeInsets.all(8.0), child: CardDesignPurchase()));
+    }
+    if (isSalesClicked) {
+      bodyWidgets.add(const Padding(
+        padding: EdgeInsets.all(8.0),
+        child: CardDesignSales(
+          title: 'Sales Overview',
+          totalSales: '5768',
+          totalCollections: '90,000',
+          revenue: '34',
+          growth: '34',
+        ),
+      ));
+    }
+
     return Scaffold(
-      backgroundColor: Color(0xffff9f9f9),
-      body: ListView(
-        children: [
-          SizedBox(
-            height: 250,
-            child: Stack(
-              children: [
-                Container(
-                  alignment: Alignment.topCenter,
-                  height: 120,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [AppColor.appBarColor1, AppColor.appBarColor2],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                  ),
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Icon(Icons.menu, color: AppColor.appBarIcon),
-                        Text(
-                          HandText.welcome,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
-                              .copyWith(color: AppColor.appbarFont),
-                        ),
-                        IconButton(
-                            onPressed: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      title: const Text("Settings"),
-                                      content: const Text("Settings content"),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: const Text("Close"),
-                                        ),
-                                      ],
-                                    );
-                                  });
-                            },
-                            icon: Icon(Icons.settings,
-                                color: AppColor.appBarIcon)),
-                      ],
-                    ),
-                  ),
+      appBar: (isReceivableClicked || isPurchaseClicked || isSalesClicked)
+          ? AppBar(
+              automaticallyImplyLeading: false,
+              title: const Text(
+                "Dashboard",
+                style: TextStyle(color: Colors.white),
+              ),
+              centerTitle: true,
+              leading: IconButton(
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                icon: const Icon(
+                  Icons.menu,
+                  color: Colors.white,
                 ),
-                Positioned(
-                  top: 50,
-                  left: 10,
-                  right: 10,
-                  child: Card(
+              ),
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text("Settings"),
+                          content: const Text("Settings content"),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text("Close"),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.settings,
                     color: Colors.white,
-                    elevation: 4,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            HandText.summary,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium!
-                                .copyWith(fontSize: 18),
-                          ),
-                          const SizedBox(height: 16),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              CircularChart('Sales', 30, 100, 30),
-                              CircularChart('Revenue', 26, 82, 30),
-                              CircularChart('growth', 14, 60, 50),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
                   ),
                 )
               ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 6),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      gradient: LinearGradient(
-                        colors: [AppColor.raisedCard1, AppColor.raisedCard2],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                    ),
-                    child: ListTile(
-                      title: Text(
-                        HandText.raisedCount,
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            fontSize: 20, color: AppColor.lightFontCpy),
-                      ),
-                      subtitle: Text(
-                        HandText.raised,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium!
-                            .copyWith(color: AppColor.lightFontCpy),
-                      ),
-                      trailing:
-                          Icon(Icons.trending_up, color: AppColor.appBarIcon),
-                    ),
+              flexibleSpace: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [AppColor.appBarColor1, AppColor.appBarColor2],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                   ),
                 ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      gradient: LinearGradient(
-                        colors: [AppColor.itemCard1, AppColor.itemCard2],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                    ),
-                    child: ListTile(
-                      title: Text(
-                        HandText.itemCount,
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            fontSize: 20, color: AppColor.lightFontCpy),
-                      ),
-                      subtitle: Text(
-                        HandText.item,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodySmall!
-                            .copyWith(color: AppColor.lightFontCpy),
-                      ),
-                      trailing: Icon(Icons.edit, color: AppColor.appBarIcon),
-                    ),
-                  ),
-                ),
-              ],
+              ),
+            )
+          : null,
+      backgroundColor: const Color(0xfff9f9f9),
+      body: bodyWidgets.isEmpty
+          ? const Deafaultwidget()
+          : SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: bodyWidgets,
+              ),
             ),
-          ),
-          const SizedBox(height: 10),
-          const ProductWidget(),
-          const SizedBox(height: 10),
-          const RegionWidget(),
-        ],
-      ),
     );
   }
 }

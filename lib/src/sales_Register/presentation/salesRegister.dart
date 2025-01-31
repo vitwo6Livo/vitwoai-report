@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/src/sales_Register/presentation/detailsScreen.dart';
 import 'package:vitwoai_report/src/sales_Register/presentation/lineChart.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 
-class SalesRegister extends StatefulWidget {
+final isClickedProviderSales = StateProvider<bool>((ref) => false);
+
+class SalesRegister extends ConsumerWidget {
   const SalesRegister({super.key});
 
   @override
-  State<SalesRegister> createState() => _SalesRegisterState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isClicked = ref.watch(isClickedProviderSales);
+    final isClickedNotifier = ref.read(isClickedProviderSales.notifier);
 
-class _SalesRegisterState extends State<SalesRegister> {
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -21,6 +22,18 @@ class _SalesRegisterState extends State<SalesRegister> {
           style: TextStyle(color: Colors.white),
         ),
         actions: [
+          InkWell(
+            onTap: () {
+              isClickedNotifier.state = !isClicked;
+            },
+            child: CircleAvatar(
+              backgroundColor: isClicked ? Colors.amber : Colors.white,
+              child: const Icon(
+                Icons.push_pin,
+                color: Colors.black,
+              ),
+            ),
+          ),
           IconButton(
               onPressed: () {
                 showDialog(
@@ -43,7 +56,7 @@ class _SalesRegisterState extends State<SalesRegister> {
               icon: const Icon(
                 Icons.settings,
                 color: Colors.white,
-              )),
+              ))
         ],
         flexibleSpace: Container(
           decoration: BoxDecoration(

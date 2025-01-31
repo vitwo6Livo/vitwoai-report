@@ -41,7 +41,7 @@ class ProductWidget extends StatelessWidget {
                 backgroundColor: Colors.purple,
                 radius: 8,
               ),
-              title: Text('Bettry',
+              title: Text('Battery',
                   style: Theme.of(context).textTheme.bodyMedium!),
               trailing:
                   Text('6517', style: Theme.of(context).textTheme.bodySmall!),

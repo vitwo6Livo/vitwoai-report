@@ -15,8 +15,8 @@ class NewBottomNav extends StatefulWidget {
 
 class _NewBottomNavState extends State<NewBottomNav> {
   final List<Widget> _screens = [
-    const Main_Screen(),
-    SalesAnalyticsScreen(),
+    const MainScreen(),
+    ReceivableAnalyticsScreen(),
     const PurchesRegister(),
     // HomeScreen(),
     const SalesRegister(),

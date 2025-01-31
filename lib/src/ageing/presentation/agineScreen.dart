@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/golobal-Widget/dayCalendar.dart';
 import 'package:vitwoai_report/src/sales_Register/presentation/detailsScreen.dart';
 
-class SalesAnalyticsScreen extends StatefulWidget {
-  @override
-  State<SalesAnalyticsScreen> createState() => _SalesAnalyticsScreenState();
-}
+final isClickedProviderReceivable = StateProvider<bool>((ref) => false);
 
-class _SalesAnalyticsScreenState extends State<SalesAnalyticsScreen> {
-  final fromDate = null;
-  void showDateDialog() {
+class ReceivableAnalyticsScreen extends ConsumerWidget {
+  void showDateDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) => DayCalendarPickerDialog(
-        initialFromDate: fromDate ?? DateTime.now(),
+        initialFromDate: DateTime.now(),
         onSave: (fromDate) {},
       ),
     );
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isClicked = ref.watch(isClickedProviderReceivable);
+    print("hhhhhhhhhhhhhh${isClicked.toString()}");
+    final isClickedNotifier = ref.read(isClickedProviderReceivable.notifier);
     return Scaffold(
       backgroundColor: Color(0xffff9f9f9),
       // backgroundColor: const Color.fromARGB(255, 215, 229, 239),
@@ -30,7 +30,7 @@ class _SalesAnalyticsScreenState extends State<SalesAnalyticsScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                     colors: [Color(0xfff759bec), Color(0xfff4e3986)],
@@ -55,14 +55,32 @@ class _SalesAnalyticsScreenState extends State<SalesAnalyticsScreen> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      IconButton(
-                          onPressed: () {
-                            showDateDialog();
-                          },
-                          icon: const Icon(
-                            Icons.settings,
-                            color: Colors.white,
-                          ))
+                      Row(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              isClickedNotifier.state =
+                                  !isClickedNotifier.state;
+                            },
+                            child: CircleAvatar(
+                              backgroundColor:
+                                  isClicked ? Colors.amber : Colors.white,
+                              child: const Icon(
+                                Icons.push_pin,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                              onPressed: () {
+                                showDateDialog(context);
+                              },
+                              icon: const Icon(
+                                Icons.settings,
+                                color: Colors.white,
+                              ))
+                        ],
+                      )
                     ],
                   ),
                   const SizedBox(height: 16),
@@ -105,7 +123,7 @@ class _SalesAnalyticsScreenState extends State<SalesAnalyticsScreen> {
                           topRight: Radius.circular(16)),
                     ),
                     child: Padding(
-                      padding: EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.all(16.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -151,7 +169,7 @@ class _SalesAnalyticsScreenState extends State<SalesAnalyticsScreen> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 16),
+                          const SizedBox(height: 16),
                           Container(
                             height: 200,
                             color: Colors.teal.shade50,
@@ -201,7 +219,7 @@ class _SalesAnalyticsScreenState extends State<SalesAnalyticsScreen> {
                           MaterialPageRoute(
                               builder: (context) => DetailsScreen()));
                     },
-                    child: Card(
+                    child: const Card(
                       color: Colors.white,
                       child: ListTile(
                         leading: CircleAvatar(
@@ -223,7 +241,7 @@ class _SalesAnalyticsScreenState extends State<SalesAnalyticsScreen> {
                           MaterialPageRoute(
                               builder: (context) => DetailsScreen()));
                     },
-                    child: Card(
+                    child: const Card(
                       color: Colors.white,
                       child: ListTile(
                         leading: CircleAvatar(
@@ -245,7 +263,7 @@ class _SalesAnalyticsScreenState extends State<SalesAnalyticsScreen> {
                           MaterialPageRoute(
                               builder: (context) => DetailsScreen()));
                     },
-                    child: Card(
+                    child: const Card(
                       color: Colors.white,
                       child: ListTile(
                         leading: CircleAvatar(
@@ -267,7 +285,7 @@ class _SalesAnalyticsScreenState extends State<SalesAnalyticsScreen> {
                           MaterialPageRoute(
                               builder: (context) => DetailsScreen()));
                     },
-                    child: Card(
+                    child: const Card(
                       color: Colors.white,
                       child: ListTile(
                         leading: CircleAvatar(
