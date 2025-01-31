@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vitwoai_report/golobal-Widget/new-bottom-Nav.dart';
 import 'package:vitwoai_report/src/login/presentation/loginScreen.dart';
-import '../../golobal-Widget/bottom-Nav.dart';
 import '../home/presentation/main-Screen.dart';
 import '../splash/presentation/intro-Screen.dart';
 import 'routeNames.dart';
@@ -20,7 +19,9 @@ class Routes {
 
       case RouteNames.bottomnav:
         return MaterialPageRoute(
-          builder: (BuildContext context) => const NewBottomNav(),
+          builder: (BuildContext context) => NewBottomNav(
+            settings: (settings.arguments as List<Map<String, dynamic>>?) ?? [],
+          ),
         );
 
       case RouteNames.mainScrren:

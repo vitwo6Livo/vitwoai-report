@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
+import '../../../golobal-Widget/appDrawer.dart';
 import 'main-widget/productWidget.dart';
 import 'main-widget/progresWidget.dart';
 import 'main-widget/regionWidget.dart';
@@ -18,7 +19,8 @@ class _Main_ScreenState extends State<Main_Screen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffff9f9f9),
+      backgroundColor: const Color(0xffff9f9f9),
+      drawer: const AppDrawer(selectedSettings: []),
       body: ListView(
         children: [
           SizedBox(
@@ -41,7 +43,14 @@ class _Main_ScreenState extends State<Main_Screen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Icon(Icons.menu, color: AppColor.appBarIcon),
+                        Builder(
+                          builder: (context) => InkWell(
+                            onTap: () {
+                              Scaffold.of(context).openDrawer();
+                            },
+                            child: Icon(Icons.menu, color: AppColor.appBarIcon),
+                          ),
+                        ),
                         Text(
                           HandText.welcome,
                           style: Theme.of(context)
@@ -50,26 +59,29 @@ class _Main_ScreenState extends State<Main_Screen> {
                               .copyWith(color: AppColor.appbarFont),
                         ),
                         IconButton(
-                            onPressed: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      title: const Text("Settings"),
-                                      content: const Text("Settings content"),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: const Text("Close"),
-                                        ),
-                                      ],
-                                    );
-                                  });
-                            },
-                            icon: Icon(Icons.settings,
-                                color: AppColor.appBarIcon)),
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text("Settings"),
+                                    content: const Text("Settings content"),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text("Close"),
+                                      ),
+                                    ],
+                                  );
+                                });
+                          },
+                          icon: Icon(
+                            Icons.settings,
+                            color: AppColor.appBarIcon,
+                          ),
+                        ),
                       ],
                     ),
                   ),
