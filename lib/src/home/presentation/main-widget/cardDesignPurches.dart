@@ -73,7 +73,7 @@ class CardDesignPurchase extends StatelessWidget {
                             fontSize: 20, color: AppColor.lightFontCpy),
                       ),
                       subtitle: Text(
-                        "Receibalbe Quentity",
+                        "Receivalbe Quentity",
                         style: Theme.of(context)
                             .textTheme
                             .bodySmall!

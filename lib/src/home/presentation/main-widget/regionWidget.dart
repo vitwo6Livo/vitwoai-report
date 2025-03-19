@@ -16,7 +16,7 @@ class RegionWidget extends StatelessWidget {
           // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Tranding Region',
+              'Trending Region',
               style: Theme.of(context)
                   .textTheme
                   .bodyLarge!

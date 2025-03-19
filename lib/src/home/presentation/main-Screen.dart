@@ -1,27 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:vitwoai_report/src/ageing/presentation/agineScreen.dart';
 import 'package:vitwoai_report/src/home/presentation/main-widget/cardDesignPurches.dart';
 import 'package:vitwoai_report/src/home/presentation/main-widget/cardDesignReceivable.dart';
 import 'package:vitwoai_report/src/home/presentation/main-widget/cardDesignSales.dart';
 import 'package:vitwoai_report/src/home/presentation/main-widget/deafaultWidget.dart';
-import 'package:vitwoai_report/src/home/presentation/main-widget/progresWidget.dart';
-import 'package:vitwoai_report/src/purchaseRegister/presentation/PRScreen.dart';
 import 'package:vitwoai_report/src/sales_Register/presentation/salesRegister.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
+import '../../purchaseRegister/presentation/purchesRegister_Screen.dart';
 
 class MainScreen extends ConsumerWidget {
   const MainScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Access the states
     final isReceivableClicked = ref.watch(isClickedProviderReceivable);
     final isPurchaseClicked = ref.watch(isClickedProviderPurschese);
     final isSalesClicked = ref.watch(isClickedProviderSales);
-
-    // Build a list of body widgets based on the state
     List<Widget> bodyWidgets = [];
 
     if (isReceivableClicked) {
@@ -54,6 +49,7 @@ class MainScreen extends ConsumerWidget {
     }
 
     return Scaffold(
+      // drawer: const AppDrawer(selectedSettings: []),
       appBar: (isReceivableClicked || isPurchaseClicked || isSalesClicked)
           ? AppBar(
               automaticallyImplyLeading: false,
@@ -62,15 +58,14 @@ class MainScreen extends ConsumerWidget {
                 style: TextStyle(color: Colors.white),
               ),
               centerTitle: true,
-              leading: IconButton(
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
-                icon: const Icon(
-                  Icons.menu,
-                  color: Colors.white,
-                ),
-              ),
+              // leading: Builder(
+              //   builder: (context) => InkWell(
+              //     onTap: () {
+              //       Scaffold.of(context).openDrawer();
+              //     },
+              //     child: Icon(Icons.menu, color: AppColor.appBarIcon),
+              //   ),
+              // ),
               actions: [
                 IconButton(
                   onPressed: () {

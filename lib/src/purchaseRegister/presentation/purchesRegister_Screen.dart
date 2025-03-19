@@ -1,52 +1,61 @@
-// ignore_for_file: use_full_hex_values_for_flutter_colors, deprecated_member_use
-
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
+import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/POGraph.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/POlist.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/costCenterGraph.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/costCenterList.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/functionalAreaGraph.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/functionalAreaList.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/storageLocationGraph.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/storageLocationList.dart';
 import 'prWidget/productGraph.dart';
 import 'prWidget/productList.dart';
 import 'prWidget/vendorGraph.dart';
 import 'prWidget/vendorList.dart';
 
-class PurchesregisterScreen extends StatefulWidget {
+final isClickedProviderPurschese = StateProvider<bool>((ref) => false);
+
+class PurchesregisterScreen extends ConsumerStatefulWidget {
   const PurchesregisterScreen({super.key});
 
   @override
-  State<PurchesregisterScreen> createState() => _PurchesregisterScreenState();
+  ConsumerState<PurchesregisterScreen> createState() =>
+      _PurchesregisterScreenState();
 }
 
-class _PurchesregisterScreenState extends State<PurchesregisterScreen> {
+class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
   int selectedIndex = 0; // Track the selected item
 
   List<Map<String, dynamic>> data = [
     {
       'image': 'assets/images/product.svg',
-      'name': 'Product',
+      'name': 'ALL',
       'gradient': const [Color(0xfff759bec), Color(0xfff4e3986)],
     },
     {
       'image': 'assets/images/supplier.svg',
-      'name': 'Vendor',
+      'name': 'PO Wise',
       'gradient': const [Color(0xfff759bec), Color(0xfff4e3986)],
     },
     {
       'image': 'assets/images/cash-register.svg',
-      'name': 'Purchase Order',
+      'name': 'Vendor Wise',
       'gradient': const [Color(0xfff759bec), Color(0xfff4e3986)],
     },
     {
       'image': 'assets/images/chemical-flask.svg',
-      'name': 'Functional Area',
+      'name': 'Item Wise',
       'gradient': const [Color(0xfff759bec), Color(0xfff4e3986)],
     },
     {
       'image': 'assets/images/server-location.svg',
-      'name': 'Storage Location',
+      'name': 'Item Group Wise',
       'gradient': const [Color(0xfff759bec), Color(0xfff4e3986)],
     },
     {
       'image': 'assets/images/data-storage.svg',
-      'name': 'Cast Center',
+      'name': 'HSN Code Wise',
       'gradient': const [Color(0xfff759bec), Color(0xfff4e3986)],
     },
   ];
@@ -57,26 +66,28 @@ class _PurchesregisterScreenState extends State<PurchesregisterScreen> {
       backgroundColor: const Color(0xffff9f9f9),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: 0.0,
         children: [
           _purchaseSummary(context),
           _cardViewPurchase(),
           Flexible(
             child: SingleChildScrollView(
               child: Column(
+                spacing: 0.0,
                 children: [
                   selectedIndex == 0
                       ? const ProductList()
                       : selectedIndex == 1
                           ? const VendorList()
-                          //     : selectedIndex == 2
-                          //         ? _purchaseOrder()
-                          //         : selectedIndex == 3
-                          //             ? _functionalArea()
-                          //             : selectedIndex == 4
-                          //                 ? _storageLocation()
-                          //                 : selectedIndex == 5
-                          //                     ? _costCenter()
-                          : const SizedBox(),
+                          : selectedIndex == 2
+                              ? const PurchaseOrderList()
+                              : selectedIndex == 3
+                                  ? const FunctionalAreaList()
+                                  : selectedIndex == 4
+                                      ? const StorageLocationList()
+                                      : selectedIndex == 5
+                                          ? const CostCenterList()
+                                          : const SizedBox(),
                 ],
               ),
             ),
@@ -163,6 +174,8 @@ class _PurchesregisterScreenState extends State<PurchesregisterScreen> {
   }
 
   SizedBox _purchaseSummary(BuildContext context) {
+    // final isClicked = ref.watch(isClickedProviderPurschese);
+    // final isClickedNotifier = ref.read(isClickedProviderPurschese.notifier);
     return SizedBox(
       height: 280,
       width: double.infinity,
@@ -184,7 +197,7 @@ class _PurchesregisterScreenState extends State<PurchesregisterScreen> {
               ),
             ),
             child: Padding(
-              padding: const EdgeInsets.only(top: 50, left: 10),
+              padding: const EdgeInsets.only(top: 65, left: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -192,27 +205,10 @@ class _PurchesregisterScreenState extends State<PurchesregisterScreen> {
                     "Purchase Register",
                     style: TextStyle(fontSize: 24, color: Colors.white),
                   ),
-                  IconButton(
-                    onPressed: selectedIndex == 0
-                        ? () {
-                            showModalBottomSheet(
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(20.0),
-                                ),
-                              ),
-                              isScrollControlled: true,
-                              useSafeArea: true,
-                              context: context,
-                              builder: (context) {
-                                return const FractionallySizedBox(
-                                  heightFactor: 0.9,
-                                  child: ProductGraphModel(),
-                                );
-                              },
-                            );
-                          }
-                        : selectedIndex == 1
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: selectedIndex == 0
                             ? () {
                                 showModalBottomSheet(
                                   shape: const RoundedRectangleBorder(
@@ -226,25 +222,126 @@ class _PurchesregisterScreenState extends State<PurchesregisterScreen> {
                                   builder: (context) {
                                     return const FractionallySizedBox(
                                       heightFactor: 0.9,
-                                      child: VendorGraphModel(),
+                                      child: ProductGraphModel(),
                                     );
                                   },
                                 );
                               }
-                            : selectedIndex == 2
-                                ? () {}
-                                : selectedIndex == 3
-                                    ? () {}
-                                    : selectedIndex == 4
-                                        ? () {}
-                                        : selectedIndex == 5
-                                            ? () {}
-                                            : null,
-                    icon: const Icon(
-                      Icons.bar_chart,
-                      color: Colors.white,
-                    ),
-                  ),
+                            : selectedIndex == 1
+                                ? () {
+                                    showModalBottomSheet(
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.vertical(
+                                          top: Radius.circular(20.0),
+                                        ),
+                                      ),
+                                      isScrollControlled: true,
+                                      useSafeArea: true,
+                                      context: context,
+                                      builder: (context) {
+                                        return const FractionallySizedBox(
+                                          heightFactor: 0.9,
+                                          child: VendorGraphModel(),
+                                        );
+                                      },
+                                    );
+                                  }
+                                : selectedIndex == 2
+                                    ? () {
+                                        showModalBottomSheet(
+                                          shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.vertical(
+                                              top: Radius.circular(20.0),
+                                            ),
+                                          ),
+                                          isScrollControlled: true,
+                                          useSafeArea: true,
+                                          context: context,
+                                          builder: (context) {
+                                            return const FractionallySizedBox(
+                                              heightFactor: 0.9,
+                                              child: POGraphModel(),
+                                            );
+                                          },
+                                        );
+                                      }
+                                    : selectedIndex == 3
+                                        ? () {
+                                            showModalBottomSheet(
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.vertical(
+                                                  top: Radius.circular(20.0),
+                                                ),
+                                              ),
+                                              isScrollControlled: true,
+                                              useSafeArea: true,
+                                              context: context,
+                                              builder: (context) {
+                                                return const FractionallySizedBox(
+                                                  heightFactor: 0.9,
+                                                  child:
+                                                      FunctionalAreaGraphModel(),
+                                                );
+                                              },
+                                            );
+                                          }
+                                        : selectedIndex == 4
+                                            ? () {
+                                                showModalBottomSheet(
+                                                  shape:
+                                                      const RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.vertical(
+                                                      top:
+                                                          Radius.circular(20.0),
+                                                    ),
+                                                  ),
+                                                  isScrollControlled: true,
+                                                  useSafeArea: true,
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return const FractionallySizedBox(
+                                                      heightFactor: 0.9,
+                                                      child:
+                                                          StorageLocationGraphModel(),
+                                                    );
+                                                  },
+                                                );
+                                              }
+                                            : selectedIndex == 5
+                                                ? () {
+                                                    showModalBottomSheet(
+                                                      shape:
+                                                          const RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .vertical(
+                                                          top: Radius.circular(
+                                                              20.0),
+                                                        ),
+                                                      ),
+                                                      isScrollControlled: true,
+                                                      useSafeArea: true,
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return const FractionallySizedBox(
+                                                          heightFactor: 0.9,
+                                                          child:
+                                                              CostCenterGraphModel(),
+                                                        );
+                                                      },
+                                                    );
+                                                  }
+                                                : null,
+                        icon: const Icon(
+                          Icons.bar_chart,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  )
                 ],
               ),
             ),

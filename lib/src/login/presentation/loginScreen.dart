@@ -1,11 +1,26 @@
-// ignore_for_file: file_names
-
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:vitwoai_report/src/login/data/loginApi.dart';
 import 'package:vitwoai_report/src/routes/routeNames.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Dispose controllers to avoid memory leaks
+    usernameController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,15 +31,18 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
+          // Background image
           SizedBox.expand(
             child: Image.network(
               "https://img.freepik.com/premium-photo/calculated-statistics-financial-data-paints-detailed-picture-financial-landscapes-markets_896558-12402.jpg?w=360",
               fit: BoxFit.cover,
             ),
           ),
+          // Semi-transparent overlay
           Container(
             color: Colors.black.withOpacity(0.3),
           ),
+          // Centered content
           Center(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: padding),
@@ -45,9 +63,11 @@ class LoginScreen extends StatelessWidget {
                     height: size.height * 0.25,
                   ),
                   SizedBox(height: size.height * 0.02),
+                  // Username text field
                   SizedBox(
                     height: textFieldHeight,
                     child: TextField(
+                      controller: usernameController,
                       decoration: InputDecoration(
                         hintText: "Username",
                         labelStyle: const TextStyle(color: Colors.white),
@@ -60,9 +80,11 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: size.height * 0.02),
+                  // Password text field
                   SizedBox(
                     height: textFieldHeight,
                     child: TextField(
+                      controller: passwordController,
                       obscureText: true,
                       decoration: InputDecoration(
                         hintText: 'Password',
@@ -76,11 +98,18 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: size.height * 0.04),
+                  // Login button
                   SizedBox(
                     width: size.width * 0.5,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, RouteNames.bottomnav);
+                        ApiService().postData(
+                          {
+                            "username": usernameController.text,
+                            "password": passwordController.text
+                          },
+                          context,
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xff003060),

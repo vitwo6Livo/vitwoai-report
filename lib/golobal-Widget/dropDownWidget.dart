@@ -129,7 +129,7 @@ class _AnimatedDropdownState extends State<AnimatedDropdown>
               widget.selectedItem ?? widget.items.first,
               style: TextStyle(color: Colors.white, fontSize: 18),
             ),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             const Icon(Icons.arrow_drop_down),
           ],
         ),

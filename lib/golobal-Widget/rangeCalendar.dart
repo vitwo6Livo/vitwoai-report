@@ -35,7 +35,7 @@ class _CustomDatePickerDialogState extends State<CustomDatePickerDialog> {
   Widget build(BuildContext context) {
     return Dialog(
       child: Container(
-        height: 500,
+        height: 508,
         color: Colors.white,
         child: Column(
           children: [

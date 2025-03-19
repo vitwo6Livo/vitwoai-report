@@ -62,7 +62,14 @@ class DetailsScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: Color(0xffff9f9f9),
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            )),
         title: const Text(
           "Details",
           style: TextStyle(color: Colors.white),
@@ -94,20 +101,16 @@ class DetailsScreen extends ConsumerWidget {
             decoration: BoxDecoration(
               color: Colors.white,
               border: Border.all(),
-              borderRadius: BorderRadius.circular(
-                  5), // Added rounded corners for better aesthetics
+              borderRadius: BorderRadius.circular(5),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
                   "Sales",
-                  style: TextStyle(
-                      fontWeight: FontWeight
-                          .bold), // Added bold styling for better visibility
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(
-                    height: 8), // Added spacing between the title and Row
+                const SizedBox(height: 8),
                 Row(
                   children: [
                     Flexible(
@@ -120,11 +123,8 @@ class DetailsScreen extends ConsumerWidget {
                           decoration: InputDecoration(
                             hintText: "Search",
                             prefixIcon: Icon(Icons.search),
-                            border:
-                                OutlineInputBorder(), // Added a proper border style
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical:
-                                    8), // Reduced padding for better alignment
+                            border: OutlineInputBorder(),
+                            contentPadding: EdgeInsets.symmetric(vertical: 8),
                           ),
                         ),
                       ),
@@ -133,14 +133,13 @@ class DetailsScreen extends ConsumerWidget {
                       fit: FlexFit.tight,
                       flex: 1,
                       child: Container(
-                        height:
-                            35, // Ensured it matches the height of the TextField
+                        height: 35,
                         decoration: BoxDecoration(
+                          color: Colors.blue,
                           border: Border.all(color: Colors.blue),
                           borderRadius: BorderRadius.circular(5),
                         ),
-                        child: const Icon(Icons.arrow_drop_down_sharp,
-                            color: Colors.blue),
+                        child: const Icon(Icons.search, color: Colors.white),
                       ),
                     ),
                   ],

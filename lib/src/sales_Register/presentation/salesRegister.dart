@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vitwoai_report/src/sales_Register/presentation/detailsScreen.dart';
+import 'package:vitwoai_report/golobal-Widget/rangeCalendar.dart';
+import 'package:vitwoai_report/src/sales_Register/presentation/SRWidget/HsnCodeWiseList.dart';
+import 'package:vitwoai_report/src/sales_Register/presentation/SRWidget/allDetailsList.dart';
+import 'package:vitwoai_report/src/sales_Register/presentation/SRWidget/customerWiseList.dart';
+import 'package:vitwoai_report/src/sales_Register/presentation/SRWidget/itemGroupWiseList.dart';
+import 'package:vitwoai_report/src/sales_Register/presentation/SRWidget/itemWiseList.dart';
+import 'package:vitwoai_report/src/sales_Register/presentation/SRWidget/soWiseList.dart';
 import 'package:vitwoai_report/src/sales_Register/presentation/lineChart.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 
@@ -11,8 +17,18 @@ class SalesRegister extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isClicked = ref.watch(isClickedProviderSales);
-    final isClickedNotifier = ref.read(isClickedProviderSales.notifier);
+    void showDateDialog(BuildContext context) {
+      showDialog(
+        context: context,
+        builder: (context) => CustomDatePickerDialog(
+          initialFromDate: DateTime.now(),
+          initialToDate: DateTime.now(),
+          onSave: (fromDate, toDate) {
+            // Navigator.pop(context);
+          },
+        ),
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -22,36 +38,9 @@ class SalesRegister extends ConsumerWidget {
           style: TextStyle(color: Colors.white),
         ),
         actions: [
-          InkWell(
-            onTap: () {
-              isClickedNotifier.state = !isClicked;
-            },
-            child: CircleAvatar(
-              backgroundColor: isClicked ? Colors.amber : Colors.white,
-              child: const Icon(
-                Icons.push_pin,
-                color: Colors.black,
-              ),
-            ),
-          ),
           IconButton(
               onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: const Text("Settings"),
-                        content: const Text("Settings content"),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: const Text("Close"),
-                          ),
-                        ],
-                      );
-                    });
+                showDateDialog(context);
               },
               icon: const Icon(
                 Icons.settings,
@@ -68,7 +57,7 @@ class SalesRegister extends ConsumerWidget {
           ),
         ),
       ),
-      backgroundColor: Color(0xffff9f9f9),
+      backgroundColor: const Color(0xffff9f9f9),
       body: Column(
         children: [
           const Padding(
@@ -86,7 +75,8 @@ class SalesRegister extends ConsumerWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => DetailsScreen()));
+                            builder: (context) =>
+                                const AllSalesRegisterList()));
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -99,154 +89,7 @@ class SalesRegister extends ConsumerWidget {
                     ),
                     child: ListTile(
                       title: Text(
-                        "Product",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium!
-                            .copyWith(color: AppColor.lightFontCpy),
-                      ),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("₹1445200.00",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge!
-                                  .copyWith(color: AppColor.lightFontCpy)),
-                          Text("December",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall!
-                                  .copyWith(color: AppColor.lightFontCpy)),
-                        ],
-                      ),
-                      trailing: const Text("48%",
-                          style:
-                              TextStyle(color: Colors.white60, fontSize: 40)),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 8,
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => DetailsScreen()));
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      gradient: const LinearGradient(
-                        colors: [Color(0xfff3de8de), Color(0xfff4aa5f6)],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                    ),
-                    child: ListTile(
-                      title: Text(
-                        "Customer",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium!
-                            .copyWith(color: AppColor.lightFontCpy),
-                      ),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("₹1445200.00",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge!
-                                  .copyWith(color: AppColor.lightFontCpy)),
-                          Text("December",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall!
-                                  .copyWith(color: AppColor.lightFontCpy)),
-                        ],
-                      ),
-                      trailing: const Text("48%",
-                          style:
-                              TextStyle(color: Colors.white60, fontSize: 40)),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 8,
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => DetailsScreen()));
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      gradient: const LinearGradient(
-                        colors: [Color(0xfff87f9b5), Color(0xfff17cf92)],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                    ),
-                    child: ListTile(
-                      title: Text(
-                        "SO",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium!
-                            .copyWith(color: AppColor.lightFontCpy),
-                      ),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("₹1445200.00",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge!
-                                  .copyWith(color: AppColor.lightFontCpy)),
-                          Text("December",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall!
-                                  .copyWith(color: AppColor.lightFontCpy)),
-                        ],
-                      ),
-                      trailing: const Text("48%",
-                          style:
-                              TextStyle(color: Colors.white60, fontSize: 40)),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 8,
-                ),
-                const SizedBox(
-                  height: 8,
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => DetailsScreen()));
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      gradient: const LinearGradient(
-                        colors: [Color(0xffff389ee), Color(0xfff9180f8)],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                    ),
-                    child: ListTile(
-                      title: Text(
-                        "KAM",
+                        "All",
                         style: Theme.of(context)
                             .textTheme
                             .bodyMedium!
@@ -281,7 +124,199 @@ class SalesRegister extends ConsumerWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => DetailsScreen()));
+                            builder: (context) => const SoWiseListScreen()));
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      gradient: const LinearGradient(
+                        colors: [Color(0xfff3de8de), Color(0xfff4aa5f6)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                    ),
+                    child: ListTile(
+                      title: Text(
+                        "So Wise",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium!
+                            .copyWith(color: AppColor.lightFontCpy),
+                      ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("₹1445200.00",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge!
+                                  .copyWith(color: AppColor.lightFontCpy)),
+                          Text("December",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall!
+                                  .copyWith(color: AppColor.lightFontCpy)),
+                        ],
+                      ),
+                      trailing: const Text("48%",
+                          style:
+                              TextStyle(color: Colors.white60, fontSize: 40)),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const CustomerWiseScreen()));
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      gradient: const LinearGradient(
+                        colors: [Color(0xfff87f9b5), Color(0xfff17cf92)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                    ),
+                    child: ListTile(
+                      title: Text(
+                        "Customer Wise",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium!
+                            .copyWith(color: AppColor.lightFontCpy),
+                      ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("₹1445200.00",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge!
+                                  .copyWith(color: AppColor.lightFontCpy)),
+                          Text("December",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall!
+                                  .copyWith(color: AppColor.lightFontCpy)),
+                        ],
+                      ),
+                      trailing: const Text("48%",
+                          style:
+                              TextStyle(color: Colors.white60, fontSize: 40)),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ItemWiseScreen()));
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      gradient: const LinearGradient(
+                        colors: [Color.fromARGB(255, 49, 49, 49), Colors.amber],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                    ),
+                    child: ListTile(
+                      title: Text(
+                        "Item Wise",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium!
+                            .copyWith(color: AppColor.lightFontCpy),
+                      ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("₹1445200.00",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge!
+                                  .copyWith(color: AppColor.lightFontCpy)),
+                          Text("December",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall!
+                                  .copyWith(color: AppColor.lightFontCpy)),
+                        ],
+                      ),
+                      trailing: const Text("48%",
+                          style:
+                              TextStyle(color: Colors.white60, fontSize: 40)),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ItemGroupWiseScreen()));
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      gradient: const LinearGradient(
+                        colors: [Color(0xffff389ee), Color(0xfff9180f8)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                    ),
+                    child: ListTile(
+                      title: Text(
+                        "Item Group Wise",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium!
+                            .copyWith(color: AppColor.lightFontCpy),
+                      ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("₹1445200.00",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge!
+                                  .copyWith(color: AppColor.lightFontCpy)),
+                          Text("December",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall!
+                                  .copyWith(color: AppColor.lightFontCpy)),
+                        ],
+                      ),
+                      trailing: const Text("48%",
+                          style:
+                              TextStyle(color: Colors.white60, fontSize: 40)),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HsnCodeWiseScreen()));
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -297,7 +332,7 @@ class SalesRegister extends ConsumerWidget {
                     ),
                     child: ListTile(
                       title: Text(
-                        "Region",
+                        "HSN Code Wise",
                         style: Theme.of(context)
                             .textTheme
                             .bodyMedium!

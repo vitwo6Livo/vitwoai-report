@@ -23,6 +23,7 @@ dependencies:
   table_calendar: #calendar used
   sizer:
   flutter_svg: #svg image
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:

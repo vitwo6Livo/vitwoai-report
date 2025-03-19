@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vitwoai_report/golobal-Widget/dayCalendar.dart';
-import 'package:vitwoai_report/src/sales_Register/presentation/detailsScreen.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:vitwoai_report/golobal-Widget/rangeCalendar.dart';
+import 'package:vitwoai_report/src/ageing/data/receivableAnalytics_repositry.dart';
 
 final isClickedProviderReceivable = StateProvider<bool>((ref) => false);
 
@@ -10,18 +11,81 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
   void showDateDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => DayCalendarPickerDialog(
+      builder: (context) => CustomDatePickerDialog(
         initialFromDate: DateTime.now(),
-        onSave: (fromDate) {},
+        initialToDate: DateTime.now(),
+        onSave: (fromDate, toDate) {
+          // Navigator.pop(context);
+        },
       ),
+    );
+  }
+
+  void showChartsPopup(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            width: MediaQuery.of(context).size.width * 0.9,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  'Charts Overview',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.2),
+                        spreadRadius: 3,
+                        blurRadius: 5,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  padding: const EdgeInsets.all(8),
+                  child: const SizedBox(
+                    height: 200,
+                    child: PieChartWidget(),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () => Navigator.pop(context),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: const Text('Close'),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isClicked = ref.watch(isClickedProviderReceivable);
-    print("hhhhhhhhhhhhhh${isClicked.toString()}");
-    final isClickedNotifier = ref.read(isClickedProviderReceivable.notifier);
+    final receivablesAsync = ref.watch(receivablesTotalDueProvider);
+    final coustomerListProvider = ref.watch(receivablesCustomerProvider);
+
     return Scaffold(
       backgroundColor: Color(0xffff9f9f9),
       // backgroundColor: const Color.fromARGB(255, 215, 229, 239),
@@ -57,20 +121,20 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                       ),
                       Row(
                         children: [
-                          InkWell(
-                            onTap: () {
-                              isClickedNotifier.state =
-                                  !isClickedNotifier.state;
-                            },
-                            child: CircleAvatar(
-                              backgroundColor:
-                                  isClicked ? Colors.amber : Colors.white,
-                              child: const Icon(
-                                Icons.push_pin,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
+                          // InkWell(
+                          //   onTap: () {
+                          //     isClickedNotifier.state =
+                          //         !isClickedNotifier.state;
+                          //   },
+                          //   child: CircleAvatar(
+                          //     backgroundColor:
+                          //         isClicked ? Colors.amber : Colors.white,
+                          //     child: const Icon(
+                          //       Icons.push_pin,
+                          //       color: Colors.black,
+                          //     ),
+                          //   ),
+                          // ),
                           IconButton(
                               onPressed: () {
                                 showDateDialog(context);
@@ -84,227 +148,543 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  const Text(
-                    '\$54,431.32',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
+                  receivablesAsync.when(
+                    data: (data) {
+                      // Ensure data is not null and contains the required keys
+                      final totalOfTotalDue =
+                          data['totalOfTotalDue']?.toString() ?? '0';
+                      final totalOnAccountDue =
+                          data['totalOnAccountDue']?.toString() ?? '0';
+                      final netDue = data['netDue']?.toString() ?? '0';
+
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "₹$totalOfTotalDue",
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 32,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Row(
+                            children: [
+                              const Text(
+                                'On account due',
+                                style: TextStyle(color: Colors.white70),
+                              ),
+                              const Spacer(),
+                              Text(
+                                "₹$totalOnAccountDue",
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          Row(
+                            children: [
+                              const Text(
+                                'Net due',
+                                style: TextStyle(color: Colors.white70),
+                              ),
+                              const Spacer(),
+                              Text(
+                                "₹$netDue",
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ],
+                      );
+                    },
+                    loading: () => Shimmer.fromColors(
+                      baseColor: Colors.grey[400]!,
+                      highlightColor: Colors.grey[800]!,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 150,
+                            height: 30,
+                            decoration: BoxDecoration(
+                              color: Colors.grey[400],
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Row(
+                            children: [
+                              Container(
+                                width: 100,
+                                height: 15,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[400],
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                              ),
+                              const Spacer(),
+                              Container(
+                                width: 80,
+                                height: 10,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[400],
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          Row(
+                            children: [
+                              Container(
+                                width: 60,
+                                height: 10,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[400],
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                              ),
+                              const Spacer(),
+                              Container(
+                                width: 80,
+                                height: 10,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[400],
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
+                    error: (error, stack) =>
+                        Center(child: Text('Error: $error')),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              height: 80,
+              margin: const EdgeInsets.all(8),
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Total Records: 208",
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
-                  const Row(
+                  Row(
                     children: [
-                      Text(
-                        'Total Revenue',
-                        style: TextStyle(color: Colors.white70),
+                      Flexible(
+                        fit: FlexFit.tight,
+                        flex: 9,
+                        child: Container(
+                          margin: const EdgeInsets.only(right: 8),
+                          height: 35,
+                          child: const TextField(
+                            decoration: InputDecoration(
+                              hintText: "Search",
+                              prefixIcon: Icon(Icons.search),
+                              border: OutlineInputBorder(),
+                              contentPadding: EdgeInsets.symmetric(vertical: 8),
+                            ),
+                          ),
+                        ),
                       ),
-                      Spacer(),
-                      Text(
-                        '+35.5%',
-                        style: TextStyle(color: Colors.white),
+                      Flexible(
+                        fit: FlexFit.tight,
+                        flex: 1,
+                        child: Container(
+                          height: 35,
+                          decoration: BoxDecoration(
+                            color: Colors.blue,
+                            border: Border.all(color: Colors.blue),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: const Icon(Icons.search, color: Colors.white),
+                        ),
                       ),
                     ],
                   ),
                 ],
               ),
             ),
-            const SizedBox(
-              height: 5,
-            ),
-            Flexible(
-              child: ListView(
-                children: [
-                  Card(
-                    color: Colors.white,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(16),
-                          topRight: Radius.circular(16)),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Summary Report',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Column(
+            coustomerListProvider.when(
+                data: (data) {
+                  return Expanded(
+                    child: ListView.builder(
+                      itemCount: data['content'].length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 4),
+                          child: Card(
+                            color: Colors.white,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Collected Amount',
-                                    style: TextStyle(
+                                    data["content"][index]['customer_name'],
+                                    style: const TextStyle(
                                       fontSize: 16,
-                                      color: Colors.orange,
-                                    ),
-                                  ),
-                                  SizedBox(height: 4),
-                                  Text(
-                                    '₹5,55,000',
-                                    style: TextStyle(
-                                      fontSize: 24,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  SizedBox(height: 4),
-                                  Text('55% of target'),
-                                ],
-                              ),
-                              Container(
-                                height: 40,
-                                width: 100,
-                                color: Colors.teal.shade200,
-                                alignment: Alignment.center,
-                                child: const Text('Bar Chart'),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 16),
-                          Container(
-                            height: 200,
-                            color: Colors.teal.shade50,
-                            alignment: Alignment.center,
-                            child: LineChart(
-                              LineChartData(
-                                gridData: FlGridData(show: true),
-                                titlesData: FlTitlesData(
-                                  leftTitles: AxisTitles(
-                                    sideTitles: SideTitles(showTitles: true),
+                                  const SizedBox(
+                                    height: 12,
                                   ),
-                                  bottomTitles: AxisTitles(
-                                    sideTitles: SideTitles(showTitles: true),
-                                  ),
-                                ),
-                                borderData: FlBorderData(show: true),
-                                lineBarsData: [
-                                  LineChartBarData(
-                                    spots: [
-                                      FlSpot(0, 1),
-                                      FlSpot(0.5, 2),
-                                      FlSpot(1, 2.5),
-                                      FlSpot(1.5, 3.8),
-                                      FlSpot(2, 3),
-                                      FlSpot(2.5, 4.5),
-                                      FlSpot(3, 4),
-                                      FlSpot(3.5, 5),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text.rich(
+                                        TextSpan(
+                                            text: "Customer Code: \n",
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.grey,
+                                            ),
+                                            children: [
+                                              TextSpan(
+                                                text: data["content"][index]
+                                                        ['customer_code']
+                                                    .toString(),
+                                                style: const TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.black),
+                                              )
+                                            ]),
+                                      ),
+                                      Text.rich(
+                                        TextSpan(
+                                            text: "Total Due: \n",
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.grey,
+                                            ),
+                                            children: [
+                                              TextSpan(
+                                                text: data["content"][index]
+                                                        ['total_due']
+                                                    .toString(),
+                                                style: const TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.black),
+                                              )
+                                            ]),
+                                      ),
                                     ],
-                                    // isCurved: true,
-                                    color: Colors.blue,
-                                    barWidth: 1,
-                                    // isStrokeCapRound: true,
-                                    belowBarData: BarAreaData(show: false),
                                   ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text.rich(
+                                        TextSpan(
+                                            text: "On Account Due: \n",
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.grey,
+                                            ),
+                                            children: [
+                                              TextSpan(
+                                                text: data["content"][index]
+                                                        ['on_account_due']
+                                                    .toString(),
+                                                style: const TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.black),
+                                              )
+                                            ]),
+                                      ),
+                                      Text.rich(
+                                        TextSpan(
+                                            text: "Net Due: \n",
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.grey,
+                                            ),
+                                            children: [
+                                              TextSpan(
+                                                text: data["content"][index]
+                                                        ['net_due']
+                                                    .toString(),
+                                                style: const TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.black),
+                                              )
+                                            ]),
+                                      ),
+                                    ],
+                                  )
                                 ],
                               ),
                             ),
-                          )
-                        ],
-                      ),
+                          ),
+                        );
+                      },
                     ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DetailsScreen()));
-                    },
-                    child: const Card(
-                      color: Colors.white,
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          child: Icon(Icons.person),
-                        ),
-                        title: Text("Customer"),
-                        subtitle: Text(
-                          "21/10/2022 - 30/08/2024",
-                          style: TextStyle(fontSize: 12),
-                        ),
-                        trailing: Text("150"),
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DetailsScreen()));
-                    },
-                    child: const Card(
-                      color: Colors.white,
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          child: Icon(Icons.multiline_chart),
-                        ),
-                        title: Text("Total Due"),
-                        subtitle: Text(
-                          "21/10/2022 - 30/08/2024",
-                          style: TextStyle(fontSize: 12),
-                        ),
-                        trailing: Text("₹35400.00"),
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DetailsScreen()));
-                    },
-                    child: const Card(
-                      color: Colors.white,
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          child: Icon(Icons.equalizer),
-                        ),
-                        title: Text("On Account Due"),
-                        subtitle: Text(
-                          "21/10/2022 - 30/08/2024",
-                          style: TextStyle(fontSize: 12),
-                        ),
-                        trailing: Text("₹750000.0"),
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DetailsScreen()));
-                    },
-                    child: const Card(
-                      color: Colors.white,
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          child: Icon(Icons.query_stats),
-                        ),
-                        title: Text("Net Due"),
-                        subtitle: Text(
-                          "21/10/2022 - 30/08/2024",
-                          style: TextStyle(fontSize: 12),
-                        ),
-                        trailing: Text("₹15000.20"),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            )
+                  );
+                },
+                error: (error, stack) => Center(child: Text('Error: $error')),
+                loading: () => CircularProgressIndicator())
+
+            // Flexible(
+            //   child: ListView(
+            //     children: [
+            //       Card(
+            //         color: Colors.white,
+            //         shape: const RoundedRectangleBorder(
+            //           borderRadius: BorderRadius.only(
+            //               topLeft: Radius.circular(16),
+            //               topRight: Radius.circular(16)),
+            //         ),
+            //         child: Padding(
+            //           padding: const EdgeInsets.all(16.0),
+            //           child: Column(
+            //             crossAxisAlignment: CrossAxisAlignment.start,
+            //             children: [
+            //               const Text(
+            //                 'Summary Report',
+            //                 style: TextStyle(
+            //                   fontSize: 18,
+            //                   fontWeight: FontWeight.bold,
+            //                 ),
+            //               ),
+            //               const SizedBox(height: 20),
+            //               Row(
+            //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //                 children: [
+            //                   const Column(
+            //                     crossAxisAlignment: CrossAxisAlignment.start,
+            //                     children: [
+            //                       Text(
+            //                         'Collected Amount',
+            //                         style: TextStyle(
+            //                           fontSize: 16,
+            //                           color: Colors.orange,
+            //                         ),
+            //                       ),
+            //                       SizedBox(height: 4),
+            //                       Text(
+            //                         '₹5,55,000',
+            //                         style: TextStyle(
+            //                           fontSize: 24,
+            //                           fontWeight: FontWeight.bold,
+            //                         ),
+            //                       ),
+            //                       SizedBox(height: 4),
+            //                       Text('55% of target'),
+            //                     ],
+            //                   ),
+            //                   InkWell(
+            //                     onTap: () {
+            //                       showChartsPopup(context);
+            //                     },
+            //                     child: Container(
+            //                       height: 40,
+            //                       width: 100,
+            //                       color: Colors.teal.shade200,
+            //                       alignment: Alignment.center,
+            //                       child: const Text('Pie Chart'),
+            //                     ),
+            //                   ),
+            //                 ],
+            //               ),
+            //               const SizedBox(height: 16),
+            //               Container(
+            //                 height: 200,
+            //                 color: Colors.teal.shade50,
+            //                 alignment: Alignment.center,
+            //                 child: LineChart(
+            //                   LineChartData(
+            //                     gridData: const FlGridData(show: true),
+            //                     titlesData: const FlTitlesData(
+            //                       leftTitles: AxisTitles(
+            //                         sideTitles: SideTitles(showTitles: true),
+            //                       ),
+            //                       bottomTitles: AxisTitles(
+            //                         sideTitles: SideTitles(showTitles: true),
+            //                       ),
+            //                     ),
+            //                     borderData: FlBorderData(show: true),
+            //                     lineBarsData: [
+            //                       LineChartBarData(
+            //                         spots: [
+            //                           const FlSpot(0, 1),
+            //                           const FlSpot(0.5, 2),
+            //                           const FlSpot(1, 2.5),
+            //                           const FlSpot(1.5, 3.8),
+            //                           const FlSpot(2, 3),
+            //                           const FlSpot(2.5, 4.5),
+            //                           const FlSpot(3, 4),
+            //                           const FlSpot(3.5, 5),
+            //                         ],
+            //                         // isCurved: true,
+            //                         color: Colors.blue,
+            //                         barWidth: 1,
+            //                         // isStrokeCapRound: true,
+            //                         belowBarData: BarAreaData(show: false),
+            //                       ),
+            //                     ],
+            //                   ),
+            //                 ),
+            //               )
+            //             ],
+            //           ),
+            //         ),
+            //       ),
+            //       InkWell(
+            //         onTap: () {
+            //           Navigator.push(
+            //               context,
+            //               MaterialPageRoute(
+            //                   builder: (context) =>
+            //                       const ReceivableDetailsScreen()));
+            //         },
+            //         child: const Card(
+            //           color: Colors.white,
+            //           child: ListTile(
+            //             leading: CircleAvatar(
+            //               child: Icon(Icons.person),
+            //             ),
+            //             title: Text("Customer"),
+            //             subtitle: Text(
+            //               "21/10/2022 - 30/08/2024",
+            //               style: TextStyle(fontSize: 12),
+            //             ),
+            //             trailing: Text("150"),
+            //           ),
+            //         ),
+            //       ),
+            //       InkWell(
+            //         onTap: () {
+            //           Navigator.push(
+            //               context,
+            //               MaterialPageRoute(
+            //                   builder: (context) =>
+            //                       const ReceivableDetailsScreen()));
+            //         },
+            //         child: const Card(
+            //           color: Colors.white,
+            //           child: ListTile(
+            //             leading: CircleAvatar(
+            //               child: Icon(Icons.multiline_chart),
+            //             ),
+            //             title: Text("Total Due"),
+            //             subtitle: Text(
+            //               "21/10/2022 - 30/08/2024",
+            //               style: TextStyle(fontSize: 12),
+            //             ),
+            //             trailing: Text("₹35400.00"),
+            //           ),
+            //         ),
+            //       ),
+            //       InkWell(
+            //         onTap: () {
+            //           Navigator.push(
+            //               context,
+            //               MaterialPageRoute(
+            //                   builder: (context) =>
+            //                       const ReceivableDetailsScreen()));
+            //         },
+            //         child: const Card(
+            //           color: Colors.white,
+            //           child: ListTile(
+            //             leading: CircleAvatar(
+            //               child: Icon(Icons.equalizer),
+            //             ),
+            //             title: Text("On Account Due"),
+            //             subtitle: Text(
+            //               "21/10/2022 - 30/08/2024",
+            //               style: TextStyle(fontSize: 12),
+            //             ),
+            //             trailing: Text("₹750000.0"),
+            //           ),
+            //         ),
+            //       ),
+            //       InkWell(
+            //         onTap: () {
+            //           Navigator.push(
+            //               context,
+            //               MaterialPageRoute(
+            //                   builder: (context) =>
+            //                       const ReceivableDetailsScreen()));
+            //         },
+            //         child: const Card(
+            //           color: Colors.white,
+            //           child: ListTile(
+            //             leading: CircleAvatar(
+            //               child: Icon(Icons.query_stats),
+            //             ),
+            //             title: Text("Net Due"),
+            //             subtitle: Text(
+            //               "21/10/2022 - 30/08/2024",
+            //               style: TextStyle(fontSize: 12),
+            //             ),
+            //             trailing: Text("₹15000.20"),
+            //           ),
+            //         ),
+            //       )
+            //     ],
+            //   ),
+            // )
           ],
         ),
+      ),
+    );
+  }
+}
+
+class PieChartWidget extends StatelessWidget {
+  const PieChartWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return PieChart(
+      PieChartData(
+        sections: [
+          PieChartSectionData(
+            value: 40,
+            color: Colors.blue,
+            title: '40%',
+            titleStyle: const TextStyle(fontSize: 14, color: Colors.white),
+          ),
+          PieChartSectionData(
+            value: 30,
+            color: Colors.green,
+            title: '30%',
+            titleStyle: const TextStyle(fontSize: 14, color: Colors.white),
+          ),
+          PieChartSectionData(
+            value: 20,
+            color: Colors.orange,
+            title: '20%',
+            titleStyle: const TextStyle(fontSize: 14, color: Colors.white),
+          ),
+          PieChartSectionData(
+            value: 10,
+            color: Colors.red,
+            title: '10%',
+            titleStyle: const TextStyle(fontSize: 14, color: Colors.white),
+          ),
+        ],
+        sectionsSpace: 2,
+        centerSpaceRadius: 40,
       ),
     );
   }

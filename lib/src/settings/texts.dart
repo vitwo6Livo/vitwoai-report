@@ -10,5 +10,5 @@ class HandText {
   static String raised = 'Query Raised';
   static String itemCount = '02';
   static String item = 'Query Item';
-  static String product = 'Tranding Product';
+  static String product = 'Trending Product';
 }
