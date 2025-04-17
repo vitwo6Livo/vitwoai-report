@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/golobal-Widget/rangeCalendar.dart';
 import 'package:vitwoai_report/src/sales_Register/presentation/SRWidget/HsnCodeWiseList.dart';
-import 'package:vitwoai_report/src/sales_Register/presentation/SRWidget/allDetailsList.dart';
+import 'package:vitwoai_report/src/sales_Register/presentation/SRWidget/allSalesRegisterList.dart';
 import 'package:vitwoai_report/src/sales_Register/presentation/SRWidget/customerWiseList.dart';
 import 'package:vitwoai_report/src/sales_Register/presentation/SRWidget/itemGroupWiseList.dart';
 import 'package:vitwoai_report/src/sales_Register/presentation/SRWidget/itemWiseList.dart';

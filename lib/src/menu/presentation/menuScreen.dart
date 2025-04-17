@@ -71,29 +71,120 @@ class _MenuScreenState extends State<MenuScreen> {
   }
 
   Widget _buildGridItem(int index) {
-    const items = [
-      (Icons.assessment, 'Receivable', Colors.purple),
-      (Icons.blinds, 'Product', Colors.indigo),
-      (Icons.baby_changing_station, 'Vendor', Colors.amber),
-      (Icons.bar_chart, 'Purchase Po', Colors.green),
-      (Icons.table_chart, 'Functional Area', Colors.blue),
-      (Icons.store_mall_directory, 'Storage Location', Colors.cyan),
-      (Icons.on_device_training, 'Cost Center', Colors.deepOrangeAccent),
-      (Icons.production_quantity_limits, 'Sales Product', Colors.indigo),
-      (Icons.support_agent, 'Customer', Colors.amber),
-      (Icons.vertical_split, 'Vertical', Colors.green),
-      (Icons.business_center, 'Sales Order', Colors.blue),
-      (Icons.contact_mail, 'Key Account Manager', Colors.cyan),
-      (Icons.map, 'Region', Colors.deepPurple),
+    var items = [
+      (
+        Icons.assessment,
+        'Receivable',
+        Colors.purple,
+        () {
+          Navigator.pushNamed(context, RouteNames.Receivable);
+        }
+      ),
+      (
+        Icons.blinds,
+        'Purchase',
+        Colors.indigo,
+        () {
+          Navigator.pushNamed(context, RouteNames.Purchase);
+        }
+      ),
+      (
+        Icons.bar_chart,
+        'Purchase Order Wise',
+        Colors.green,
+        () {
+          Navigator.pushNamed(context, RouteNames.POWise);
+        }
+      ),
+      (
+        Icons.baby_changing_station,
+        'Vendor Wise',
+        Colors.amber,
+        () {
+          Navigator.pushNamed(context, RouteNames.VendorWise);
+        }
+      ),
+      (
+        Icons.table_chart,
+        'Item Wise',
+        Colors.blue,
+        () {
+          Navigator.pushNamed(context, RouteNames.ItemWise);
+        }
+      ),
+      (
+        Icons.store_mall_directory,
+        'Item Group Wise',
+        Colors.cyan,
+        () {
+          Navigator.pushNamed(context, RouteNames.ItemGroupWise);
+        }
+      ),
+      (
+        Icons.on_device_training,
+        'HSN Code Wise',
+        Colors.deepOrangeAccent,
+        () {
+          Navigator.pushNamed(context, RouteNames.HSNWise);
+        }
+      ),
+      (
+        Icons.vertical_split,
+        'Sales',
+        Colors.green,
+        () {
+          Navigator.pushNamed(context, RouteNames.Sales);
+        }
+      ),
+      (
+        Icons.business_center,
+        'Sales Order Wise',
+        Colors.blue,
+        () {
+          Navigator.pushNamed(context, RouteNames.SOWise);
+        }
+      ),
+      (
+        Icons.contact_mail,
+        'Customer Wise',
+        Colors.cyan,
+        () {
+          Navigator.pushNamed(context, RouteNames.SalesCustomerWise);
+        }
+      ),
+      (
+        Icons.production_quantity_limits,
+        'Item Wise',
+        Colors.indigo,
+        () {
+          Navigator.pushNamed(context, RouteNames.SalesItemWise);
+        }
+      ),
+      (
+        Icons.support_agent,
+        'Item Group Wise',
+        Colors.amber,
+        () {
+          Navigator.pushNamed(context, RouteNames.SalesItemGroupWise);
+        }
+      ),
+      (
+        Icons.map,
+        'HSN Code Wise',
+        Colors.deepPurple,
+        () {
+          Navigator.pushNamed(context, RouteNames.SalesHSNWise);
+        }
+      ),
     ];
-    final (icon, label, color) = items[index];
+    final (icon, label, color, ontap) = items[index];
     final isFavourite = favouriteList.contains(index);
 
     return Material(
       color: Colors.grey[100],
       borderRadius: BorderRadius.circular(12),
       child: InkWell(
-        onTap: () {},
+        onTap: ontap,
         borderRadius: BorderRadius.circular(12),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

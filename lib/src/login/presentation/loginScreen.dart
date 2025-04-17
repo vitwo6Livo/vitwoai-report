@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:vitwoai_report/src/login/data/loginApi.dart';
-import 'package:vitwoai_report/src/routes/routeNames.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

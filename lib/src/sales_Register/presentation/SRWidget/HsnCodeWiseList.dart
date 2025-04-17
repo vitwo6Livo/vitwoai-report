@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/sales_Register/data/salesRegisterFatchData.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 
@@ -22,7 +23,7 @@ class HsnCodeWiseScreen extends ConsumerWidget {
               color: Colors.white,
             )),
         title: const Text(
-          "Item Wise",
+          "HSN Code Wise",
           style: TextStyle(color: Colors.white),
         ),
         actions: [
@@ -60,7 +61,7 @@ class HsnCodeWiseScreen extends ConsumerWidget {
                 salesRegisterHsnCodeWiseList.when(
                   data: (value) {
                     return Text(
-                      "Total Records: ${value['totalElements']?.toString() ?? '0'}",
+                      "Total Records: ${value.totalElements.toString()}",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     );
                   },
@@ -106,139 +107,139 @@ class HsnCodeWiseScreen extends ConsumerWidget {
           ),
           Expanded(
             child: salesRegisterHsnCodeWiseList.when(
-              data: (data) {
-                return ListView.builder(
-                  itemCount: data['content'].length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 4),
-                      child: Card(
-                        color: Colors.white,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                data['content'][index]['HSN Code'],
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
+                data: (data) {
+                  return ListView.builder(
+                    itemCount: data.content.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
+                        child: Card(
+                          color: Colors.white,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  data.content[index].hsnCode,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              Text.rich(
-                                TextSpan(
-                                    text: "SO Quantity: ",
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.grey,
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        text: data['content'][index]
-                                            ['SO Quantity'],
-                                        style: const TextStyle(
-                                            fontSize: 16, color: Colors.black),
-                                      )
-                                    ]),
-                              ),
-                              Text.rich(
-                                TextSpan(
-                                    text: "Invoice Quantity: ",
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.grey,
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        text: data['content'][index]
-                                            ['Invoice Quantity'],
-                                        style: const TextStyle(
-                                            fontSize: 16, color: Colors.black),
-                                      )
-                                    ]),
-                              ),
-                              Text.rich(
-                                TextSpan(
-                                    text: "SO Value (Net): ",
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.grey,
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        text: data['content'][index]
-                                            ['SO Value (Net)'],
-                                        style: const TextStyle(
-                                            fontSize: 16, color: Colors.black),
-                                      )
-                                    ]),
-                              ),
-                              Text.rich(
-                                TextSpan(
-                                    text: "SO Value (Gross): ",
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.grey,
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        text: data['content'][index]
-                                            ['SO Value (Gross)'],
-                                        style: const TextStyle(
-                                            fontSize: 16, color: Colors.black),
-                                      )
-                                    ]),
-                              ),
-                              Text.rich(
-                                TextSpan(
-                                    text: "Base Value: ",
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.grey,
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        text: data['content'][index]
-                                            ['Base Value'],
-                                        style: const TextStyle(
-                                            fontSize: 16, color: Colors.black),
-                                      )
-                                    ]),
-                              ),
-                              Text.rich(
-                                TextSpan(
-                                    text: "Invoice Value: ",
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.grey,
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        text: data['content'][index]
-                                            ['Invoice Value'],
-                                        style: const TextStyle(
-                                            fontSize: 16, color: Colors.black),
-                                      )
-                                    ]),
-                              ),
-                            ],
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                Text.rich(
+                                  TextSpan(
+                                      text: "SO Quantity: ",
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey,
+                                      ),
+                                      children: [
+                                        TextSpan(
+                                          text: data.content[index].soQuantity,
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.black),
+                                        )
+                                      ]),
+                                ),
+                                Text.rich(
+                                  TextSpan(
+                                      text: "Invoice Quantity: ",
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey,
+                                      ),
+                                      children: [
+                                        TextSpan(
+                                          text: data
+                                              .content[index].invoiceQuantity,
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.black),
+                                        )
+                                      ]),
+                                ),
+                                Text.rich(
+                                  TextSpan(
+                                      text: "SO Value (Net): ",
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey,
+                                      ),
+                                      children: [
+                                        TextSpan(
+                                          text: data.content[index].soValueNet,
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.black),
+                                        )
+                                      ]),
+                                ),
+                                Text.rich(
+                                  TextSpan(
+                                      text: "SO Value (Gross): ",
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey,
+                                      ),
+                                      children: [
+                                        TextSpan(
+                                          text:
+                                              data.content[index].soValueGross,
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.black),
+                                        )
+                                      ]),
+                                ),
+                                Text.rich(
+                                  TextSpan(
+                                      text: "Base Value: ",
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey,
+                                      ),
+                                      children: [
+                                        TextSpan(
+                                          text: data.content[index].baseValue,
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.black),
+                                        )
+                                      ]),
+                                ),
+                                Text.rich(
+                                  TextSpan(
+                                      text: "Invoice Value: ",
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey,
+                                      ),
+                                      children: [
+                                        TextSpan(
+                                          text:
+                                              data.content[index].invoiceValue,
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.black),
+                                        )
+                                      ]),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  },
-                );
-              },
-              error: (error, stack) => Center(child: Text('Error: $error')),
-              loading: () => const Center(
-                child: CircularProgressIndicator(),
-              ),
-            ),
+                      );
+                    },
+                  );
+                },
+                error: (error, stack) => Center(child: Text('Error: $error')),
+                loading: () => screen_shimmer(120, 800)),
           ),
         ],
       ),

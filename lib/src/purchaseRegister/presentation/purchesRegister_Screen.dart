@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/POGraph.dart';
-import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/POlist.dart';
-import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/costCenterGraph.dart';
-import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/costCenterList.dart';
-import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/functionalAreaGraph.dart';
-import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/functionalAreaList.dart';
-import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/storageLocationGraph.dart';
-import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/storageLocationList.dart';
-import 'prWidget/productGraph.dart';
-import 'prWidget/productList.dart';
-import 'prWidget/vendorGraph.dart';
-import 'prWidget/vendorList.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/hsnCodeWiseGraph.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/purchasePOGraph.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/vendorWise.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/hsnCodeWise.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/itemWiseGraph.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/itemWise.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/ItemGroupWiseGraph.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/itemGroupWise.dart';
+import 'prWidget/purchaseGraph.dart';
+import 'prWidget/purchase.dart';
+import 'prWidget/vendorWiseGraph.dart';
+import 'prWidget/purchasePO.dart';
 
 final isClickedProviderPurschese = StateProvider<bool>((ref) => false);
 
 class PurchesregisterScreen extends ConsumerStatefulWidget {
-  const PurchesregisterScreen({super.key});
+  final int initialTab;
+  const PurchesregisterScreen({super.key, this.initialTab = 0});
 
   @override
   ConsumerState<PurchesregisterScreen> createState() =>
@@ -26,6 +27,14 @@ class PurchesregisterScreen extends ConsumerStatefulWidget {
 
 class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
   int selectedIndex = 0; // Track the selected item
+  late int selectedIndexMenu;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedIndexMenu = widget.initialTab;
+    selectedIndex = selectedIndexMenu;
+  }
 
   List<Map<String, dynamic>> data = [
     {
@@ -76,17 +85,17 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
                 spacing: 0.0,
                 children: [
                   selectedIndex == 0
-                      ? const ProductList()
+                      ? const Purchase()
                       : selectedIndex == 1
-                          ? const VendorList()
+                          ? const PurchaseOrderWise()
                           : selectedIndex == 2
-                              ? const PurchaseOrderList()
+                              ? const Vendorwise()
                               : selectedIndex == 3
-                                  ? const FunctionalAreaList()
+                                  ? const Itemwise()
                                   : selectedIndex == 4
-                                      ? const StorageLocationList()
+                                      ? const Itemgroupwise()
                                       : selectedIndex == 5
-                                          ? const CostCenterList()
+                                          ? const Hsncodewise()
                                           : const SizedBox(),
                 ],
               ),
@@ -222,7 +231,7 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
                                   builder: (context) {
                                     return const FractionallySizedBox(
                                       heightFactor: 0.9,
-                                      child: ProductGraphModel(),
+                                      child: PurchaseGraph(),
                                     );
                                   },
                                 );
@@ -241,7 +250,7 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
                                       builder: (context) {
                                         return const FractionallySizedBox(
                                           heightFactor: 0.9,
-                                          child: VendorGraphModel(),
+                                          child: PurchaseOrderGraph(),
                                         );
                                       },
                                     );
@@ -260,7 +269,7 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
                                           builder: (context) {
                                             return const FractionallySizedBox(
                                               heightFactor: 0.9,
-                                              child: POGraphModel(),
+                                              child: VendorGraph(),
                                             );
                                           },
                                         );
@@ -281,8 +290,7 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
                                               builder: (context) {
                                                 return const FractionallySizedBox(
                                                   heightFactor: 0.9,
-                                                  child:
-                                                      FunctionalAreaGraphModel(),
+                                                  child: ItemwiseGraph(),
                                                 );
                                               },
                                             );
@@ -305,7 +313,7 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
                                                     return const FractionallySizedBox(
                                                       heightFactor: 0.9,
                                                       child:
-                                                          StorageLocationGraphModel(),
+                                                          ItemgroupwiseGraph(),
                                                     );
                                                   },
                                                 );
@@ -329,7 +337,7 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
                                                         return const FractionallySizedBox(
                                                           heightFactor: 0.9,
                                                           child:
-                                                              CostCenterGraphModel(),
+                                                              HsncodewiseGraph(),
                                                         );
                                                       },
                                                     );

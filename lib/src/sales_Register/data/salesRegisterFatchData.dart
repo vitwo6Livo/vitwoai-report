@@ -1,19 +1,21 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:vitwoai_report/src/sales_Register/model/salesAllDetailsModel.dart';
+import 'package:vitwoai_report/src/sales_Register/model/salesCustomerWiseModel.dart';
+import 'package:vitwoai_report/src/sales_Register/model/salesHSNCodeModel.dart';
+import 'package:vitwoai_report/src/sales_Register/model/salesItemGroupWiseModel.dart';
+import 'package:vitwoai_report/src/sales_Register/model/salesItemWiseModel.dart';
+import 'package:vitwoai_report/src/sales_Register/model/salesSOWiseModel.dart';
 import 'package:vitwoai_report/src/utils/api_urls.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 //All Sales Register Data
-final salesRegisterProvider = FutureProvider((ref) async {
-  return await fetchSalesRegisterData();
+final allDetailsSearch = FutureProvider.family((ref, String key) async {
+  return await getSearchData(key);
 });
 
-Future<Map<String, dynamic>> fetchSalesRegisterData() async {
-  final accessToken = await getTokenData();
-
-  final url = Uri.parse('$baseURL$salesRegisterAllListUrl');
-
-  final Map<String, dynamic> bodyData = {
+Future<SalesAllDetailsmodel> getSearchData(String searchKey) async {
+  final Map<String, dynamic> apiData = {
     "data": [
       "items.itemCode", // item code
       "items.itemName", // item name
@@ -29,7 +31,7 @@ Future<Map<String, dynamic>> fetchSalesRegisterData() async {
       "salesOrder.so_date", // SO date
       "items.hsnCode", // hsn code
       "items.uom.uomName", // alternate uom
-      "items.qty", // Total quantity
+      "items.qty", // Invoice quantity
       "salesOrder.salesOrderItems.qty", // SO qty
       "salesOrder.salesOrderItems.unitPrice", // SO net value
       "salesOrder.salesOrderItems.totalPrice", // SO gross value
@@ -42,28 +44,36 @@ Future<Map<String, dynamic>> fetchSalesRegisterData() async {
       "companyFunction.functionalities_name" // Fucntional area
     ],
     "groupBy": [],
-    "filter": [],
+    "filter": [
+      {
+        "column": "customer.trade_name",
+        "operator": "like",
+        "type": "String",
+        "value": searchKey
+      }
+    ],
     "page": 0,
-    "size": 500,
-    "sortDir": "asc",
-    "sortBy": "invoice_date"
+    "size": 50,
+    "sortBy": "customer.trade_name",
+    "sortDir": "asc"
   };
 
+  final token = await getTokenData();
+  final url = Uri.parse('$baseURL$salesRegisterAllListUrl');
+
   try {
-    final response = await http.post(
-      url,
-      headers: {
-        'Authorization': 'Bearer $accessToken',
-        'Content-Type': 'application/json',
-      },
-      body: json.encode(bodyData),
-    );
+    final response = await http.post(url,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+        body: json.encode(apiData));
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> data = json.decode(response.body);
-      return data;
+      final data = json.decode(response.body);
+      return SalesAllDetailsmodel.fromJson(data);
     } else {
-      throw Exception('Failed to load data');
+      throw Exception('Failed to load data: ${response.statusCode}');
     }
   } catch (e) {
     throw Exception('Failed to load data');
@@ -75,7 +85,7 @@ final salesRegisterSOProvider = FutureProvider((ref) async {
   return await fetchSalesRegisterSOData();
 });
 
-Future<Map<String, dynamic>> fetchSalesRegisterSOData() async {
+Future<SalesSOwisemodel> fetchSalesRegisterSOData() async {
   final accessToken = await getTokenData();
 
   final url = Uri.parse('$baseURL$salesRegisterSOWiseUrl');
@@ -99,8 +109,8 @@ Future<Map<String, dynamic>> fetchSalesRegisterSOData() async {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> data = json.decode(response.body);
-      return data;
+      final data = json.decode(response.body);
+      return SalesSOwisemodel.fromJson(data);
     } else {
       throw Exception('Failed to load data');
     }
@@ -114,7 +124,7 @@ final salesRegisterCustomerProvider = FutureProvider((ref) async {
   return await fetchSalesRegisterCustomerData();
 });
 
-Future<Map<String, dynamic>> fetchSalesRegisterCustomerData() async {
+Future<SalesCustomerwisemodel> fetchSalesRegisterCustomerData() async {
   final accessToken = await getTokenData();
 
   final url = Uri.parse('$baseURL$salesRegisterCustomerWiseUrl');
@@ -138,8 +148,8 @@ Future<Map<String, dynamic>> fetchSalesRegisterCustomerData() async {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> data = json.decode(response.body);
-      return data;
+      final data = json.decode(response.body);
+      return SalesCustomerwisemodel.fromJson(data);
     } else {
       throw Exception('Failed to load data');
     }
@@ -153,7 +163,7 @@ final salesRegisterItemProvider = FutureProvider((ref) async {
   return await fetchSalesRegisterItemData();
 });
 
-Future<Map<String, dynamic>> fetchSalesRegisterItemData() async {
+Future<Salesitemwisemodel> fetchSalesRegisterItemData() async {
   final accessToken = await getTokenData();
 
   final url = Uri.parse('$baseURL$salesRegisterItemWiseUrl');
@@ -177,8 +187,8 @@ Future<Map<String, dynamic>> fetchSalesRegisterItemData() async {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> data = json.decode(response.body);
-      return data;
+      final data = json.decode(response.body);
+      return Salesitemwisemodel.fromJson(data);
     } else {
       throw Exception('Failed to load data');
     }
@@ -192,7 +202,7 @@ final salesRegisterItemGroupProvider = FutureProvider((ref) async {
   return await fetchSalesRegisterItemGroupData();
 });
 
-Future<Map<String, dynamic>> fetchSalesRegisterItemGroupData() async {
+Future<SalesItemGroupwisemodel> fetchSalesRegisterItemGroupData() async {
   final accessToken = await getTokenData();
 
   final url = Uri.parse('$baseURL$salesRegisterItemGroupWiseUrl');
@@ -216,8 +226,8 @@ Future<Map<String, dynamic>> fetchSalesRegisterItemGroupData() async {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> data = json.decode(response.body);
-      return data;
+      final data = json.decode(response.body);
+      return SalesItemGroupwisemodel.fromJson(data);
     } else {
       throw Exception('Failed to load data');
     }
@@ -231,7 +241,7 @@ final salesRegisterHSNCodeProvider = FutureProvider((ref) async {
   return await fetchSalesRegisterHSNCodeData();
 });
 
-Future<Map<String, dynamic>> fetchSalesRegisterHSNCodeData() async {
+Future<SalesHSNCodewisemodel> fetchSalesRegisterHSNCodeData() async {
   final accessToken = await getTokenData();
 
   final url = Uri.parse('$baseURL$salesRegisterHSNCodeWiseUrl');
@@ -255,8 +265,8 @@ Future<Map<String, dynamic>> fetchSalesRegisterHSNCodeData() async {
     );
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> data = json.decode(response.body);
-      return data;
+      final data = json.decode(response.body);
+      return SalesHSNCodewisemodel.fromJson(data);
     } else {
       throw Exception('Failed to load data');
     }
