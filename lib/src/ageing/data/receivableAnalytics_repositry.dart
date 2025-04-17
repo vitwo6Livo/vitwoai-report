@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:vitwoai_report/src/ageing/model/receivableModel.dart';
+import 'package:vitwoai_report/src/ageing/model/receivableTotalModel.dart';
 import 'package:vitwoai_report/src/utils/api_urls.dart';
 
 final receivablesTotalDueProvider = FutureProvider((ref) async {
@@ -8,7 +10,7 @@ final receivablesTotalDueProvider = FutureProvider((ref) async {
 });
 
 // Total Value of Total Due, On account due, Net Due
-Future<Map<String, dynamic>> fetchReceivablesData() async {
+Future<Total> fetchReceivablesData() async {
   final token = await getTokenData();
   final url = Uri.parse('$baseURL$receivablTotalDueurl');
 
@@ -27,7 +29,8 @@ Future<Map<String, dynamic>> fetchReceivablesData() async {
     );
 
     if (response.statusCode == 200) {
-      return json.decode(response.body);
+      final data = json.decode(response.body);
+      return Total.fromJson(data);
     } else {
       throw Exception('Failed to load data: ${response.statusCode}');
     }
@@ -42,7 +45,7 @@ final receivablesCustomerProvider = FutureProvider((ref) async {
   return await fetchReceivablesCustomerData();
 });
 
-Future<Map<String, dynamic>> fetchReceivablesCustomerData() async {
+Future<ReceivableAPIModel> fetchReceivablesCustomerData() async {
   final accessToken = await getTokenData();
   final url = Uri.parse('$baseURL$receivablCustomerurl');
 
@@ -67,7 +70,8 @@ Future<Map<String, dynamic>> fetchReceivablesCustomerData() async {
     );
 
     if (response.statusCode == 200) {
-      return json.decode(response.body);
+      final data = json.decode(response.body);
+      return ReceivableAPIModel.fromJson(data);
     } else {
       throw Exception('Failed to load data: ${response.statusCode}');
     }

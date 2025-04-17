@@ -1,0 +1,2 @@
+D:/Vitwo/vitwoai-report/android/app/.cxx/Debug/2e584u23/x86_64/CMakeFiles/edit_cache.dir
+D:/Vitwo/vitwoai-report/android/app/.cxx/Debug/2e584u23/x86_64/CMakeFiles/rebuild_cache.dir

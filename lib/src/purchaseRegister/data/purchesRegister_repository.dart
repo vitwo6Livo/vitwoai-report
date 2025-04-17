@@ -1,5 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:vitwoai_report/src/purchaseRegister/model/HsnCodeModel.dart';
+import 'package:vitwoai_report/src/purchaseRegister/model/ItemGroupWiseModel.dart';
+import 'package:vitwoai_report/src/purchaseRegister/model/ItemWiseModel.dart';
+import 'package:vitwoai_report/src/purchaseRegister/model/purchaseModel.dart';
+import 'package:vitwoai_report/src/purchaseRegister/model/vendorWiseModal.dart';
 import 'package:vitwoai_report/src/utils/api_urls.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -7,7 +12,7 @@ final purchesRegisterProvider = FutureProvider((ref) async {
   return await fetchPurchesRegisterData();
 });
 
-Future<Map<String, dynamic>> fetchPurchesRegisterData() async {
+Future<Purchasemodel> fetchPurchesRegisterData() async {
   final accessToken = await getTokenData();
 
   final url = Uri.parse('$baseURL$purchaseRegisterAllListUrl');
@@ -59,7 +64,8 @@ Future<Map<String, dynamic>> fetchPurchesRegisterData() async {
     );
 
     if (response.statusCode == 200) {
-      return json.decode(response.body);
+      final data = json.decode(response.body);
+      return Purchasemodel.fromJson(data);
     } else {
       throw Exception('Failed to load data: ${response.statusCode}');
     }
@@ -112,7 +118,7 @@ final purchesRegisterVendorWiseProvider = FutureProvider((ref) async {
   return await fetchPurchesRegisterVendorWiseData();
 });
 
-Future<Map<String, dynamic>> fetchPurchesRegisterVendorWiseData() async {
+Future<Vendorwisemodal> fetchPurchesRegisterVendorWiseData() async {
   final accessToken = await getTokenData();
 
   final url = Uri.parse('$baseURL$purchaseRegisterVendorWiseUrl');
@@ -136,7 +142,8 @@ Future<Map<String, dynamic>> fetchPurchesRegisterVendorWiseData() async {
     );
 
     if (response.statusCode == 200) {
-      return json.decode(response.body);
+      final data = json.decode(response.body);
+      return Vendorwisemodal.fromJson(data);
     } else {
       throw Exception('Failed to load data: ${response.statusCode}');
     }
@@ -151,7 +158,7 @@ final purchesRegisterItemWiseProvider = FutureProvider((ref) async {
   return await fetchPurchesRegisterItemWiseData();
 });
 
-Future<Map<String, dynamic>> fetchPurchesRegisterItemWiseData() async {
+Future<Itemwisemodel> fetchPurchesRegisterItemWiseData() async {
   final accessToken = await getTokenData();
 
   final url = Uri.parse('$baseURL$purchaseRegisterItemWiseUrl');
@@ -175,7 +182,8 @@ Future<Map<String, dynamic>> fetchPurchesRegisterItemWiseData() async {
     );
 
     if (response.statusCode == 200) {
-      return json.decode(response.body);
+      final data = json.decode(response.body);
+      return Itemwisemodel.fromJson(data);
     } else {
       throw Exception('Failed to load data: ${response.statusCode}');
     }
@@ -190,7 +198,7 @@ final purchesRegisterItemGroupWiseProvider = FutureProvider((ref) async {
   return await fetchPurchesRegisterItemGroupWiseData();
 });
 
-Future<Map<String, dynamic>> fetchPurchesRegisterItemGroupWiseData() async {
+Future<ItemGroupwisemodel> fetchPurchesRegisterItemGroupWiseData() async {
   final accessToken = await getTokenData();
 
   final url = Uri.parse('$baseURL$purchaseRegisterItemGroupWiseUrl');
@@ -214,7 +222,8 @@ Future<Map<String, dynamic>> fetchPurchesRegisterItemGroupWiseData() async {
     );
 
     if (response.statusCode == 200) {
-      return json.decode(response.body);
+      final data = json.decode(response.body);
+      return ItemGroupwisemodel.fromJson(data);
     } else {
       throw Exception('Failed to load data: ${response.statusCode}');
     }
@@ -229,7 +238,7 @@ final purchesRegisterHsnCodeWiseProvider = FutureProvider((ref) async {
   return await fetchPurchesRegisterHsnCodeWiseData();
 });
 
-Future<Map<String, dynamic>> fetchPurchesRegisterHsnCodeWiseData() async {
+Future<Hsncodemodel> fetchPurchesRegisterHsnCodeWiseData() async {
   final accessToken = await getTokenData();
 
   final url = Uri.parse('$baseURL$purchaseRegisterHSNCodeWiseUrl');
@@ -253,7 +262,8 @@ Future<Map<String, dynamic>> fetchPurchesRegisterHsnCodeWiseData() async {
     );
 
     if (response.statusCode == 200) {
-      return json.decode(response.body);
+      final data = json.decode(response.body);
+      return Hsncodemodel.fromJson(data);
     } else {
       throw Exception('Failed to load data: ${response.statusCode}');
     }
