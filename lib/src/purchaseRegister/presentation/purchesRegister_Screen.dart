@@ -66,14 +66,12 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
       backgroundColor: const Color(0xffff9f9f9),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 0.0,
         children: [
           _purchaseSummary(context),
           _cardViewPurchase(),
           Flexible(
             child: SingleChildScrollView(
               child: Column(
-                spacing: 0.0,
                 children: [
                   selectedIndex == 0
                       ? const ProductList()

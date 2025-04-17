@@ -27,7 +27,6 @@ class ProductList extends ConsumerWidget {
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  spacing: 0.0,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
