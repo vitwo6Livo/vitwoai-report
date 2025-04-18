@@ -190,21 +190,28 @@ class _MenuScreenState extends State<MenuScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircleAvatar(
-                backgroundColor: color,
-                radius: 30,
-                child: Icon(
-                  icon,
-                  color: Colors.white,
-                  size: 30,
-                )),
+              backgroundColor: color,
+              radius: 30,
+              child: Icon(
+                icon,
+                color: Colors.white,
+                size: 30,
+              ),
+            ),
             const SizedBox(height: 6),
-            Text(label,
-                style:
-                    const TextStyle(fontSize: 13, fontWeight: FontWeight.w500)),
+            Text(
+              label,
+              style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
             IconButton(
               onPressed: () => _toggleFavourite(index),
-              icon: Icon(isFavourite ? Icons.star : Icons.star_border,
-                  color: Colors.amber),
+              icon: Icon(
+                isFavourite ? Icons.star : Icons.star_border,
+                color: Colors.amber,
+              ),
             ),
           ],
         ),
@@ -222,9 +229,13 @@ class _MenuScreenState extends State<MenuScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title,
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             const SizedBox(height: 10),
             GridView.count(
               crossAxisCount: crossAxisCount,
@@ -256,14 +267,20 @@ class _MenuScreenState extends State<MenuScreen> {
         children: [
           InkWell(
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return const GeneralSettingScreen();
-              }));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const GeneralSettingScreen();
+                  },
+                ),
+              );
             },
             child: _buildSettingsItem(
-                icon: Icons.settings,
-                title: "General Settings",
-                color: const Color.fromARGB(255, 223, 129, 239)),
+              icon: Icons.settings,
+              title: "General Settings",
+              color: const Color.fromARGB(255, 223, 129, 239),
+            ),
           ),
           InkWell(
             onTap: () {
