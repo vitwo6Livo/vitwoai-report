@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class HsncodewiseGraph extends StatelessWidget {
-  const HsncodewiseGraph({super.key});
+class CostCenterGraphModel extends StatelessWidget {
+  const CostCenterGraphModel({super.key});
 
   @override
   Widget build(BuildContext context) {

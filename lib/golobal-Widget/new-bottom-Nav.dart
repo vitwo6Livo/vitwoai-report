@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vitwoai_report/src/ageing/presentation/agineScreen.dart';
+import 'package:vitwoai_report/src/ageing/presentation/receivableScreen.dart';
 import 'package:vitwoai_report/src/home/presentation/main-Screen.dart';
 import 'package:vitwoai_report/src/menu/presentation/menuScreen.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/purchesRegister_Screen.dart';
@@ -18,7 +18,7 @@ class _SimpleBottomNavState extends State<SimpleBottomNav> {
 
   final List<Widget> _screens = [
     const MainScreen(),
-    ReceivableAnalyticsScreen(),
+    const ReceivableAnalyticsScreen(),
     const PurchesregisterScreen(),
     const SalesRegister(),
     const MenuScreen(),

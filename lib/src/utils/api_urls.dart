@@ -1,7 +1,11 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
-const baseURL = 'http://192.168.0.250:81/';
+// const baseURL = 'http://192.168.0.250:81/';
+
+const baseURL = 'https://www.analytic.vitwo.ai/'; // Live URL
+
+// const baseURL = 'http://192.168.0.196:81/';
 
 Future<String?> getTokenData() async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -23,6 +27,7 @@ Future<String?> getTokenData() async {
 
 const loginUrl = 'user/login';
 const receivablCustomerurl = 'receivable/customer';
+const payableCustomerurl = 'payable/vendor';
 const receivablTotalDueurl = 'receivable/all-total-dues';
 const purchaseRegisterAllListUrl = 'purchase/purchase-groupby-data';
 const purchaseRegisterPOWiseUrl = 'purchase/po-sub-total';
@@ -36,3 +41,6 @@ const salesRegisterCustomerWiseUrl = 'sales/customer-sub-total';
 const salesRegisterItemWiseUrl = 'sales/item-sub-total';
 const salesRegisterItemGroupWiseUrl = 'sales/item-gr-sub-total';
 const salesRegisterHSNCodeWiseUrl = 'sales/hsn-sub-total';
+const trandingProducturl = 'sales/product-desc';
+const trandingRegionurl = 'sales/region-desc';
+const salesGraphurl = 'sales/graph/mobile-sales-graph';

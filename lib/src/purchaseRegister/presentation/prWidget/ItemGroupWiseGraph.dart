@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class ItemgroupwiseGraph extends StatelessWidget {
-  const ItemgroupwiseGraph({super.key});
+class StorageLocationGraphModel extends StatelessWidget {
+  const StorageLocationGraphModel({super.key});
 
   @override
   Widget build(BuildContext context) {

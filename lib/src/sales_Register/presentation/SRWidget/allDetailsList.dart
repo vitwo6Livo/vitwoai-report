@@ -30,7 +30,7 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
   @override
   Widget build(BuildContext context) {
     final salesRegisterList =
-        ref.watch(allDetailsSearch(receivableSearchController.text));
+        ref.watch(salesRegisterProvider(receivableSearchController.text));
     return Scaffold(
       backgroundColor: const Color(0xffff9f9f9),
       appBar: AppBar(
@@ -89,6 +89,7 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
                   error: (error, stack) => Center(child: Text('Error: $error')),
                   loading: () => const Text("Loding.."),
                 ),
+                //
                 const SizedBox(height: 8),
                 Row(
                   children: [
@@ -115,7 +116,7 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
                       child: GestureDetector(
                         onTap: () {
                           setState(() {
-                            ref.read(allDetailsSearch(
+                            ref.read(salesRegisterProvider(
                                 receivableSearchController.text.toString()));
                           });
                         },
@@ -135,6 +136,7 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
               ],
             ),
           ),
+          //
           Expanded(
               child: salesRegisterList.when(
             data: (data) {

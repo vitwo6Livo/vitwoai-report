@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 
 class GeneralSettingScreen extends StatefulWidget {
@@ -15,9 +16,15 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
   String selectFirstDayOfMonth = "1";
   String selectFirstMonthOfYear = "January";
 
-  void showSelectionBottomSheet(BuildContext context, String title,
-      List<String> options, Function(String) onSelected, IconData iconName) {
-    String? selectedOption;
+  void showSelectionBottomSheet(
+      BuildContext context,
+      String title,
+      List<String> options,
+      Function(String) onSelected,
+      IconData iconName) async {
+    const savedOption = "Saved Option";
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String? selectedOption = sharedPreferences.getString(savedOption);
 
     showModalBottomSheet(
       context: context,
@@ -35,29 +42,29 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: const Text(
-                            "Cancel",
-                            style: TextStyle(color: Colors.redAccent),
-                          ),
-                        ),
-                        ElevatedButton(
-                          onPressed: selectedOption != null
-                              ? () {
-                                  onSelected(selectedOption!);
-                                  Navigator.of(context).pop();
-                                }
-                              : null,
-                          child: const Text("OK"),
-                        ),
-                      ],
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   children: [
+                    //     TextButton(
+                    //       onPressed: () {
+                    //         Navigator.of(context).pop();
+                    //       },
+                    //       child: const Text(
+                    //         "Cancel",
+                    //         style: TextStyle(color: Colors.redAccent),
+                    //       ),
+                    //     ),
+                    //     ElevatedButton(
+                    //       onPressed: selectedOption != null
+                    //           ? () {
+                    //               onSelected(selectedOption!);
+                    //               Navigator.of(context).pop();
+                    //             }
+                    //           : null,
+                    //       child: const Text("OK"),
+                    //     ),
+                    //   ],
+                    // ),
                     Text(
                       title,
                       style: const TextStyle(
@@ -81,13 +88,21 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
                               onChanged: (value) {
                                 setState(() {
                                   selectedOption = value;
+                                  Navigator.of(context).pop();
                                 });
+                                sharedPreferences.setString(
+                                    savedOption, value.toString());
+                                onSelected(option);
                               },
                             ),
                             onTap: () {
                               setState(() {
                                 selectedOption = option;
+                                Navigator.of(context).pop();
                               });
+                              sharedPreferences.setString(
+                                  savedOption, selectedOption.toString());
+                              // onSelected(option);
                             },
                           );
                         },
@@ -300,13 +315,6 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
                     [
                       "INR",
                       "USD",
-                      "GBP",
-                      "IDFC",
-                      "FNP",
-                      "UME",
-                      "EUR",
-                      "JPY",
-                      "CNY"
                     ],
                     updateCurrency,
                     Icons.paid);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vitwoai_report/src/ageing/presentation/agineScreen.dart';
+import 'package:vitwoai_report/src/ageing/presentation/receivableScreen.dart';
 import 'package:vitwoai_report/src/home/presentation/main-widget/cardDesignPurches.dart';
 import 'package:vitwoai_report/src/home/presentation/main-widget/cardDesignReceivable.dart';
 import 'package:vitwoai_report/src/home/presentation/main-widget/cardDesignSales.dart';

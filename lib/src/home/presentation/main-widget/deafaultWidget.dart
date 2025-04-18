@@ -97,7 +97,7 @@ class Deafaultwidget extends StatelessWidget {
                                 .copyWith(fontSize: 18),
                           ),
                           const SizedBox(height: 16),
-                          Row(
+                          const Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               CircularChart('Sales', 30, 100, 30),
@@ -105,17 +105,6 @@ class Deafaultwidget extends StatelessWidget {
                               CircularChart('growth', 14, 60, 50),
                             ],
                           ),
-                          // SizedBox(
-                          //   height: 40,
-                          // ),
-                          // Row(
-                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //   children: [
-                          //     CircularChart('Receivable', 30, 100, 30),
-                          //     CircularChart('Purchase', 26, 82, 30),
-                          //     CircularChart('Sales', 14, 60, 50),
-                          //   ],
-                          // ),
                         ],
                       ),
                     ),
@@ -124,68 +113,71 @@ class Deafaultwidget extends StatelessWidget {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 6),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      gradient: LinearGradient(
-                        colors: [AppColor.raisedCard1, AppColor.raisedCard2],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                    ),
-                    child: ListTile(
-                      title: Text(
-                        HandText.raisedCount,
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            fontSize: 20, color: AppColor.lightFontCpy),
-                      ),
-                      subtitle: Text(
-                        HandText.raised,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium!
-                            .copyWith(color: AppColor.lightFontCpy),
-                      ),
-                      trailing:
-                          Icon(Icons.trending_up, color: AppColor.appBarIcon),
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.only(left: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    gradient: LinearGradient(
+                      colors: [AppColor.raisedCard1, AppColor.raisedCard2],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
                   ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      gradient: LinearGradient(
-                        colors: [AppColor.itemCard1, AppColor.itemCard2],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
+                  child: ListTile(
+                    title: Text(
+                      HandText.raisedCount,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall!
+                          .copyWith(fontSize: 20, color: AppColor.lightFontCpy),
                     ),
-                    child: ListTile(
-                      title: Text(
-                        HandText.itemCount,
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            fontSize: 20, color: AppColor.lightFontCpy),
-                      ),
-                      subtitle: Text(
-                        HandText.item,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodySmall!
-                            .copyWith(color: AppColor.lightFontCpy),
-                      ),
-                      trailing: Icon(Icons.edit, color: AppColor.appBarIcon),
+                    subtitle: Text(
+                      HandText.raised,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium!
+                          .copyWith(color: AppColor.lightFontCpy),
                     ),
+                    trailing:
+                        Icon(Icons.trending_up, color: AppColor.appBarIcon),
                   ),
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.only(right: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    gradient: LinearGradient(
+                      colors: [AppColor.itemCard1, AppColor.itemCard2],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                  ),
+                  child: ListTile(
+                    title: Text(
+                      HandText.itemCount,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall!
+                          .copyWith(fontSize: 20, color: AppColor.lightFontCpy),
+                    ),
+                    subtitle: Text(
+                      HandText.item,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall!
+                          .copyWith(color: AppColor.lightFontCpy),
+                    ),
+                    trailing: Icon(Icons.edit, color: AppColor.appBarIcon),
+                  ),
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 10),
           const ProductWidget(),

@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vitwoai_report/src/home/data/dashboardDataFatch.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
 import '../../../settings/colors.dart';
 
-class ProductWidget extends StatelessWidget {
+class ProductWidget extends ConsumerWidget {
   const ProductWidget({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final trandingProductList = ref.watch(trandingProductProvider);
     return Card(
       color: AppColor.cardBackgroundColor,
       elevation: 4,
@@ -21,69 +24,40 @@ class ProductWidget extends StatelessWidget {
                     .textTheme
                     .bodyLarge!
                     .copyWith(fontWeight: FontWeight.bold)),
-            const SizedBox(height: 16),
-            ListTile(
-              leading: const CircleAvatar(
-                backgroundColor: Colors.blue,
-                radius: 8,
-              ),
-              title: Text('Net Pay',
-                  style: Theme.of(context).textTheme.bodyMedium!),
-              trailing:
-                  Text('93562', style: Theme.of(context).textTheme.bodySmall!),
-            ),
-            const Divider(
-              height: 1,
-              thickness: 0,
-            ),
-            ListTile(
-              leading: const CircleAvatar(
-                backgroundColor: Colors.purple,
-                radius: 8,
-              ),
-              title: Text('Battery',
-                  style: Theme.of(context).textTheme.bodyMedium!),
-              trailing:
-                  Text('6517', style: Theme.of(context).textTheme.bodySmall!),
-            ),
-            const Divider(
-              height: 1,
-              thickness: 0,
-            ),
-            ListTile(
-              leading: const CircleAvatar(
-                backgroundColor: Colors.purple,
-                radius: 8,
-              ),
-              title: Text('Fruits',
-                  style: Theme.of(context).textTheme.bodyMedium!),
-              trailing:
-                  Text('6517', style: Theme.of(context).textTheme.bodySmall!),
-            ),
-            const Divider(
-              height: 1,
-              thickness: 0,
-            ),
-            ListTile(
-              leading: const CircleAvatar(
-                backgroundColor: Colors.purple,
-                radius: 8,
-              ),
-              title:
-                  Text('Car', style: Theme.of(context).textTheme.bodyMedium!),
-              trailing:
-                  Text('6517', style: Theme.of(context).textTheme.bodySmall!),
-            ),
-            ListTile(
-              leading: const CircleAvatar(
-                backgroundColor: Colors.purple,
-                radius: 8,
-              ),
-              title:
-                  Text('Bike', style: Theme.of(context).textTheme.bodyMedium!),
-              trailing:
-                  Text('6517', style: Theme.of(context).textTheme.bodySmall!),
-            ),
+            const SizedBox(height: 5),
+            trandingProductList.when(
+                data: (data) {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: data['topList'].length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          ListTile(
+                            leading: const CircleAvatar(
+                              backgroundColor: Colors.blue,
+                              radius: 8,
+                            ),
+                            title: Text(data['topList'][index]['Product Name'],
+                                style: Theme.of(context).textTheme.bodyMedium!),
+                            trailing: Text(
+                                data['topList'][index]['Quantity'].toString(),
+                                style: Theme.of(context).textTheme.bodySmall!),
+                          ),
+                          const Divider(
+                            height: 1,
+                            thickness: 0,
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                error: (error, stack) => Center(child: Text('Error: $error')),
+                loading: () => const Center(
+                      child: CircularProgressIndicator(),
+                    ))
           ],
         ),
       ),

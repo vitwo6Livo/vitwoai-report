@@ -14,14 +14,47 @@ class MenuScreen extends StatefulWidget {
 
 class _MenuScreenState extends State<MenuScreen> {
   final List<int> favouriteList = [];
+  late SharedPreferences sharedPreferences;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadFavourites();
+  }
+
+  Future<void> _loadFavourites() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    setState(() {
+      favouriteList.clear();
+      final savedFavourites =
+          sharedPreferences.getStringList('favouriteList') ?? [];
+      favouriteList.addAll(savedFavourites.map(int.parse));
+    });
+  }
+
+  Future<void> _saveFavourites() async {
+    await sharedPreferences.setStringList(
+        'favouriteList', favouriteList.map((e) => e.toString()).toList());
+  }
 
   void _toggleFavourite(int index) {
     setState(() {
-      favouriteList.contains(index)
-          ? favouriteList.remove(index)
-          : favouriteList.add(index);
+      if (favouriteList.contains(index)) {
+        favouriteList.remove(index);
+      } else {
+        favouriteList.add(index);
+      }
+      _saveFavourites();
     });
   }
+
+  // void _navigateOtherScreen(int index) {
+  //   switch (index) {
+  //     case 1:
+  //       Navigator.pushNamed(context, RouteNames.payableScreen);
+  //       break;
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +63,7 @@ class _MenuScreenState extends State<MenuScreen> {
     return Scaffold(
       backgroundColor: const Color(0xffe9e9e9),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text("Menu", style: TextStyle(color: Colors.white)),
         centerTitle: true,
         flexibleSpace: Container(
@@ -50,18 +84,19 @@ class _MenuScreenState extends State<MenuScreen> {
                   'Favourite',
                   favouriteList.map((index) => _buildGridItem(index)).toList(),
                   crossAxisCount),
-            _buildSectionCard('Ageing', [_buildGridItem(0)], crossAxisCount),
+            _buildSectionCard(
+                'Ageing', [0, 1].map(_buildGridItem).toList(), crossAxisCount),
             const SizedBox(
               height: 2,
             ),
             _buildSectionCard(
                 'Purchase Register',
-                [1, 2, 3, 4, 5, 6].map(_buildGridItem).toList(),
+                [2, 3, 4, 5, 6, 7].map(_buildGridItem).toList(),
                 crossAxisCount),
             const SizedBox(height: 2),
             _buildSectionCard(
                 'Sales Register',
-                [7, 8, 9, 10, 11, 12].map(_buildGridItem).toList(),
+                [8, 9, 10, 11, 12, 13].map(_buildGridItem).toList(),
                 crossAxisCount),
             _buildSettingsSection()
           ],
@@ -71,6 +106,22 @@ class _MenuScreenState extends State<MenuScreen> {
   }
 
   Widget _buildGridItem(int index) {
+    // const items = [
+    //   (Icons.assessment, 'Receivable', Colors.purple),
+    //   (Icons.payments, 'Payable', Colors.orange),
+    //   (Icons.blinds, 'Product', Colors.indigo),
+    //   (Icons.baby_changing_station, 'Vendor', Colors.amber),
+    //   (Icons.bar_chart, 'Purchase Po', Colors.green),
+    //   (Icons.table_chart, 'Functional Area', Colors.blue),
+    //   (Icons.store_mall_directory, 'Storage Location', Colors.cyan),
+    //   (Icons.on_device_training, 'Cost Center', Colors.deepOrangeAccent),
+    //   (Icons.production_quantity_limits, 'Sales Product', Colors.indigo),
+    //   (Icons.support_agent, 'Customer', Colors.amber),
+    //   (Icons.vertical_split, 'Vertical', Colors.green),
+    //   (Icons.business_center, 'Sales Order', Colors.blue),
+    //   (Icons.contact_mail, 'Key Account Manager', Colors.cyan),
+    //   (Icons.map, 'Region', Colors.deepPurple),
+    // ];
     var items = [
       (
         Icons.assessment,
@@ -78,6 +129,14 @@ class _MenuScreenState extends State<MenuScreen> {
         Colors.purple,
         () {
           Navigator.pushNamed(context, RouteNames.Receivable);
+        }
+      ),
+      (
+        Icons.payments,
+        'Payable',
+        Colors.orange,
+        () {
+          Navigator.pushNamed(context, RouteNames.payableScreen);
         }
       ),
       (
@@ -190,28 +249,21 @@ class _MenuScreenState extends State<MenuScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircleAvatar(
-              backgroundColor: color,
-              radius: 30,
-              child: Icon(
-                icon,
-                color: Colors.white,
-                size: 30,
-              ),
-            ),
+                backgroundColor: color,
+                radius: 30,
+                child: Icon(
+                  icon,
+                  color: Colors.white,
+                  size: 30,
+                )),
             const SizedBox(height: 6),
-            Text(
-              label,
-              style: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
+            Text(label,
+                style:
+                    const TextStyle(fontSize: 13, fontWeight: FontWeight.w500)),
             IconButton(
               onPressed: () => _toggleFavourite(index),
-              icon: Icon(
-                isFavourite ? Icons.star : Icons.star_border,
-                color: Colors.amber,
-              ),
+              icon: Icon(isFavourite ? Icons.star : Icons.star_border,
+                  color: Colors.amber),
             ),
           ],
         ),
@@ -229,13 +281,9 @@ class _MenuScreenState extends State<MenuScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            Text(title,
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             const SizedBox(height: 10),
             GridView.count(
               crossAxisCount: crossAxisCount,
@@ -267,20 +315,14 @@ class _MenuScreenState extends State<MenuScreen> {
         children: [
           InkWell(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return const GeneralSettingScreen();
-                  },
-                ),
-              );
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return const GeneralSettingScreen();
+              }));
             },
             child: _buildSettingsItem(
-              icon: Icons.settings,
-              title: "General Settings",
-              color: const Color.fromARGB(255, 223, 129, 239),
-            ),
+                icon: Icons.settings,
+                title: "General Settings",
+                color: const Color.fromARGB(255, 223, 129, 239)),
           ),
           InkWell(
             onTap: () {
@@ -304,7 +346,7 @@ class _MenuScreenState extends State<MenuScreen> {
                 Navigator.pushNamedAndRemoveUntil(
                     context, RouteNames.loginScreen, (route) => false);
               });
-              print("LogOut succussfully");
+              print("LogOut successfully");
             },
             child: _buildSettingsItem(
                 icon: Icons.exit_to_app, title: "LogOut", color: Colors.red),

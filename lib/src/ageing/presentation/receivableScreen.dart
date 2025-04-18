@@ -3,12 +3,15 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:vitwoai_report/golobal-Widget/rangeCalendar.dart';
-import 'package:vitwoai_report/src/ageing/data/receivableAnalytics_repositry.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
+import 'package:vitwoai_report/src/ageing/data/receivableAnalytics_repositry.dart';
+import 'package:vitwoai_report/src/ageing/presentation/receivabledetailsScreen.dart';
 
 final isClickedProviderReceivable = StateProvider<bool>((ref) => false);
 
 class ReceivableAnalyticsScreen extends ConsumerWidget {
+  const ReceivableAnalyticsScreen({super.key});
+
   void showDateDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -88,8 +91,7 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
     final coustomerListProvider = ref.watch(receivablesCustomerProvider);
 
     return Scaffold(
-      backgroundColor: Color(0xffff9f9f9),
-      // backgroundColor: const Color.fromARGB(255, 215, 229, 239),
+      backgroundColor: const Color(0xffff9f9f9),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -207,9 +209,9 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                         children: [
                           Container(
                             width: 150,
-                            height: 20,
+                            height: 30,
                             decoration: BoxDecoration(
-                              color: Colors.grey[300],
+                              color: Colors.grey.shade300,
                               borderRadius: BorderRadius.circular(4),
                             ),
                           ),
@@ -220,7 +222,7 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                                 width: 100,
                                 height: 15,
                                 decoration: BoxDecoration(
-                                  color: Colors.grey[300],
+                                  color: Colors.grey[400],
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                               ),
@@ -229,7 +231,7 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                                 width: 80,
                                 height: 10,
                                 decoration: BoxDecoration(
-                                  color: Colors.grey[300],
+                                  color: Colors.grey[400],
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                               ),
@@ -242,7 +244,7 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                                 width: 60,
                                 height: 10,
                                 decoration: BoxDecoration(
-                                  color: Colors.grey[300],
+                                  color: Colors.grey[400],
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                               ),
@@ -251,7 +253,7 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                                 width: 80,
                                 height: 10,
                                 decoration: BoxDecoration(
-                                  color: Colors.grey[300],
+                                  color: Colors.grey[400],
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                               ),
@@ -277,9 +279,16 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "Total Records: 208",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                  coustomerListProvider.when(
+                    data: (value) {
+                      return Text(
+                        "Total Records: ${value.totalElements.toString()}",
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      );
+                    },
+                    error: (error, stack) =>
+                        Center(child: Text('Error: $error')),
+                    loading: () => const Text("Loding.."),
                   ),
                   const SizedBox(height: 8),
                   Row(
@@ -289,14 +298,22 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                         flex: 9,
                         child: Container(
                           margin: const EdgeInsets.only(right: 8),
-                          height: 35,
+                          height: 40,
                           child: const TextField(
                             decoration: InputDecoration(
                               hintText: "Search",
                               prefixIcon: Icon(Icons.search),
                               border: OutlineInputBorder(),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color.fromARGB(255, 104, 181, 244),
+                                  width: 2.0,
+                                ),
+                              ),
                               contentPadding: EdgeInsets.symmetric(vertical: 8),
                             ),
+                            cursorHeight: 20,
+                            cursorColor: Colors.blue,
                           ),
                         ),
                       ),
@@ -304,7 +321,7 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                         fit: FlexFit.tight,
                         flex: 1,
                         child: Container(
-                          height: 35,
+                          height: 40,
                           decoration: BoxDecoration(
                             color: Colors.blue,
                             border: Border.all(color: Colors.blue),
@@ -318,16 +335,23 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                 ],
               ),
             ),
-
             coustomerListProvider.when(
-                data: (data) {
-                  return Expanded(
-                    child: ListView.builder(
-                      itemCount: data.content.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 4),
+              data: (data) {
+                return Expanded(
+                  child: ListView.builder(
+                    itemCount: data.content.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        ReceivableDetailsScreen(
+                                            data: data.content, index: index)));
+                          },
                           child: Card(
                             color: Colors.white,
                             child: Padding(
@@ -435,214 +459,15 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                               ),
                             ),
                           ),
-                        );
-                      },
-                    ),
-                  );
-                },
-                error: (error, stack) => Center(child: Text('Error: $error')),
-                loading: () => screen_shimmer(120, 800))
-
-            // Flexible(
-            //   child: ListView(
-            //     children: [
-            //       Card(
-            //         color: Colors.white,
-            //         shape: const RoundedRectangleBorder(
-            //           borderRadius: BorderRadius.only(
-            //               topLeft: Radius.circular(16),
-            //               topRight: Radius.circular(16)),
-            //         ),
-            //         child: Padding(
-            //           padding: const EdgeInsets.all(16.0),
-            //           child: Column(
-            //             crossAxisAlignment: CrossAxisAlignment.start,
-            //             children: [
-            //               const Text(
-            //                 'Summary Report',
-            //                 style: TextStyle(
-            //                   fontSize: 18,
-            //                   fontWeight: FontWeight.bold,
-            //                 ),
-            //               ),
-            //               const SizedBox(height: 20),
-            //               Row(
-            //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //                 children: [
-            //                   const Column(
-            //                     crossAxisAlignment: CrossAxisAlignment.start,
-            //                     children: [
-            //                       Text(
-            //                         'Collected Amount',
-            //                         style: TextStyle(
-            //                           fontSize: 16,
-            //                           color: Colors.orange,
-            //                         ),
-            //                       ),
-            //                       SizedBox(height: 4),
-            //                       Text(
-            //                         '₹5,55,000',
-            //                         style: TextStyle(
-            //                           fontSize: 24,
-            //                           fontWeight: FontWeight.bold,
-            //                         ),
-            //                       ),
-            //                       SizedBox(height: 4),
-            //                       Text('55% of target'),
-            //                     ],
-            //                   ),
-            //                   InkWell(
-            //                     onTap: () {
-            //                       showChartsPopup(context);
-            //                     },
-            //                     child: Container(
-            //                       height: 40,
-            //                       width: 100,
-            //                       color: Colors.teal.shade200,
-            //                       alignment: Alignment.center,
-            //                       child: const Text('Pie Chart'),
-            //                     ),
-            //                   ),
-            //                 ],
-            //               ),
-            //               const SizedBox(height: 16),
-            //               Container(
-            //                 height: 200,
-            //                 color: Colors.teal.shade50,
-            //                 alignment: Alignment.center,
-            //                 child: LineChart(
-            //                   LineChartData(
-            //                     gridData: const FlGridData(show: true),
-            //                     titlesData: const FlTitlesData(
-            //                       leftTitles: AxisTitles(
-            //                         sideTitles: SideTitles(showTitles: true),
-            //                       ),
-            //                       bottomTitles: AxisTitles(
-            //                         sideTitles: SideTitles(showTitles: true),
-            //                       ),
-            //                     ),
-            //                     borderData: FlBorderData(show: true),
-            //                     lineBarsData: [
-            //                       LineChartBarData(
-            //                         spots: [
-            //                           const FlSpot(0, 1),
-            //                           const FlSpot(0.5, 2),
-            //                           const FlSpot(1, 2.5),
-            //                           const FlSpot(1.5, 3.8),
-            //                           const FlSpot(2, 3),
-            //                           const FlSpot(2.5, 4.5),
-            //                           const FlSpot(3, 4),
-            //                           const FlSpot(3.5, 5),
-            //                         ],
-            //                         // isCurved: true,
-            //                         color: Colors.blue,
-            //                         barWidth: 1,
-            //                         // isStrokeCapRound: true,
-            //                         belowBarData: BarAreaData(show: false),
-            //                       ),
-            //                     ],
-            //                   ),
-            //                 ),
-            //               )
-            //             ],
-            //           ),
-            //         ),
-            //       ),
-            //       InkWell(
-            //         onTap: () {
-            //           Navigator.push(
-            //               context,
-            //               MaterialPageRoute(
-            //                   builder: (context) =>
-            //                       const ReceivableDetailsScreen()));
-            //         },
-            //         child: const Card(
-            //           color: Colors.white,
-            //           child: ListTile(
-            //             leading: CircleAvatar(
-            //               child: Icon(Icons.person),
-            //             ),
-            //             title: Text("Customer"),
-            //             subtitle: Text(
-            //               "21/10/2022 - 30/08/2024",
-            //               style: TextStyle(fontSize: 12),
-            //             ),
-            //             trailing: Text("150"),
-            //           ),
-            //         ),
-            //       ),
-            //       InkWell(
-            //         onTap: () {
-            //           Navigator.push(
-            //               context,
-            //               MaterialPageRoute(
-            //                   builder: (context) =>
-            //                       const ReceivableDetailsScreen()));
-            //         },
-            //         child: const Card(
-            //           color: Colors.white,
-            //           child: ListTile(
-            //             leading: CircleAvatar(
-            //               child: Icon(Icons.multiline_chart),
-            //             ),
-            //             title: Text("Total Due"),
-            //             subtitle: Text(
-            //               "21/10/2022 - 30/08/2024",
-            //               style: TextStyle(fontSize: 12),
-            //             ),
-            //             trailing: Text("₹35400.00"),
-            //           ),
-            //         ),
-            //       ),
-            //       InkWell(
-            //         onTap: () {
-            //           Navigator.push(
-            //               context,
-            //               MaterialPageRoute(
-            //                   builder: (context) =>
-            //                       const ReceivableDetailsScreen()));
-            //         },
-            //         child: const Card(
-            //           color: Colors.white,
-            //           child: ListTile(
-            //             leading: CircleAvatar(
-            //               child: Icon(Icons.equalizer),
-            //             ),
-            //             title: Text("On Account Due"),
-            //             subtitle: Text(
-            //               "21/10/2022 - 30/08/2024",
-            //               style: TextStyle(fontSize: 12),
-            //             ),
-            //             trailing: Text("₹750000.0"),
-            //           ),
-            //         ),
-            //       ),
-            //       InkWell(
-            //         onTap: () {
-            //           Navigator.push(
-            //               context,
-            //               MaterialPageRoute(
-            //                   builder: (context) =>
-            //                       const ReceivableDetailsScreen()));
-            //         },
-            //         child: const Card(
-            //           color: Colors.white,
-            //           child: ListTile(
-            //             leading: CircleAvatar(
-            //               child: Icon(Icons.query_stats),
-            //             ),
-            //             title: Text("Net Due"),
-            //             subtitle: Text(
-            //               "21/10/2022 - 30/08/2024",
-            //               style: TextStyle(fontSize: 12),
-            //             ),
-            //             trailing: Text("₹15000.20"),
-            //           ),
-            //         ),
-            //       )
-            //     ],
-            //   ),
-            // )
+                        ),
+                      );
+                    },
+                  ),
+                );
+              },
+              error: (error, stack) => Center(child: Text('Error: $error')),
+              loading: () => screen_shimmer(120, 800),
+            )
           ],
         ),
       ),

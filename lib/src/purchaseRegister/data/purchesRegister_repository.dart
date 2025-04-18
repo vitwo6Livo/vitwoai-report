@@ -12,7 +12,7 @@ final purchesRegisterProvider = FutureProvider((ref) async {
   return await fetchPurchesRegisterData();
 });
 
-Future<Purchasemodel> fetchPurchesRegisterData() async {
+Future<AllPurchasemodel> fetchPurchesRegisterData() async {
   final accessToken = await getTokenData();
 
   final url = Uri.parse('$baseURL$purchaseRegisterAllListUrl');
@@ -65,7 +65,7 @@ Future<Purchasemodel> fetchPurchesRegisterData() async {
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      return Purchasemodel.fromJson(data);
+      return AllPurchasemodel.fromJson(data);
     } else {
       throw Exception('Failed to load data: ${response.statusCode}');
     }

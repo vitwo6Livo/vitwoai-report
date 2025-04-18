@@ -1,5 +1,5 @@
 // /*
-class Purchasemodel {
+class AllPurchasemodel {
   final List<PurchaseContentList> content;
   final int pageNumber;
   final int pageSize;
@@ -7,7 +7,7 @@ class Purchasemodel {
   final int totalPages;
   final bool lastPage;
 
-  Purchasemodel({
+  AllPurchasemodel({
     required this.pageNumber,
     required this.pageSize,
     required this.totalElements,
@@ -16,8 +16,8 @@ class Purchasemodel {
     required this.content,
   });
 
-  factory Purchasemodel.fromJson(Map<String, dynamic> json) {
-    return Purchasemodel(
+  factory AllPurchasemodel.fromJson(Map<String, dynamic> json) {
+    return AllPurchasemodel(
       content: (json['content'] as List)
           .map((e) => PurchaseContentList.fromJson(e))
           .toList(),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class ItemwiseGraph extends StatelessWidget {
-  const ItemwiseGraph({super.key});
+class FunctionalAreaGraphModel extends StatelessWidget {
+  const FunctionalAreaGraphModel({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -22,6 +22,7 @@ class ApiService {
         "Content-Type": "application/json",
         "username": bodyData["username"].toString(),
         "password": bodyData["password"].toString(),
+        "User-Agent": "Mobile"
       };
 
       final response = await http.post(
@@ -33,15 +34,12 @@ class ApiService {
       print("Response status code: ${response.statusCode}");
 
       if (response.statusCode == 200) {
-        // Save the response body in SharedPreferences
         prefs.setString('response_data', response.body);
 
-        // Print the stored response data
         print("Stored Response Data: ${prefs.getString('response_data')}");
 
         Navigator.pushNamed(context, RouteNames.bottomnav);
 
-        // Return the API response
         return ApiResponse.fromJson(jsonDecode(response.body));
       } else {
         throw Exception('Failed to load data: ${response.statusCode}');

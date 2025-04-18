@@ -10,12 +10,17 @@ import 'package:vitwoai_report/src/utils/api_urls.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 //All Sales Register Data
-final allDetailsSearch = FutureProvider.family((ref, String key) async {
-  return await getSearchData(key);
+
+final salesRegisterProvider = FutureProvider.family((ref, String key) async {
+  return await fetchSalesRegisterData(key);
 });
 
-Future<SalesAllDetailsmodel> getSearchData(String searchKey) async {
-  final Map<String, dynamic> apiData = {
+Future<SalesAllDetailsmodel> fetchSalesRegisterData(String searchKey) async {
+  final accessToken = await getTokenData();
+
+  final url = Uri.parse('$baseURL$salesRegisterAllListUrl');
+
+  final Map<String, dynamic> bodyData = {
     "data": [
       "items.itemCode", // item code
       "items.itemName", // item name
@@ -31,7 +36,7 @@ Future<SalesAllDetailsmodel> getSearchData(String searchKey) async {
       "salesOrder.so_date", // SO date
       "items.hsnCode", // hsn code
       "items.uom.uomName", // alternate uom
-      "items.qty", // Invoice quantity
+      "items.qty", // Total quantity
       "salesOrder.salesOrderItems.qty", // SO qty
       "salesOrder.salesOrderItems.unitPrice", // SO net value
       "salesOrder.salesOrderItems.totalPrice", // SO gross value
@@ -53,27 +58,26 @@ Future<SalesAllDetailsmodel> getSearchData(String searchKey) async {
       }
     ],
     "page": 0,
-    "size": 50,
-    "sortBy": "customer.trade_name",
-    "sortDir": "asc"
+    "size": 500,
+    "sortDir": "asc",
+    "sortBy": "invoice_date"
   };
 
-  final token = await getTokenData();
-  final url = Uri.parse('$baseURL$salesRegisterAllListUrl');
-
   try {
-    final response = await http.post(url,
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json',
-        },
-        body: json.encode(apiData));
+    final response = await http.post(
+      url,
+      headers: {
+        'Authorization': 'Bearer $accessToken',
+        'Content-Type': 'application/json',
+      },
+      body: json.encode(bodyData),
+    );
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       return SalesAllDetailsmodel.fromJson(data);
     } else {
-      throw Exception('Failed to load data: ${response.statusCode}');
+      throw Exception('Failed to load data');
     }
   } catch (e) {
     throw Exception('Failed to load data');
@@ -81,21 +85,28 @@ Future<SalesAllDetailsmodel> getSearchData(String searchKey) async {
 }
 
 //SO Wise Sales Register Data
-final salesRegisterSOProvider = FutureProvider((ref) async {
-  return await fetchSalesRegisterSOData();
+final salesRegisterSOProvider =
+    FutureProvider.family((ref, String searchItem) async {
+  return await fetchSalesRegisterSOData(searchData: searchItem);
 });
 
-Future<SalesSOwisemodel> fetchSalesRegisterSOData() async {
+Future<SalesSOwisemodel> fetchSalesRegisterSOData({
+  required String searchData,
+  int page = 0,
+  int size = 100,
+  String sortBy = "Invoice Value",
+  String sortDir = "desc",
+}) async {
   final accessToken = await getTokenData();
 
   final url = Uri.parse('$baseURL$salesRegisterSOWiseUrl');
 
   final Map<String, dynamic> bodyData = {
-    "page": 0,
-    "size": 100,
-    "sortBy": "Invoice Value",
-    "sortDir": "desc",
-    "search": ""
+    "page": page,
+    "size": size,
+    "sortBy": sortBy,
+    "sortDir": sortDir,
+    "search": searchData,
   };
 
   try {
@@ -112,29 +123,36 @@ Future<SalesSOwisemodel> fetchSalesRegisterSOData() async {
       final data = json.decode(response.body);
       return SalesSOwisemodel.fromJson(data);
     } else {
-      throw Exception('Failed to load data');
+      throw Exception('HTTP Error: ${response.statusCode}');
     }
   } catch (e) {
-    throw Exception('Failed to load data');
+    throw Exception('API Error: $e');
   }
 }
 
 //Customer Wise Sales Register Data
-final salesRegisterCustomerProvider = FutureProvider((ref) async {
-  return await fetchSalesRegisterCustomerData();
+final salesRegisterCustomerProvider =
+    FutureProvider.family((ref, String searchItem) async {
+  return await fetchSalesRegisterCustomerData(searchData: searchItem);
 });
 
-Future<SalesCustomerwisemodel> fetchSalesRegisterCustomerData() async {
+Future<SalesCustomerwisemodel> fetchSalesRegisterCustomerData({
+  required String searchData,
+  int page = 0,
+  int size = 100,
+  String sortBy = "Customer Name",
+  String sortDir = "desc",
+}) async {
   final accessToken = await getTokenData();
 
   final url = Uri.parse('$baseURL$salesRegisterCustomerWiseUrl');
 
   final Map<String, dynamic> bodyData = {
-    "page": 0,
-    "size": 100,
-    "sortBy": "Customer Name",
-    "sortDir": "desc",
-    "search": ""
+    "page": page,
+    "size": size,
+    "sortBy": sortBy,
+    "sortDir": sortDir,
+    "search": searchData
   };
 
   try {
@@ -159,21 +177,28 @@ Future<SalesCustomerwisemodel> fetchSalesRegisterCustomerData() async {
 }
 
 //item Wise Sales Register Data
-final salesRegisterItemProvider = FutureProvider((ref) async {
-  return await fetchSalesRegisterItemData();
+final salesRegisterItemProvider =
+    FutureProvider.family((ref, String searchItem) async {
+  return await fetchSalesRegisterItemData(searchData: searchItem);
 });
 
-Future<Salesitemwisemodel> fetchSalesRegisterItemData() async {
+Future<Salesitemwisemodel> fetchSalesRegisterItemData({
+  required String searchData,
+  int page = 0,
+  int size = 100,
+  String sortBy = "Invoice Value",
+  String sortDir = "desc",
+}) async {
   final accessToken = await getTokenData();
 
   final url = Uri.parse('$baseURL$salesRegisterItemWiseUrl');
 
   final Map<String, dynamic> bodyData = {
-    "page": 0,
-    "size": 100,
-    "sortBy": "Invoice Value",
-    "sortDir": "desc",
-    "search": ""
+    "page": page,
+    "size": size,
+    "sortBy": sortBy,
+    "sortDir": sortDir,
+    "search": searchData
   };
 
   try {
@@ -198,21 +223,28 @@ Future<Salesitemwisemodel> fetchSalesRegisterItemData() async {
 }
 
 //Item Group Wise Sales Register Data
-final salesRegisterItemGroupProvider = FutureProvider((ref) async {
-  return await fetchSalesRegisterItemGroupData();
+final salesRegisterItemGroupProvider =
+    FutureProvider.family((ref, String searchItem) async {
+  return await fetchSalesRegisterItemGroupData(searchData: searchItem);
 });
 
-Future<SalesItemGroupwisemodel> fetchSalesRegisterItemGroupData() async {
+Future<SalesItemGroupwisemodel> fetchSalesRegisterItemGroupData({
+  required String searchData,
+  int page = 0,
+  int size = 100,
+  String sortBy = "Item Group Name",
+  String sortDir = "desc",
+}) async {
   final accessToken = await getTokenData();
 
   final url = Uri.parse('$baseURL$salesRegisterItemGroupWiseUrl');
 
   final Map<String, dynamic> bodyData = {
-    "page": 0,
-    "size": 100,
-    "sortBy": "Item Group Name",
-    "sortDir": "desc",
-    "search": ""
+    "page": page,
+    "size": size,
+    "sortBy": sortBy,
+    "sortDir": sortDir,
+    "search": searchData
   };
 
   try {
@@ -237,21 +269,28 @@ Future<SalesItemGroupwisemodel> fetchSalesRegisterItemGroupData() async {
 }
 
 //HSN Code Wise Sales Register Data
-final salesRegisterHSNCodeProvider = FutureProvider((ref) async {
-  return await fetchSalesRegisterHSNCodeData();
+final salesRegisterHSNCodeProvider =
+    FutureProvider.family((ref, String searchItem) async {
+  return await fetchSalesRegisterHSNCodeData(searchData: searchItem);
 });
 
-Future<SalesHSNCodewisemodel> fetchSalesRegisterHSNCodeData() async {
+Future<SalesHSNCodewisemodel> fetchSalesRegisterHSNCodeData({
+  required String searchData,
+  int page = 0,
+  int size = 100,
+  String sortBy = "HSN Code",
+  String sortDir = "desc",
+}) async {
   final accessToken = await getTokenData();
 
   final url = Uri.parse('$baseURL$salesRegisterHSNCodeWiseUrl');
 
   final Map<String, dynamic> bodyData = {
-    "page": 0,
-    "size": 100,
-    "sortBy": "HSN Code",
-    "sortDir": "desc",
-    "search": ""
+    "page": page,
+    "size": size,
+    "sortBy": sortBy,
+    "sortDir": sortDir,
+    "search": searchData
   };
 
   try {
@@ -272,5 +311,38 @@ Future<SalesHSNCodewisemodel> fetchSalesRegisterHSNCodeData() async {
     }
   } catch (e) {
     throw Exception('Failed to load data');
+  }
+}
+
+// Sales Graph Data
+final salesGraphProvider = FutureProvider<Map<String, dynamic>>((ref) async {
+  return await fetchSalesGraphData();
+});
+
+Future<Map<String, dynamic>> fetchSalesGraphData() async {
+  final accessToken = await getTokenData();
+
+  final url = Uri.parse('$baseURL$salesGraphurl');
+
+  final Map<String, dynamic> bodyData = {"durationInMonths": 6};
+
+  try {
+    final response = await http.post(
+      url,
+      headers: {
+        'Authorization': 'Bearer $accessToken',
+        'Content-Type': 'application/json',
+      },
+      body: json.encode(bodyData),
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = json.decode(response.body);
+      return data;
+    } else {
+      throw Exception('Failed to load data: ${response.statusCode}');
+    }
+  } catch (e) {
+    throw Exception('Error fetching data: $e');
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/golobal-Widget/rangeCalendar.dart';
 import 'package:vitwoai_report/src/sales_Register/presentation/SRWidget/HsnCodeWiseList.dart';
-import 'package:vitwoai_report/src/sales_Register/presentation/SRWidget/allSalesRegisterList.dart';
+import 'package:vitwoai_report/src/sales_Register/presentation/SRWidget/allDetailsList.dart';
 import 'package:vitwoai_report/src/sales_Register/presentation/SRWidget/customerWiseList.dart';
 import 'package:vitwoai_report/src/sales_Register/presentation/SRWidget/itemGroupWiseList.dart';
 import 'package:vitwoai_report/src/sales_Register/presentation/SRWidget/itemWiseList.dart';
@@ -61,10 +61,13 @@ class SalesRegister extends ConsumerWidget {
       body: Column(
         children: [
           const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 3, vertical: 5),
-            child: Card(
-              color: Colors.white,
-              child: LineChartSample2(),
+            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+            child: Padding(
+              padding: EdgeInsets.only(top: 40, left: 25),
+              child: SizedBox(
+                  height: 300,
+                  width: double.infinity,
+                  child: LineChartSample2()),
             ),
           ),
           Expanded(
@@ -79,6 +82,7 @@ class SalesRegister extends ConsumerWidget {
                                 const AllSalesRegisterList()));
                   },
                   child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       gradient: const LinearGradient(
@@ -124,9 +128,10 @@ class SalesRegister extends ConsumerWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const SoWiseListScreen()));
+                            builder: (context) => SalesRegisterSOScreen()));
                   },
                   child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       gradient: const LinearGradient(
@@ -172,9 +177,10 @@ class SalesRegister extends ConsumerWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const CustomerWiseScreen()));
+                            builder: (context) => CustomerWiseScreen()));
                   },
                   child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       gradient: const LinearGradient(
@@ -220,9 +226,10 @@ class SalesRegister extends ConsumerWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const ItemWiseScreen()));
+                            builder: (context) => ItemWiseScreen()));
                   },
                   child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       gradient: const LinearGradient(
@@ -268,9 +275,10 @@ class SalesRegister extends ConsumerWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const ItemGroupWiseScreen()));
+                            builder: (context) => ItemGroupWiseScreen()));
                   },
                   child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       gradient: const LinearGradient(
@@ -316,9 +324,10 @@ class SalesRegister extends ConsumerWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const HsnCodeWiseScreen()));
+                            builder: (context) => HsnCodeWiseScreen()));
                   },
                   child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       gradient: const LinearGradient(

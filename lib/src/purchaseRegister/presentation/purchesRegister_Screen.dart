@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/POGraph.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/POlist.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/hsnCodeWiseGraph.dart';
-import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/purchasePOGraph.dart';
-import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/vendorWise.dart';
-import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/hsnCodeWise.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/costCenterList.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/itemWiseGraph.dart';
-import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/itemWise.dart';
-import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/ItemGroupWiseGraph.dart';
-import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/itemGroupWise.dart';
-import 'prWidget/purchaseGraph.dart';
-import 'prWidget/purchase.dart';
-import 'prWidget/vendorWiseGraph.dart';
-import 'prWidget/purchasePO.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/functionalAreaList.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/itemGroupWiseGraph.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/storageLocationList.dart';
+import 'prWidget/AllGraph.dart';
+import 'prWidget/productList.dart';
+import 'prWidget/vendorGraph.dart';
+import 'prWidget/vendorList.dart';
 
 final isClickedProviderPurschese = StateProvider<bool>((ref) => false);
 
@@ -83,17 +83,17 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
               child: Column(
                 children: [
                   selectedIndex == 0
-                      ? const Purchase()
+                      ? const ProductList()
                       : selectedIndex == 1
-                          ? const PurchaseOrderWise()
+                          ? const VendorList()
                           : selectedIndex == 2
-                              ? const Vendorwise()
+                              ? const PurchaseOrderList()
                               : selectedIndex == 3
-                                  ? const Itemwise()
+                                  ? const FunctionalAreaList()
                                   : selectedIndex == 4
-                                      ? const Itemgroupwise()
+                                      ? const StorageLocationList()
                                       : selectedIndex == 5
-                                          ? const Hsncodewise()
+                                          ? const CostCenterList()
                                           : const SizedBox(),
                 ],
               ),
@@ -229,7 +229,7 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
                                   builder: (context) {
                                     return const FractionallySizedBox(
                                       heightFactor: 0.9,
-                                      child: PurchaseGraph(),
+                                      child: ProductGraphModel(),
                                     );
                                   },
                                 );
@@ -248,7 +248,7 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
                                       builder: (context) {
                                         return const FractionallySizedBox(
                                           heightFactor: 0.9,
-                                          child: PurchaseOrderGraph(),
+                                          child: VendorGraphModel(),
                                         );
                                       },
                                     );
@@ -267,7 +267,7 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
                                           builder: (context) {
                                             return const FractionallySizedBox(
                                               heightFactor: 0.9,
-                                              child: VendorGraph(),
+                                              child: POGraphModel(),
                                             );
                                           },
                                         );
@@ -288,7 +288,8 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
                                               builder: (context) {
                                                 return const FractionallySizedBox(
                                                   heightFactor: 0.9,
-                                                  child: ItemwiseGraph(),
+                                                  child:
+                                                      FunctionalAreaGraphModel(),
                                                 );
                                               },
                                             );
@@ -311,7 +312,7 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
                                                     return const FractionallySizedBox(
                                                       heightFactor: 0.9,
                                                       child:
-                                                          ItemgroupwiseGraph(),
+                                                          StorageLocationGraphModel(),
                                                     );
                                                   },
                                                 );
@@ -335,7 +336,7 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
                                                         return const FractionallySizedBox(
                                                           heightFactor: 0.9,
                                                           child:
-                                                              HsncodewiseGraph(),
+                                                              CostCenterGraphModel(),
                                                         );
                                                       },
                                                     );

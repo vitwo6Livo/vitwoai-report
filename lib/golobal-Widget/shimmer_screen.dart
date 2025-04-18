@@ -1,5 +1,3 @@
-// ignore_for_file: non_constant_identifier_names
-
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -14,7 +12,7 @@ Widget screen_shimmer(double h, double w) {
             baseColor: Colors.grey.shade300,
             highlightColor: Colors.grey.shade200,
             child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+              margin: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
               height: h,
               width: w,
               decoration: BoxDecoration(

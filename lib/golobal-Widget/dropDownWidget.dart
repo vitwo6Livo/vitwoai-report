@@ -1,5 +1,3 @@
-// ignore_for_file: use_super_parameters, library_private_types_in_public_api
-
 import 'package:flutter/material.dart';
 
 class AnimatedDropdown extends StatefulWidget {
@@ -125,10 +123,11 @@ class _AnimatedDropdownState extends State<AnimatedDropdown>
       child: GestureDetector(
         onTap: _toggleDropdown,
         child: Row(
+          // mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               widget.selectedItem ?? widget.items.first,
-              style: const TextStyle(color: Colors.white, fontSize: 18),
+              style: TextStyle(color: Colors.white, fontSize: 18),
             ),
             const SizedBox(width: 8),
             const Icon(Icons.arrow_drop_down),

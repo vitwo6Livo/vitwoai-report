@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vitwoai_report/src/home/data/dashboardDataFatch.dart';
 
-class RegionWidget extends StatelessWidget {
+class RegionWidget extends ConsumerWidget {
   const RegionWidget({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final trandingRegionList = ref.watch(trandingRegionProvider);
     return Card(
       color: Colors.white,
       elevation: 4,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
         child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Trending Region',
@@ -22,58 +24,43 @@ class RegionWidget extends StatelessWidget {
                   .bodyLarge!
                   .copyWith(fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 16),
-            ListTile(
-              leading: CircleAvatar(
-                backgroundColor: Colors.blue,
-                radius: 8,
+            const SizedBox(height: 5),
+            trandingRegionList.when(
+              data: (data) {
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: data['topList'].length,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: Colors.purple[200],
+                            radius: 8,
+                          ),
+                          title: Text(
+                            data['topList'][index]['Region'],
+                            style: Theme.of(context).textTheme.bodyMedium!,
+                          ),
+                          trailing: Text(
+                            data['topList'][index]['Total Price'].toString(),
+                            style: Theme.of(context).textTheme.bodySmall!,
+                          ),
+                        ),
+                        const Divider(
+                          height: 1,
+                          thickness: 0,
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              error: (error, stack) => Center(child: Text('Error: $error')),
+              loading: () => const Center(
+                child: CircularProgressIndicator(),
               ),
-              title: Text('Kolkata',
-                  style: Theme.of(context).textTheme.bodyMedium!),
-              trailing:
-                  Text('93562', style: Theme.of(context).textTheme.bodySmall!),
-            ),
-            Divider(
-              height: 1,
-              thickness: 0,
-            ),
-            ListTile(
-              leading: CircleAvatar(
-                backgroundColor: Colors.purple,
-                radius: 8,
-              ),
-              title: Text('Mumbai',
-                  style: Theme.of(context).textTheme.bodyMedium!),
-              trailing:
-                  Text('6517', style: Theme.of(context).textTheme.bodySmall!),
-            ),
-            Divider(
-              height: 1,
-              thickness: 0,
-            ),
-            ListTile(
-              leading: CircleAvatar(
-                backgroundColor: Colors.purple,
-                radius: 8,
-              ),
-              title: Text('Banglore',
-                  style: Theme.of(context).textTheme.bodyMedium!),
-              trailing:
-                  Text('6517', style: Theme.of(context).textTheme.bodySmall!),
-            ),
-            Divider(
-              height: 1,
-              thickness: 0,
-            ),
-            ListTile(
-              leading: CircleAvatar(
-                backgroundColor: Colors.purple,
-                radius: 8,
-              ),
-              title:
-                  Text('Pune', style: Theme.of(context).textTheme.bodyMedium!),
-              trailing:
-                  Text('6517', style: Theme.of(context).textTheme.bodySmall!),
             ),
           ],
         ),

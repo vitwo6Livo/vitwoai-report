@@ -2,25 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/purchaseRegister/data/purchesRegister_repository.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/detailsPage/vendorWiseDetails.dart';
 
-class PurchaseOrderWise extends ConsumerWidget {
-  const PurchaseOrderWise({super.key});
+class PurchaseOrderList extends ConsumerWidget {
+  const PurchaseOrderList({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final purchaseRegisterPoWiseList = ref.watch(purchesRegisterPoWiseProvider);
-    return purchaseRegisterPoWiseList.when(
-        data: (data) {
-          return data['content'].length == 0
-              ? const Center(
-                  child: Text("No Data Found"),
-                )
-              : ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: data['content'].length,
-                  itemBuilder: (context, index) {
-                    return Card(
+    final purchaseRegisterVendorWiseList =
+        ref.watch(purchesRegisterVendorWiseProvider);
+    return purchaseRegisterVendorWiseList.when(
+      data: (data) {
+        return data.content.length == 0
+            ? const Center(
+                child: Text("No Data Found"),
+              )
+            : ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: data.content.length,
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => VendorWiseDetails(
+                                  data: data.content, index: index)));
+                    },
+                    child: Card(
                       color: Colors.white,
                       margin: const EdgeInsets.symmetric(
                           horizontal: 8, vertical: 8),
@@ -42,7 +52,7 @@ class PurchaseOrderWise extends ConsumerWidget {
                                 const SizedBox(width: 8),
                                 Expanded(
                                   child: Text(
-                                    data['content'][index]['Vendor Name'],
+                                    data.content[index].vendorName,
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodySmall!
@@ -79,8 +89,8 @@ class PurchaseOrderWise extends ConsumerWidget {
                                                 ),
                                             children: [
                                               TextSpan(
-                                                text: data['content'][index]
-                                                    ['Vendor Code'],
+                                                text: data
+                                                    .content[index].vendorCode,
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .bodySmall!
@@ -117,9 +127,9 @@ class PurchaseOrderWise extends ConsumerWidget {
                                                 ),
                                             children: [
                                               TextSpan(
-                                                text: data['content'][index]
-                                                        ['Invoice Quantity'] ??
-                                                    '0.0',
+                                                text: data.content[index]
+                                                    .invoiceQuantity
+                                                    .toString(),
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .bodySmall!
@@ -162,9 +172,9 @@ class PurchaseOrderWise extends ConsumerWidget {
                                                 ),
                                             children: [
                                               TextSpan(
-                                                text: data['content'][index]
-                                                        ['Received Quantity'] ??
-                                                    '0.0',
+                                                text: data.content[index]
+                                                    .receivedQuantity
+                                                    .toString(),
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .bodySmall!
@@ -200,9 +210,9 @@ class PurchaseOrderWise extends ConsumerWidget {
                                               ),
                                           children: [
                                             TextSpan(
-                                              text: data['content'][index]
-                                                      ['Invoice Value'] ??
-                                                  '0.0',
+                                              text: data
+                                                  .content[index].invoiceValue
+                                                  .toString(),
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .bodySmall!
@@ -221,10 +231,12 @@ class PurchaseOrderWise extends ConsumerWidget {
                           ],
                         ),
                       ),
-                    );
-                  });
-        },
-        error: (error, stack) => Center(child: Text('Error: $error')),
-        loading: () => screen_shimmer(120, 800));
+                    ),
+                  );
+                });
+      },
+      error: (error, stack) => Center(child: Text('Error: $error')),
+      loading: () => screen_shimmer(120, 800),
+    );
   }
 }

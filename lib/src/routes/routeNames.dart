@@ -7,6 +7,7 @@ class RouteNames {
   static const String loginScreen = 'Login-Screen';
   static const String menuScreen = 'Menu-Screen';
   static const String generalSettings = 'general-settings';
+  static const String payableScreen = 'payable-screen';
   static const String Receivable = 'Ageing';
   static const String Purchase = 'Purchase';
   static const String POWise = 'Purchase Order Wise';

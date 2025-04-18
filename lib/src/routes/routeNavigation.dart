@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:vitwoai_report/golobal-Widget/new-bottom-Nav.dart';
-import 'package:vitwoai_report/src/ageing/presentation/agineScreen.dart';
+import 'package:vitwoai_report/src/ageing/presentation/payableScreen.dart';
+import 'package:vitwoai_report/src/ageing/presentation/receivableScreen.dart';
 import 'package:vitwoai_report/src/login/presentation/loginScreen.dart';
 import 'package:vitwoai_report/src/menu/presentation/generalSettings.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/purchesRegister_Screen.dart';
 import 'package:vitwoai_report/src/sales_Register/presentation/SRWidget/HsnCodeWiseList.dart';
-import 'package:vitwoai_report/src/sales_Register/presentation/SRWidget/allSalesRegisterList.dart';
+import 'package:vitwoai_report/src/sales_Register/presentation/SRWidget/allDetailsList.dart';
 import 'package:vitwoai_report/src/sales_Register/presentation/SRWidget/customerWiseList.dart';
 import 'package:vitwoai_report/src/sales_Register/presentation/SRWidget/itemGroupWiseList.dart';
 import 'package:vitwoai_report/src/sales_Register/presentation/SRWidget/itemWiseList.dart';
@@ -26,14 +27,14 @@ class Routes {
           builder: (BuildContext context) => const LoginScreen(),
         );
 
+      case RouteNames.payableScreen:
+        return MaterialPageRoute(
+          builder: (BuildContext context) => const PayableScreen(),
+        );
+
       case RouteNames.bottomnav:
         return MaterialPageRoute(
-            builder: (BuildContext context) => SimpleBottomNav()
-
-            // NewBottomNav(
-            //   settings: (settings.arguments as List<Map<String, dynamic>>?) ?? [],
-            // ),
-            );
+            builder: (BuildContext context) => const SimpleBottomNav());
 
       case RouteNames.mainScrren:
         return MaterialPageRoute(
@@ -44,7 +45,6 @@ class Routes {
           builder: (BuildContext context) => const GeneralSettingScreen(),
         );
 
-      // Demo COde
       // Ageing
       case RouteNames.Receivable:
         return MaterialPageRoute(
@@ -82,20 +82,19 @@ class Routes {
             builder: (BuildContext context) => const AllSalesRegisterList());
       case RouteNames.SOWise:
         return MaterialPageRoute(
-            builder: (BuildContext context) => const SoWiseListScreen());
+            builder: (BuildContext context) => SalesRegisterSOScreen());
       case RouteNames.SalesCustomerWise:
         return MaterialPageRoute(
-            builder: (BuildContext context) => const CustomerWiseScreen());
+            builder: (BuildContext context) => CustomerWiseScreen());
       case RouteNames.SalesItemWise:
         return MaterialPageRoute(
-            builder: (BuildContext context) => const ItemWiseScreen());
+            builder: (BuildContext context) => ItemWiseScreen());
       case RouteNames.SalesItemGroupWise:
         return MaterialPageRoute(
-            builder: (BuildContext context) => const ItemGroupWiseScreen());
+            builder: (BuildContext context) => ItemGroupWiseScreen());
       case RouteNames.SalesHSNWise:
         return MaterialPageRoute(
-            builder: (BuildContext context) => const HsnCodeWiseScreen());
-
+            builder: (BuildContext context) => HsnCodeWiseScreen());
       default:
         return MaterialPageRoute(builder: (BuildContext context) {
           return const Scaffold(

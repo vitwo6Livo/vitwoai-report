@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class PurchaseGraph extends StatelessWidget {
-  const PurchaseGraph({super.key});
+class ProductGraphModel extends StatelessWidget {
+  const ProductGraphModel({super.key});
 
   @override
   Widget build(BuildContext context) {
