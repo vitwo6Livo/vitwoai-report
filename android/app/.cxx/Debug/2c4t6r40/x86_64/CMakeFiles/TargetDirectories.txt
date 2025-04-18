@@ -1,0 +1,2 @@
+D:/Updated Chayan/vitwoai-report/android/app/.cxx/Debug/2c4t6r40/x86_64/CMakeFiles/edit_cache.dir
+D:/Updated Chayan/vitwoai-report/android/app/.cxx/Debug/2c4t6r40/x86_64/CMakeFiles/rebuild_cache.dir

@@ -3,6 +3,7 @@ import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/purchaseRegister/data/purchesRegister_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/detailsPage/PrAllDetails.dart';
+import 'package:vitwoai_report/src/settings/texts.dart';
 
 class ProductList extends ConsumerWidget {
   const ProductList({super.key});
@@ -13,9 +14,9 @@ class ProductList extends ConsumerWidget {
 
     return purchesRegisterList.when(
       data: (data) {
-        return data.content.length == 0
-            ? const Center(
-                child: Text("No Data Found"),
+        return data.content.isEmpty
+            ? Center(
+                child: Text(HandText.noData),
               )
             : ListView.builder(
                 itemCount: data.content.length,
@@ -73,7 +74,7 @@ class ProductList extends ConsumerWidget {
                                   children: [
                                     Text.rich(
                                       TextSpan(
-                                        text: 'Qty: ',
+                                        text: HandText.prQty,
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodySmall!
@@ -110,7 +111,7 @@ class ProductList extends ConsumerWidget {
                                       Expanded(
                                         child: Text.rich(
                                           TextSpan(
-                                            text: 'Item: ',
+                                            text: HandText.prItem,
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .bodySmall!
@@ -142,7 +143,7 @@ class ProductList extends ConsumerWidget {
                                   children: [
                                     Text.rich(
                                       TextSpan(
-                                        text: 'Item Code: ',
+                                        text: HandText.prItemCode,
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodySmall!
@@ -219,7 +220,8 @@ class ProductList extends ConsumerWidget {
                 },
               );
       },
-      error: (error, stack) => Center(child: Text('Error: $error')),
+      error: (error, stack) =>
+          Center(child: Text('${HandText.errorMessage} $error')),
       loading: () => screen_shimmer(120, 800),
     );
   }

@@ -4,6 +4,7 @@ import 'package:vitwoai_report/src/menu/presentation/generalSettings.dart';
 import 'package:vitwoai_report/src/menu/presentation/rateScreen.dart';
 import 'package:vitwoai_report/src/routes/routeNames.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
+import 'package:vitwoai_report/src/settings/texts.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
@@ -64,7 +65,8 @@ class _MenuScreenState extends State<MenuScreen> {
       backgroundColor: const Color(0xffe9e9e9),
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Text("Menu", style: TextStyle(color: Colors.white)),
+        title: Text(HandText.menuTitle,
+            style: const TextStyle(color: Colors.white)),
         centerTitle: true,
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -81,21 +83,21 @@ class _MenuScreenState extends State<MenuScreen> {
           children: [
             if (favouriteList.isNotEmpty)
               _buildSectionCard(
-                  'Favourite',
+                  HandText.menuFavSectionTitle,
                   favouriteList.map((index) => _buildGridItem(index)).toList(),
                   crossAxisCount),
-            _buildSectionCard(
-                'Ageing', [0, 1].map(_buildGridItem).toList(), crossAxisCount),
+            _buildSectionCard(HandText.menuAgeingSectionTitle,
+                [0, 1].map(_buildGridItem).toList(), crossAxisCount),
             const SizedBox(
               height: 2,
             ),
             _buildSectionCard(
-                'Purchase Register',
+                HandText.menuPRSectionTitle,
                 [2, 3, 4, 5, 6, 7].map(_buildGridItem).toList(),
                 crossAxisCount),
             const SizedBox(height: 2),
             _buildSectionCard(
-                'Sales Register',
+                HandText.menuSRSectionTitle,
                 [8, 9, 10, 11, 12, 13].map(_buildGridItem).toList(),
                 crossAxisCount),
             _buildSettingsSection()
@@ -125,7 +127,7 @@ class _MenuScreenState extends State<MenuScreen> {
     var items = [
       (
         Icons.assessment,
-        'Receivable',
+        HandText.menuAgeingReceivable,
         Colors.purple,
         () {
           Navigator.pushNamed(context, RouteNames.Receivable);
@@ -133,7 +135,7 @@ class _MenuScreenState extends State<MenuScreen> {
       ),
       (
         Icons.payments,
-        'Payable',
+        HandText.menuAgeingPayable,
         Colors.orange,
         () {
           Navigator.pushNamed(context, RouteNames.payableScreen);
@@ -141,7 +143,7 @@ class _MenuScreenState extends State<MenuScreen> {
       ),
       (
         Icons.blinds,
-        'Purchase',
+        HandText.menuPRAll,
         Colors.indigo,
         () {
           Navigator.pushNamed(context, RouteNames.Purchase);
@@ -149,7 +151,7 @@ class _MenuScreenState extends State<MenuScreen> {
       ),
       (
         Icons.bar_chart,
-        'Purchase Order Wise',
+        HandText.menuPRPO,
         Colors.green,
         () {
           Navigator.pushNamed(context, RouteNames.POWise);
@@ -157,7 +159,7 @@ class _MenuScreenState extends State<MenuScreen> {
       ),
       (
         Icons.baby_changing_station,
-        'Vendor Wise',
+        HandText.menuPRVendor,
         Colors.amber,
         () {
           Navigator.pushNamed(context, RouteNames.VendorWise);
@@ -165,7 +167,7 @@ class _MenuScreenState extends State<MenuScreen> {
       ),
       (
         Icons.table_chart,
-        'Item Wise',
+        HandText.menuPRIW,
         Colors.blue,
         () {
           Navigator.pushNamed(context, RouteNames.ItemWise);
@@ -173,7 +175,7 @@ class _MenuScreenState extends State<MenuScreen> {
       ),
       (
         Icons.store_mall_directory,
-        'Item Group Wise',
+        HandText.menuPRIGW,
         Colors.cyan,
         () {
           Navigator.pushNamed(context, RouteNames.ItemGroupWise);
@@ -181,7 +183,7 @@ class _MenuScreenState extends State<MenuScreen> {
       ),
       (
         Icons.on_device_training,
-        'HSN Code Wise',
+        HandText.menuPRHSN,
         Colors.deepOrangeAccent,
         () {
           Navigator.pushNamed(context, RouteNames.HSNWise);
@@ -189,7 +191,7 @@ class _MenuScreenState extends State<MenuScreen> {
       ),
       (
         Icons.vertical_split,
-        'Sales',
+        HandText.menuSRAll,
         Colors.green,
         () {
           Navigator.pushNamed(context, RouteNames.Sales);
@@ -197,7 +199,7 @@ class _MenuScreenState extends State<MenuScreen> {
       ),
       (
         Icons.business_center,
-        'Sales Order Wise',
+        HandText.menuSRSO,
         Colors.blue,
         () {
           Navigator.pushNamed(context, RouteNames.SOWise);
@@ -205,7 +207,7 @@ class _MenuScreenState extends State<MenuScreen> {
       ),
       (
         Icons.contact_mail,
-        'Customer Wise',
+        HandText.menuSRCustomer,
         Colors.cyan,
         () {
           Navigator.pushNamed(context, RouteNames.SalesCustomerWise);
@@ -213,7 +215,7 @@ class _MenuScreenState extends State<MenuScreen> {
       ),
       (
         Icons.production_quantity_limits,
-        'Item Wise',
+        HandText.menuSRIW,
         Colors.indigo,
         () {
           Navigator.pushNamed(context, RouteNames.SalesItemWise);
@@ -221,7 +223,7 @@ class _MenuScreenState extends State<MenuScreen> {
       ),
       (
         Icons.support_agent,
-        'Item Group Wise',
+        HandText.menuSRIGW,
         Colors.amber,
         () {
           Navigator.pushNamed(context, RouteNames.SalesItemGroupWise);
@@ -229,7 +231,7 @@ class _MenuScreenState extends State<MenuScreen> {
       ),
       (
         Icons.map,
-        'HSN Code Wise',
+        HandText.menuSRHSN,
         Colors.deepPurple,
         () {
           Navigator.pushNamed(context, RouteNames.SalesHSNWise);
@@ -321,7 +323,7 @@ class _MenuScreenState extends State<MenuScreen> {
             },
             child: _buildSettingsItem(
                 icon: Icons.settings,
-                title: "General Settings",
+                title: HandText.menuSettings,
                 color: const Color.fromARGB(255, 223, 129, 239)),
           ),
           InkWell(
@@ -330,13 +332,15 @@ class _MenuScreenState extends State<MenuScreen> {
                   MaterialPageRoute(builder: (context) => const RateScreen()));
             },
             child: _buildSettingsItem(
-                icon: Icons.star_half, title: "Rate App", color: Colors.amber),
+                icon: Icons.star_half,
+                title: HandText.menuRateApp,
+                color: Colors.amber),
           ),
           InkWell(
             onTap: () {},
             child: _buildSettingsItem(
                 icon: Icons.help_outline,
-                title: "Help & Information",
+                title: HandText.menuHelpInfo,
                 color: Colors.blue),
           ),
           InkWell(
@@ -349,7 +353,9 @@ class _MenuScreenState extends State<MenuScreen> {
               print("LogOut successfully");
             },
             child: _buildSettingsItem(
-                icon: Icons.exit_to_app, title: "LogOut", color: Colors.red),
+                icon: Icons.exit_to_app,
+                title: HandText.logoutBttn,
+                color: Colors.red),
           ),
         ],
       ),

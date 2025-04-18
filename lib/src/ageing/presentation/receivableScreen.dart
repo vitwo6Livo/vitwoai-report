@@ -6,6 +6,7 @@ import 'package:vitwoai_report/golobal-Widget/rangeCalendar.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/ageing/data/receivableAnalytics_repositry.dart';
 import 'package:vitwoai_report/src/ageing/presentation/receivabledetailsScreen.dart';
+import 'package:vitwoai_report/src/settings/texts.dart';
 
 final isClickedProviderReceivable = StateProvider<bool>((ref) => false);
 
@@ -39,9 +40,9 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text(
-                  'Charts Overview',
-                  style: TextStyle(
+                Text(
+                  HandText.receivableChartsOverview,
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
@@ -75,7 +76,7 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: const Text('Close'),
+                  child: Text(HandText.popUpCloseBttn),
                 ),
               ],
             ),
@@ -114,9 +115,9 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'Receivable Analytics',
-                        style: TextStyle(
+                      Text(
+                        HandText.receivableTitle,
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -163,7 +164,7 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "₹$totalOfTotalDue",
+                            "${HandText.inr}$totalOfTotalDue",
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 32,
@@ -173,13 +174,13 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                           const SizedBox(height: 8),
                           Row(
                             children: [
-                              const Text(
-                                'On account due',
-                                style: TextStyle(color: Colors.white70),
+                              Text(
+                                HandText.receivableOnAccountDue,
+                                style: const TextStyle(color: Colors.white70),
                               ),
                               const Spacer(),
                               Text(
-                                "₹$totalOnAccountDue",
+                                "${HandText.inr}$totalOnAccountDue",
                                 style: const TextStyle(color: Colors.white),
                               ),
                             ],
@@ -187,13 +188,13 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                           const SizedBox(height: 8),
                           Row(
                             children: [
-                              const Text(
-                                'Net due',
-                                style: TextStyle(color: Colors.white70),
+                              Text(
+                                HandText.receivableNetDue,
+                                style: const TextStyle(color: Colors.white70),
                               ),
                               const Spacer(),
                               Text(
-                                "₹$netDue",
+                                "${HandText.inr}$netDue",
                                 style: const TextStyle(color: Colors.white),
                               ),
                             ],
@@ -263,7 +264,7 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                       ),
                     ),
                     error: (error, stack) =>
-                        Center(child: Text('Error: $error')),
+                        Center(child: Text('${HandText.errorMessage} $error')),
                   ),
                 ],
               ),
@@ -282,13 +283,13 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                   coustomerListProvider.when(
                     data: (value) {
                       return Text(
-                        "Total Records: ${value.totalElements.toString()}",
+                        "${HandText.totalRecords} ${value.totalElements.toString()}",
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       );
                     },
                     error: (error, stack) =>
-                        Center(child: Text('Error: $error')),
-                    loading: () => const Text("Loding.."),
+                        Center(child: Text('${HandText.errorMessage} $error')),
+                    loading: () => Text(HandText.loadingMessage),
                   ),
                   const SizedBox(height: 8),
                   Row(
@@ -299,18 +300,19 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                         child: Container(
                           margin: const EdgeInsets.only(right: 8),
                           height: 40,
-                          child: const TextField(
+                          child: TextField(
                             decoration: InputDecoration(
-                              hintText: "Search",
-                              prefixIcon: Icon(Icons.search),
-                              border: OutlineInputBorder(),
-                              focusedBorder: OutlineInputBorder(
+                              hintText: HandText.searchBox,
+                              prefixIcon: const Icon(Icons.search),
+                              border: const OutlineInputBorder(),
+                              focusedBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Color.fromARGB(255, 104, 181, 244),
                                   width: 2.0,
                                 ),
                               ),
-                              contentPadding: EdgeInsets.symmetric(vertical: 8),
+                              contentPadding:
+                                  const EdgeInsets.symmetric(vertical: 8),
                             ),
                             cursorHeight: 20,
                             cursorColor: Colors.blue,
@@ -375,7 +377,8 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                                     children: [
                                       Text.rich(
                                         TextSpan(
-                                            text: "Customer Code: \n",
+                                            text:
+                                                "${HandText.receivableCustomerCode} \n",
                                             style: const TextStyle(
                                               fontSize: 14,
                                               color: Colors.grey,
@@ -393,7 +396,8 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                                       ),
                                       Text.rich(
                                         TextSpan(
-                                            text: "Total Due: \n",
+                                            text:
+                                                "${HandText.receivableTotalDue} \n",
                                             style: const TextStyle(
                                               fontSize: 14,
                                               color: Colors.grey,
@@ -420,7 +424,8 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                                     children: [
                                       Text.rich(
                                         TextSpan(
-                                            text: "On Account Due: \n",
+                                            text:
+                                                "${HandText.receivableOnAccountDue} \n",
                                             style: const TextStyle(
                                               fontSize: 14,
                                               color: Colors.grey,
@@ -438,7 +443,8 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                                       ),
                                       Text.rich(
                                         TextSpan(
-                                            text: "Net Due: \n",
+                                            text:
+                                                "${HandText.receivableNetDue} \n",
                                             style: const TextStyle(
                                               fontSize: 14,
                                               color: Colors.grey,
@@ -465,7 +471,8 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                   ),
                 );
               },
-              error: (error, stack) => Center(child: Text('Error: $error')),
+              error: (error, stack) =>
+                  Center(child: Text('${HandText.errorMessage} $error')),
               loading: () => screen_shimmer(120, 800),
             )
           ],

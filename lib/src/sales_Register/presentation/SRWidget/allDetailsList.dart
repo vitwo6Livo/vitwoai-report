@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/sales_Register/data/salesRegisterFatchData.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
+import 'package:vitwoai_report/src/settings/texts.dart';
 
 class AllSalesRegisterList extends ConsumerStatefulWidget {
   const AllSalesRegisterList({super.key});
@@ -42,9 +43,9 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
               Icons.arrow_back,
               color: Colors.white,
             )),
-        title: const Text(
-          "All Sales Register",
-          style: TextStyle(color: Colors.white),
+        title: Text(
+          HandText.srAllSalesRegisterTitle,
+          style: const TextStyle(color: Colors.white),
         ),
         actions: [
           IconButton(
@@ -82,12 +83,13 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
                 salesRegisterList.when(
                   data: (value) {
                     return Text(
-                      "Total Records: ${value.totalElements.toString()}",
+                      "${HandText.totalRecords} ${value.totalElements.toString()}",
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     );
                   },
-                  error: (error, stack) => Center(child: Text('Error: $error')),
-                  loading: () => const Text("Loding.."),
+                  error: (error, stack) =>
+                      Center(child: Text('${HandText.errorMessage} $error')),
+                  loading: () => Text(HandText.loadingMessage),
                 ),
                 //
                 const SizedBox(height: 8),
@@ -101,11 +103,12 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
                         height: 40,
                         child: TextField(
                           controller: receivableSearchController,
-                          decoration: const InputDecoration(
-                            hintText: "Search",
-                            prefixIcon: Icon(Icons.search),
-                            border: OutlineInputBorder(),
-                            contentPadding: EdgeInsets.symmetric(vertical: 5),
+                          decoration: InputDecoration(
+                            hintText: HandText.searchBox,
+                            prefixIcon: const Icon(Icons.search),
+                            border: const OutlineInputBorder(),
+                            contentPadding:
+                                const EdgeInsets.symmetric(vertical: 5),
                           ),
                         ),
                       ),
@@ -165,7 +168,7 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
                             ),
                             Text.rich(
                               TextSpan(
-                                  text: "Item Code: ",
+                                  text: HandText.srItemCode,
                                   style: const TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey,
@@ -180,7 +183,7 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
                             ),
                             Text.rich(
                               TextSpan(
-                                  text: "Item Group Name: ",
+                                  text: HandText.srItemGroupName,
                                   style: const TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey,
@@ -196,7 +199,7 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
                             ),
                             Text.rich(
                               TextSpan(
-                                  text: "Customer Name: ",
+                                  text: HandText.srCustomerName,
                                   style: const TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey,
@@ -212,7 +215,7 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
                             ),
                             Text.rich(
                               TextSpan(
-                                  text: "Customer Code: ",
+                                  text: HandText.srCustomerCode,
                                   style: const TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey,
@@ -228,7 +231,7 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
                             ),
                             Text.rich(
                               TextSpan(
-                                  text: "Customer GST NO: ",
+                                  text: HandText.srCustomerGSTNo,
                                   style: const TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey,
@@ -244,7 +247,7 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
                             ),
                             Text.rich(
                               TextSpan(
-                                  text: "KAM Code: ",
+                                  text: HandText.srKamCode,
                                   style: const TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey,
@@ -259,7 +262,7 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
                             ),
                             Text.rich(
                               TextSpan(
-                                  text: "KAM Name: ",
+                                  text: HandText.srKamName,
                                   style: const TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey,
@@ -274,7 +277,7 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
                             ),
                             Text.rich(
                               TextSpan(
-                                  text: "Invoice No: ",
+                                  text: HandText.srInvoiceNo,
                                   style: const TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey,
@@ -289,7 +292,7 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
                             ),
                             Text.rich(
                               TextSpan(
-                                  text: "Invoice Date: ",
+                                  text: HandText.srInvoiceDate,
                                   style: const TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey,
@@ -304,7 +307,7 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
                             ),
                             Text.rich(
                               TextSpan(
-                                  text: "Invoice Quantity: ",
+                                  text: HandText.srInvoiceQuantity,
                                   style: const TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey,
@@ -319,7 +322,7 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
                             ),
                             Text.rich(
                               TextSpan(
-                                  text: "Base Value: ",
+                                  text: HandText.srBaseValue,
                                   style: const TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey,
@@ -334,7 +337,7 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
                             ),
                             Text.rich(
                               TextSpan(
-                                  text: "Invoice Value: ",
+                                  text: HandText.srInvoiceValue,
                                   style: const TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey,
@@ -349,7 +352,7 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
                             ),
                             Text.rich(
                               TextSpan(
-                                  text: "Customer Address: ",
+                                  text: HandText.srCustomerAddress,
                                   style: const TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey,
@@ -365,7 +368,7 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
                             ),
                             Text.rich(
                               TextSpan(
-                                  text: "Functional Area: ",
+                                  text: HandText.srFunctionalArea,
                                   style: const TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey,
@@ -387,7 +390,8 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
                 },
               );
             },
-            error: (error, stack) => Center(child: Text('Error: $error')),
+            error: (error, stack) =>
+                Center(child: Text('${HandText.errorMessage} $error')),
             loading: () => screen_shimmer(120, 800),
           )),
         ],

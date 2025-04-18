@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/sales_Register/data/salesRegisterFatchData.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
+import 'package:vitwoai_report/src/settings/texts.dart';
 
 class CustomerWiseScreen extends ConsumerStatefulWidget {
   @override
@@ -40,9 +41,9 @@ class _CustomerWiseScreenState extends ConsumerState<CustomerWiseScreen> {
               Icons.arrow_back,
               color: Colors.white,
             )),
-        title: const Text(
-          "Customer Wise",
-          style: TextStyle(color: Colors.white),
+        title: Text(
+          HandText.srCustomerWiseTitle,
+          style: const TextStyle(color: Colors.white),
         ),
         actions: [
           IconButton(
@@ -79,12 +80,13 @@ class _CustomerWiseScreenState extends ConsumerState<CustomerWiseScreen> {
                 salesRegisterCustomerWiseList.when(
                   data: (value) {
                     return Text(
-                      "Total Records: ${value.totalElements.toString()}",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      "${HandText.totalRecords} ${value.totalElements.toString()}",
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     );
                   },
-                  error: (error, stack) => Center(child: Text('Error: $error')),
-                  loading: () => Text("Loding.."),
+                  error: (error, stack) =>
+                      Center(child: Text('${HandText.errorMessage} $error')),
+                  loading: () => Text(HandText.loadingMessage),
                 ),
                 const SizedBox(height: 8),
                 Row(
@@ -97,17 +99,18 @@ class _CustomerWiseScreenState extends ConsumerState<CustomerWiseScreen> {
                         height: 40,
                         child: TextField(
                           controller: searchCustomerController,
-                          decoration: const InputDecoration(
-                            hintText: "Search",
-                            prefixIcon: Icon(Icons.search),
-                            border: OutlineInputBorder(),
-                            focusedBorder: OutlineInputBorder(
+                          decoration: InputDecoration(
+                            hintText: HandText.searchBox,
+                            prefixIcon: const Icon(Icons.search),
+                            border: const OutlineInputBorder(),
+                            focusedBorder: const OutlineInputBorder(
                               borderSide: BorderSide(
                                 color: Color.fromARGB(255, 104, 181, 244),
                                 width: 2.0,
                               ),
                             ),
-                            contentPadding: EdgeInsets.symmetric(vertical: 8),
+                            contentPadding:
+                                const EdgeInsets.symmetric(vertical: 8),
                           ),
                           cursorHeight: 20,
                           cursorColor: Colors.blue,
@@ -143,9 +146,9 @@ class _CustomerWiseScreenState extends ConsumerState<CustomerWiseScreen> {
           Expanded(
             child: salesRegisterCustomerWiseList.when(
               data: (data) {
-                return data.content.length == 0
-                    ? const Center(
-                        child: Text("No Data Found"),
+                return data.content.isEmpty
+                    ? Center(
+                        child: Text(HandText.noData),
                       )
                     : ListView.builder(
                         itemCount: data.content.length,
@@ -172,7 +175,7 @@ class _CustomerWiseScreenState extends ConsumerState<CustomerWiseScreen> {
                                     ),
                                     Text.rich(
                                       TextSpan(
-                                          text: "Customer Code: ",
+                                          text: HandText.srCustomerCode,
                                           style: const TextStyle(
                                             fontSize: 14,
                                             color: Colors.grey,
@@ -189,7 +192,7 @@ class _CustomerWiseScreenState extends ConsumerState<CustomerWiseScreen> {
                                     ),
                                     Text.rich(
                                       TextSpan(
-                                          text: "SO Quantity: ",
+                                          text: HandText.srSOQuantity,
                                           style: const TextStyle(
                                             fontSize: 14,
                                             color: Colors.grey,
@@ -206,7 +209,7 @@ class _CustomerWiseScreenState extends ConsumerState<CustomerWiseScreen> {
                                     ),
                                     Text.rich(
                                       TextSpan(
-                                          text: "Invoice Quantity: ",
+                                          text: HandText.srInvoiceQuantity,
                                           style: const TextStyle(
                                             fontSize: 14,
                                             color: Colors.grey,
@@ -223,7 +226,7 @@ class _CustomerWiseScreenState extends ConsumerState<CustomerWiseScreen> {
                                     ),
                                     Text.rich(
                                       TextSpan(
-                                          text: "SO Value (Net): ",
+                                          text: HandText.srSOValueNet,
                                           style: const TextStyle(
                                             fontSize: 14,
                                             color: Colors.grey,
@@ -240,7 +243,7 @@ class _CustomerWiseScreenState extends ConsumerState<CustomerWiseScreen> {
                                     ),
                                     Text.rich(
                                       TextSpan(
-                                          text: "SO Value (Gross): ",
+                                          text: HandText.srSOValueGross,
                                           style: const TextStyle(
                                             fontSize: 14,
                                             color: Colors.grey,
@@ -257,7 +260,7 @@ class _CustomerWiseScreenState extends ConsumerState<CustomerWiseScreen> {
                                     ),
                                     Text.rich(
                                       TextSpan(
-                                          text: "Base Value: ",
+                                          text: HandText.srBaseValue,
                                           style: const TextStyle(
                                             fontSize: 14,
                                             color: Colors.grey,
@@ -274,7 +277,7 @@ class _CustomerWiseScreenState extends ConsumerState<CustomerWiseScreen> {
                                     ),
                                     Text.rich(
                                       TextSpan(
-                                          text: "Invoice Value: ",
+                                          text: HandText.srInvoiceValue,
                                           style: const TextStyle(
                                             fontSize: 14,
                                             color: Colors.grey,
@@ -297,7 +300,8 @@ class _CustomerWiseScreenState extends ConsumerState<CustomerWiseScreen> {
                         },
                       );
               },
-              error: (error, stack) => Center(child: Text('Error: $error')),
+              error: (error, stack) =>
+                  Center(child: Text('${HandText.errorMessage} $error')),
               loading: () => screen_shimmer(120, 800),
             ),
           ),

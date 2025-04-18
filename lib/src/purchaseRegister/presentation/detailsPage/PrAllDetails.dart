@@ -80,7 +80,7 @@ class AllPRDetailsScreen extends StatelessWidget {
                     Column(
                       children: [
                         _buildDetailRow(Icons.person, "Vendor NO:",
-                            _getValue(data[index]["vendorDocumentNo"])),
+                            _getValue(data[index]['vendorDocumentNo'])),
                         _buildDetailRow(Icons.code, "Vendor Code:",
                             _getValue(data[index]["grn.vendors.vendor_code"])),
                         _buildDetailRow(Icons.store, "Vendor Name:",
