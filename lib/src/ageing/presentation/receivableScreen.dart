@@ -88,7 +88,7 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final receivablesAsync = ref.watch(receivablesTotalDueProvider);
-    final coustomerListProvider = ref.watch(receivablesCustomerProvider);
+    final coustomerListProvider = ref.watch(receivablesCustomerProvider(0));
 
     return Scaffold(
       backgroundColor: const Color(0xffff9f9f9),
@@ -124,20 +124,6 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                       ),
                       Row(
                         children: [
-                          // InkWell(
-                          //   onTap: () {
-                          //     isClickedNotifier.state =
-                          //         !isClickedNotifier.state;
-                          //   },
-                          //   child: CircleAvatar(
-                          //     backgroundColor:
-                          //         isClicked ? Colors.amber : Colors.white,
-                          //     child: const Icon(
-                          //       Icons.push_pin,
-                          //       color: Colors.black,
-                          //     ),
-                          //   ),
-                          // ),
                           IconButton(
                               onPressed: () {
                                 showDateDialog(context);
@@ -153,7 +139,6 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                   const SizedBox(height: 16),
                   receivablesAsync.when(
                     data: (data) {
-                      // Ensure data is not null and contains the required keys
                       final totalOfTotalDue = data.TotalOfTotalDue.toString();
                       final totalOnAccountDue =
                           data.TotalOnAccountDue.toString();

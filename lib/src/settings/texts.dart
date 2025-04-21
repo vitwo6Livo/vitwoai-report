@@ -11,4 +11,6 @@ class HandText {
   static String itemCount = '02';
   static String item = 'Query Item';
   static String product = 'Trending Product';
+
+  ///////////////// chat screen ////////////////
 }

@@ -3,7 +3,7 @@ import 'package:shimmer/shimmer.dart';
 
 Widget screen_shimmer(double h, double w) {
   return SizedBox(
-    height: 350,
+    height: 340,
     child: ListView.builder(
         itemCount: 5,
         itemBuilder: (context, index) {
