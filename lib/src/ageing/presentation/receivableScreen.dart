@@ -345,16 +345,25 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                   child: ListView.builder(
                     itemCount: data.content.length,
                     itemBuilder: (context, index) {
+                      print(
+                          "Customer Names: ${data.content[index].onAccountAmounts.amount[4]?.toString()}}");
+
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: InkWell(
                           onTap: () {
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        ReceivableDetailsScreen(
-                                            data: data.content, index: index)));
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ReceivableDetailsScreen(
+                                  customerCode: data.content[index].customerCode
+                                      .toString(),
+                                  customerName: data.content[index].customerName
+                                      .toString(),
+                                  totalDue: data.content[index].totalDue,
+                                ),
+                              ),
+                            );
                           },
                           child: Card(
                             color: AppColor.cardBackgroundColor,
