@@ -3,6 +3,7 @@ import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/purchaseRegister/data/purchesRegister_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/detailsPage/PrAllDetails.dart';
+import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
 
 class ProductList extends ConsumerWidget {
@@ -36,7 +37,7 @@ class ProductList extends ConsumerWidget {
                       );
                     },
                     child: Card(
-                      color: Colors.white,
+                      color: AppColor.cardBackgroundColor,
                       margin: const EdgeInsets.symmetric(
                           horizontal: 8, vertical: 2),
                       shape: RoundedRectangleBorder(
@@ -79,7 +80,7 @@ class ProductList extends ConsumerWidget {
                                             .textTheme
                                             .bodySmall!
                                             .copyWith(
-                                              color: Colors.grey,
+                                              color: AppColor.cardDataKeyColor,
                                             ),
                                         children: [
                                           TextSpan(
@@ -116,7 +117,8 @@ class ProductList extends ConsumerWidget {
                                                 .textTheme
                                                 .bodySmall!
                                                 .copyWith(
-                                                  color: Colors.grey,
+                                                  color:
+                                                      AppColor.cardDataKeyColor,
                                                 ),
                                             children: [
                                               TextSpan(
@@ -148,7 +150,7 @@ class ProductList extends ConsumerWidget {
                                             .textTheme
                                             .bodySmall!
                                             .copyWith(
-                                              color: Colors.grey,
+                                              color: AppColor.cardDataKeyColor,
                                             ),
                                         children: [
                                           TextSpan(
@@ -174,9 +176,9 @@ class ProductList extends ConsumerWidget {
                               children: [
                                 Row(
                                   children: [
-                                    const Icon(
+                                    Icon(
                                       Icons.person,
-                                      color: Colors.grey,
+                                      color: AppColor.cardDataIconColor,
                                     ),
                                     Text(
                                       data.content[index].grnVendors_Vendor_code
@@ -193,9 +195,9 @@ class ProductList extends ConsumerWidget {
                                 ),
                                 Row(
                                   children: [
-                                    const Icon(
+                                    Icon(
                                       Icons.currency_rupee_outlined,
-                                      color: Colors.grey,
+                                      color: AppColor.cardDataIconColor,
                                     ),
                                     Text(
                                       data.content[index].grnTotalAmount

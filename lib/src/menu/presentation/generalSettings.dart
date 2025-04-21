@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
+import 'package:vitwoai_report/src/settings/texts.dart';
 
 class GeneralSettingScreen extends StatefulWidget {
   const GeneralSettingScreen({super.key});
@@ -15,6 +16,7 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
   String selectDayOfWeek = "Monday";
   String selectFirstDayOfMonth = "1";
   String selectFirstMonthOfYear = "January";
+  String selectDefaultScreen = 'Dashboard';
 
   void showSelectionBottomSheet(
       BuildContext context,
@@ -73,14 +75,15 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    const Divider(color: Colors.grey),
+                    Divider(color: AppColor.menuDivider),
                     Expanded(
                       child: ListView.builder(
                         itemCount: options.length,
                         itemBuilder: (context, index) {
                           String option = options[index];
                           return ListTile(
-                            leading: Icon(iconName, color: Colors.blueAccent),
+                            leading: Icon(iconName,
+                                color: AppColor.bottomSheetOptionIconColor),
                             title: Text(option),
                             trailing: Radio<String>(
                               value: option,
@@ -140,7 +143,7 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
             ),
             Icon(
               inconName,
-              color: Colors.blueAccent,
+              color: AppColor.selectedOptionColor,
             ),
           ],
         ),
@@ -186,12 +189,12 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: const Icon(
+              icon: Icon(
                 Icons.arrow_back,
-                color: Colors.white,
+                color: AppColor.appBarIcon,
               )),
-          title: const Text("General Setting",
-              style: TextStyle(color: Colors.white)),
+          title: Text(HandText.menuGeneralSettingsTitle,
+              style: TextStyle(color: AppColor.appbarFont)),
           centerTitle: true,
           flexibleSpace: Container(
             decoration: BoxDecoration(
@@ -207,11 +210,11 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
               onTap: () {
                 Navigator.pop(context);
               },
-              child: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Icon(
                   Icons.done,
-                  color: Colors.white,
+                  color: AppColor.appBarIcon,
                 ),
               ),
             )
@@ -224,7 +227,7 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
               onTap: () {
                 showSelectionBottomSheet(
                   context,
-                  "Choose Date Format",
+                  HandText.genSettDateBttmSheetTitle,
                   ["MM/dd/yyyy", "dd/MM/yyyy", "yyyy/MM/dd"],
                   updateDateFormat,
                   Icons.calendar_today,
@@ -235,28 +238,28 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      "Date format",
-                      style: TextStyle(fontWeight: FontWeight.w400),
+                    Text(
+                      HandText.menuGenSettDateFormatTitle,
+                      style: const TextStyle(fontWeight: FontWeight.w400),
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
                           selectedDateFormat,
-                          style: const TextStyle(
-                              color: Colors.blueAccent,
+                          style: TextStyle(
+                              color: AppColor.selectedOptionColor,
                               fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(
                           width: 5,
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 5),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 5),
                           child: Icon(
                             Icons.arrow_forward_ios,
                             size: 16,
-                            color: Colors.grey,
+                            color: AppColor.menuGenSettOptionArrowColor2,
                           ),
                         )
                       ],
@@ -266,37 +269,37 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
               ),
             ),
             Divider(
-              color: Colors.grey[200],
+              color: AppColor.menuGenSettOptionDivider,
             ),
             InkWell(
               onTap: () {
                 print("presssed Default use screen");
               },
-              child: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Default use screen",
-                      style: TextStyle(fontWeight: FontWeight.w400),
+                      HandText.menuGenSettDefaultScrTitle,
+                      style: const TextStyle(fontWeight: FontWeight.w400),
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          "Dashboard",
+                          selectDefaultScreen,
                           style: TextStyle(
-                              color: Colors.blueAccent,
+                              color: AppColor.selectedOptionColor,
                               fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
                         Icon(
                           Icons.arrow_forward_ios,
                           size: 16,
-                          color: Colors.grey,
+                          color: AppColor.menuGenSettOptionArrowColor2,
                         )
                       ],
                     ),
@@ -311,7 +314,7 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
               onTap: () {
                 showSelectionBottomSheet(
                     context,
-                    "Choose Currency",
+                    HandText.genSettChooseCurrencyBttmSheetTitle,
                     [
                       "INR",
                       "USD",
@@ -324,26 +327,26 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      "Currency",
-                      style: TextStyle(fontWeight: FontWeight.w400),
+                    Text(
+                      HandText.menuGenSettCurrencyTitle,
+                      style: const TextStyle(fontWeight: FontWeight.w400),
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
                           selectedCurrency,
-                          style: const TextStyle(
-                              color: Colors.blueAccent,
+                          style: TextStyle(
+                              color: AppColor.selectedOptionColor,
                               fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(
                           width: 5,
                         ),
-                        const Icon(
+                        Icon(
                           Icons.arrow_forward_ios,
                           size: 16,
-                          color: Colors.grey,
+                          color: AppColor.menuGenSettOptionArrowColor2,
                         )
                       ],
                     ),
@@ -358,7 +361,7 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
               onTap: () {
                 showSelectionBottomSheet(
                   context,
-                  "Choose Day",
+                  HandText.genSettChooseDayBttmSheetTitle,
                   [
                     "Monday",
                     "Tuesday",
@@ -377,26 +380,26 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      "First day of the week",
-                      style: TextStyle(fontWeight: FontWeight.w400),
+                    Text(
+                      HandText.menuGenSettSelect_WeekTitle,
+                      style: const TextStyle(fontWeight: FontWeight.w400),
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
                           selectDayOfWeek,
-                          style: const TextStyle(
-                              color: Colors.blueAccent,
+                          style: TextStyle(
+                              color: AppColor.selectedOptionColor,
                               fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(
                           width: 1,
                         ),
-                        const Icon(
+                        Icon(
                           Icons.arrow_forward_ios,
                           size: 16,
-                          color: Colors.grey,
+                          color: AppColor.menuGenSettOptionArrowColor2,
                         )
                       ],
                     ),
@@ -411,7 +414,7 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
               onTap: () {
                 showSelectionBottomSheet(
                     context,
-                    "Choose First Date of Month",
+                    HandText.genSettSelect_FirstDayBttmSheetTitle,
                     [
                       "1",
                       "2",
@@ -452,17 +455,18 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Column(
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "First day of month",
-                          style: TextStyle(fontWeight: FontWeight.w400),
+                          HandText.menuGenSettSelect_DayTitle,
+                          style: const TextStyle(fontWeight: FontWeight.w400),
                         ),
                         Text(
                           "This month: 02/01/2025 - 02/28/2025",
                           style: TextStyle(
-                              color: Colors.grey, fontWeight: FontWeight.w400),
+                              color: AppColor.menuGenSettOptionBelowTxtColor,
+                              fontWeight: FontWeight.w400),
                         ),
                       ],
                     ),
@@ -471,17 +475,17 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
                       children: [
                         Text(
                           selectFirstDayOfMonth,
-                          style: const TextStyle(
-                              color: Colors.blueAccent,
+                          style: TextStyle(
+                              color: AppColor.selectedOptionColor,
                               fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(
                           width: 5,
                         ),
-                        const Icon(
+                        Icon(
                           Icons.arrow_forward_ios,
                           size: 16,
-                          color: Colors.grey,
+                          color: AppColor.menuGenSettOptionArrowColor2,
                         )
                       ],
                     ),
@@ -490,13 +494,13 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
               ),
             ),
             Divider(
-              color: Colors.grey[200],
+              color: AppColor.menuGenSettOptionDivider,
             ),
             InkWell(
               onTap: () {
                 showSelectionBottomSheet(
                     context,
-                    "Choose First Month of Year",
+                    HandText.genSettSelect_FirstMonthBttmSheetTitle,
                     [
                       "January",
                       "February",
@@ -519,17 +523,18 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Column(
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "First month of year",
-                          style: TextStyle(fontWeight: FontWeight.w400),
+                          HandText.menuGenSettSelect_YearTitle,
+                          style: const TextStyle(fontWeight: FontWeight.w400),
                         ),
                         Text(
                           "This year: 01/01/2025 - 12/31/2025",
                           style: TextStyle(
-                              color: Colors.grey, fontWeight: FontWeight.w400),
+                              color: AppColor.menuGenSettOptionBelowTxtColor,
+                              fontWeight: FontWeight.w400),
                         ),
                       ],
                     ),
@@ -538,17 +543,17 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
                       children: [
                         Text(
                           selectFirstMonthOfYear,
-                          style: const TextStyle(
-                              color: Colors.blueAccent,
+                          style: TextStyle(
+                              color: AppColor.selectedOptionColor,
                               fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(
                           width: 2,
                         ),
-                        const Icon(
+                        Icon(
                           Icons.arrow_forward_ios,
                           size: 16,
-                          color: Colors.grey,
+                          color: AppColor.menuGenSettOptionArrowColor2,
                         )
                       ],
                     ),
@@ -557,7 +562,7 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
               ),
             ),
             Divider(
-              color: Colors.grey[200],
+              color: AppColor.menuGenSettOptionDivider,
             ),
           ],
         ));

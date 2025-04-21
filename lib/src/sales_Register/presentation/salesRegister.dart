@@ -43,9 +43,9 @@ class SalesRegister extends ConsumerWidget {
               onPressed: () {
                 showDateDialog(context);
               },
-              icon: const Icon(
+              icon: Icon(
                 Icons.settings,
-                color: Colors.white,
+                color: AppColor.appBarIcon,
               ))
         ],
         flexibleSpace: Container(
@@ -58,7 +58,7 @@ class SalesRegister extends ConsumerWidget {
           ),
         ),
       ),
-      backgroundColor: const Color(0xffff9f9f9),
+      backgroundColor: AppColor.screenBgColor,
       body: Column(
         children: [
           const Padding(
@@ -86,8 +86,11 @@ class SalesRegister extends ConsumerWidget {
                     margin: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      gradient: const LinearGradient(
-                        colors: [Color(0xffff8c088), Color(0xffff88d97)],
+                      gradient: LinearGradient(
+                        colors: [
+                          AppColor.srOptionAllColor1,
+                          AppColor.srOptionAllColor2
+                        ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
@@ -115,9 +118,10 @@ class SalesRegister extends ConsumerWidget {
                                   .copyWith(color: AppColor.lightFontCpy)),
                         ],
                       ),
-                      trailing: const Text("48%",
-                          style:
-                              TextStyle(color: Colors.white60, fontSize: 40)),
+                      trailing: Text("48%",
+                          style: TextStyle(
+                              color: AppColor.srOptionPercentage,
+                              fontSize: 40)),
                     ),
                   ),
                 ),
@@ -135,8 +139,11 @@ class SalesRegister extends ConsumerWidget {
                     margin: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      gradient: const LinearGradient(
-                        colors: [Color(0xfff3de8de), Color(0xfff4aa5f6)],
+                      gradient: LinearGradient(
+                        colors: [
+                          AppColor.srOptionSOWColor1,
+                          AppColor.srOptionSOWColor2
+                        ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
@@ -164,9 +171,10 @@ class SalesRegister extends ConsumerWidget {
                                   .copyWith(color: AppColor.lightFontCpy)),
                         ],
                       ),
-                      trailing: const Text("48%",
-                          style:
-                              TextStyle(color: Colors.white60, fontSize: 40)),
+                      trailing: Text("48%",
+                          style: TextStyle(
+                              color: AppColor.srOptionPercentage,
+                              fontSize: 40)),
                     ),
                   ),
                 ),
@@ -184,8 +192,11 @@ class SalesRegister extends ConsumerWidget {
                     margin: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      gradient: const LinearGradient(
-                        colors: [Color(0xfff87f9b5), Color(0xfff17cf92)],
+                      gradient: LinearGradient(
+                        colors: [
+                          AppColor.srOptionCustomerWColor1,
+                          AppColor.srOptionCustomerWColor2
+                        ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
@@ -213,9 +224,10 @@ class SalesRegister extends ConsumerWidget {
                                   .copyWith(color: AppColor.lightFontCpy)),
                         ],
                       ),
-                      trailing: const Text("48%",
-                          style:
-                              TextStyle(color: Colors.white60, fontSize: 40)),
+                      trailing: Text("48%",
+                          style: TextStyle(
+                              color: AppColor.srOptionPercentage,
+                              fontSize: 40)),
                     ),
                   ),
                 ),
@@ -233,8 +245,11 @@ class SalesRegister extends ConsumerWidget {
                     margin: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      gradient: const LinearGradient(
-                        colors: [Color.fromARGB(255, 49, 49, 49), Colors.amber],
+                      gradient: LinearGradient(
+                        colors: [
+                          AppColor.srOptionItemWColor1,
+                          AppColor.srOptionItemWColor2
+                        ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
@@ -262,9 +277,10 @@ class SalesRegister extends ConsumerWidget {
                                   .copyWith(color: AppColor.lightFontCpy)),
                         ],
                       ),
-                      trailing: const Text("48%",
-                          style:
-                              TextStyle(color: Colors.white60, fontSize: 40)),
+                      trailing: Text("48%",
+                          style: TextStyle(
+                              color: AppColor.srOptionPercentage,
+                              fontSize: 40)),
                     ),
                   ),
                 ),
@@ -282,8 +298,11 @@ class SalesRegister extends ConsumerWidget {
                     margin: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      gradient: const LinearGradient(
-                        colors: [Color(0xffff389ee), Color(0xfff9180f8)],
+                      gradient: LinearGradient(
+                        colors: [
+                          AppColor.srOptionItemGWColor1,
+                          AppColor.srOptionItemGWColor2
+                        ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
@@ -311,9 +330,10 @@ class SalesRegister extends ConsumerWidget {
                                   .copyWith(color: AppColor.lightFontCpy)),
                         ],
                       ),
-                      trailing: const Text("48%",
-                          style:
-                              TextStyle(color: Colors.white60, fontSize: 40)),
+                      trailing: Text("48%",
+                          style: TextStyle(
+                              color: AppColor.srOptionPercentage,
+                              fontSize: 40)),
                     ),
                   ),
                 ),
@@ -331,10 +351,10 @@ class SalesRegister extends ConsumerWidget {
                     margin: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      gradient: const LinearGradient(
+                      gradient: LinearGradient(
                         colors: [
-                          Color.fromARGB(255, 255, 157, 59),
-                          Colors.amber
+                          AppColor.srOptionHSNCWColor1,
+                          AppColor.srOptionHSNCWColor2
                         ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
@@ -363,9 +383,10 @@ class SalesRegister extends ConsumerWidget {
                                   .copyWith(color: AppColor.lightFontCpy)),
                         ],
                       ),
-                      trailing: const Text("38%",
-                          style:
-                              TextStyle(color: Colors.white60, fontSize: 40)),
+                      trailing: Text("38%",
+                          style: TextStyle(
+                              color: AppColor.srOptionPercentage,
+                              fontSize: 40)),
                     ),
                   ),
                 ),

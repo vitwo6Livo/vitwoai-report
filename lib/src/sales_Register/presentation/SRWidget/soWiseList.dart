@@ -30,15 +30,15 @@ class _SalesRegisterSOScreenState extends ConsumerState<SalesRegisterSOScreen> {
     final salesRegisterSOList =
         ref.watch(salesRegisterSOProvider(searchItem.text.toString()));
     return Scaffold(
-      backgroundColor: const Color(0xffff9f9f9),
+      backgroundColor: AppColor.screenBgColor,
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: const Icon(
+            icon: Icon(
               Icons.arrow_back,
-              color: Colors.white,
+              color: AppColor.appBarIcon,
             )),
         title: Text(
           HandText.srSOWiseTitle,
@@ -47,9 +47,9 @@ class _SalesRegisterSOScreenState extends ConsumerState<SalesRegisterSOScreen> {
         actions: [
           IconButton(
               onPressed: () {},
-              icon: const Icon(
+              icon: Icon(
                 Icons.settings,
-                color: Colors.white,
+                color: AppColor.appBarIcon,
               )),
         ],
         flexibleSpace: Container(
@@ -69,7 +69,7 @@ class _SalesRegisterSOScreenState extends ConsumerState<SalesRegisterSOScreen> {
               margin: const EdgeInsets.all(8),
               padding: const EdgeInsets.symmetric(horizontal: 8),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColor.lightFontCpy,
                 border: Border.all(),
                 borderRadius: BorderRadius.circular(5),
               ),
@@ -112,7 +112,7 @@ class _SalesRegisterSOScreenState extends ConsumerState<SalesRegisterSOScreen> {
                                   const EdgeInsets.symmetric(vertical: 8),
                             ),
                             cursorHeight: 20,
-                            cursorColor: Colors.blue,
+                            cursorColor: AppColor.cursonColor,
                           ),
                         ),
                       ),
@@ -130,12 +130,14 @@ class _SalesRegisterSOScreenState extends ConsumerState<SalesRegisterSOScreen> {
                           child: Container(
                             height: 40,
                             decoration: BoxDecoration(
-                              color: Colors.blue,
-                              border: Border.all(color: Colors.blue),
+                              color: AppColor.searchBttnColor,
+                              border: Border.all(color: AppColor.cursonColor),
                               borderRadius: BorderRadius.circular(5),
                             ),
-                            child:
-                                const Icon(Icons.search, color: Colors.white),
+                            child: Icon(
+                              Icons.search,
+                              color: AppColor.lightFontCpy,
+                            ),
                           ),
                         ),
                       ),
@@ -177,167 +179,177 @@ class _SalesRegisterSOScreenState extends ConsumerState<SalesRegisterSOScreen> {
                                       Text.rich(
                                         TextSpan(
                                             text: HandText.srSODate,
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontSize: 14,
-                                              color: Colors.grey,
+                                              color: AppColor.cardDataKeyColor,
                                             ),
                                             children: [
                                               TextSpan(
                                                 text:
                                                     data.content[index].soDate,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     fontSize: 16,
-                                                    color: Colors.black),
+                                                    color: AppColor
+                                                        .cardDataValueColor),
                                               )
                                             ]),
                                       ),
                                       Text.rich(
                                         TextSpan(
                                             text: HandText.srSOQuantity,
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontSize: 14,
-                                              color: Colors.grey,
+                                              color: AppColor.cardDataKeyColor,
                                             ),
                                             children: [
                                               TextSpan(
                                                 text: data
                                                     .content[index].soQuantity,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     fontSize: 16,
-                                                    color: Colors.black),
+                                                    color: AppColor
+                                                        .cardDataValueColor),
                                               )
                                             ]),
                                       ),
                                       Text.rich(
                                         TextSpan(
                                             text: HandText.srInvoiceQuantity,
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontSize: 14,
-                                              color: Colors.grey,
+                                              color: AppColor.cardDataKeyColor,
                                             ),
                                             children: [
                                               TextSpan(
                                                 text: data.content[index]
                                                     .invoiceQuantity,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     fontSize: 16,
-                                                    color: Colors.black),
+                                                    color: AppColor
+                                                        .cardDataValueColor),
                                               )
                                             ]),
                                       ),
                                       Text.rich(
                                         TextSpan(
                                             text: HandText.srSOValueNet,
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontSize: 14,
-                                              color: Colors.grey,
+                                              color: AppColor.cardDataKeyColor,
                                             ),
                                             children: [
                                               TextSpan(
                                                 text: data
                                                     .content[index].soValueNet,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     fontSize: 16,
-                                                    color: Colors.black),
+                                                    color: AppColor
+                                                        .cardDataValueColor),
                                               )
                                             ]),
                                       ),
                                       Text.rich(
                                         TextSpan(
                                             text: HandText.srSOValueGross,
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontSize: 14,
-                                              color: Colors.grey,
+                                              color: AppColor.cardDataKeyColor,
                                             ),
                                             children: [
                                               TextSpan(
                                                 text: data.content[index]
                                                     .soValueGross,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     fontSize: 16,
-                                                    color: Colors.black),
+                                                    color: AppColor
+                                                        .cardDataValueColor),
                                               )
                                             ]),
                                       ),
                                       Text.rich(
                                         TextSpan(
                                             text: HandText.srBaseValue,
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontSize: 14,
-                                              color: Colors.grey,
+                                              color: AppColor.cardDataKeyColor,
                                             ),
                                             children: [
                                               TextSpan(
                                                 text: data
                                                     .content[index].baseValue,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     fontSize: 16,
-                                                    color: Colors.black),
+                                                    color: AppColor
+                                                        .cardDataValueColor),
                                               )
                                             ]),
                                       ),
                                       Text.rich(
                                         TextSpan(
                                             text: HandText.srCGST,
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontSize: 14,
-                                              color: Colors.grey,
+                                              color: AppColor.cardDataKeyColor,
                                             ),
                                             children: [
                                               TextSpan(
                                                 text: data.content[index].cgst,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     fontSize: 16,
-                                                    color: Colors.black),
+                                                    color: AppColor
+                                                        .cardDataValueColor),
                                               )
                                             ]),
                                       ),
                                       Text.rich(
                                         TextSpan(
                                             text: HandText.srSGST,
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontSize: 14,
-                                              color: Colors.grey,
+                                              color: AppColor.cardDataKeyColor,
                                             ),
                                             children: [
                                               TextSpan(
                                                 text: data.content[index].sgst,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     fontSize: 16,
-                                                    color: Colors.black),
+                                                    color: AppColor
+                                                        .cardDataValueColor),
                                               )
                                             ]),
                                       ),
                                       Text.rich(
                                         TextSpan(
                                             text: HandText.srIGST,
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontSize: 14,
-                                              color: Colors.grey,
+                                              color: AppColor.cardDataKeyColor,
                                             ),
                                             children: [
                                               TextSpan(
                                                 text: data.content[index].igst,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     fontSize: 16,
-                                                    color: Colors.black),
+                                                    color: AppColor
+                                                        .cardDataValueColor),
                                               )
                                             ]),
                                       ),
                                       Text.rich(
                                         TextSpan(
                                             text: HandText.srInvoiceValue,
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontSize: 14,
-                                              color: Colors.grey,
+                                              color: AppColor.cardDataKeyColor,
                                             ),
                                             children: [
                                               TextSpan(
                                                 text: data.content[index]
                                                     .invoiceValue,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     fontSize: 16,
-                                                    color: Colors.black),
+                                                    color: AppColor
+                                                        .cardDataValueColor),
                                               )
                                             ]),
                                       ),
