@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/purchaseRegister/data/purchesRegister_repository.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/detailsPage/itemGroupWiseDetails.dart';
+import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
 
 class StorageLocationList extends ConsumerWidget {
@@ -32,7 +33,7 @@ class StorageLocationList extends ConsumerWidget {
                                   data: data.content, index: index)));
                     },
                     child: Card(
-                      color: Colors.white,
+                      color: AppColor.cardBackgroundColor,
                       margin: const EdgeInsets.symmetric(
                           horizontal: 8, vertical: 1.8),
                       shape: RoundedRectangleBorder(
@@ -49,9 +50,9 @@ class StorageLocationList extends ConsumerWidget {
                               children: [
                                 Row(
                                   children: [
-                                    const Icon(
+                                    Icon(
                                       Icons.factory,
-                                      color: Colors.grey,
+                                      color: AppColor.cardDataIconColor,
                                     ),
                                     SizedBox(
                                       width: 150,
@@ -76,9 +77,9 @@ class StorageLocationList extends ConsumerWidget {
                               children: [
                                 Row(
                                   children: [
-                                    const Icon(
+                                    Icon(
                                       Icons.eject_outlined,
-                                      color: Colors.grey,
+                                      color: AppColor.cardDataIconColor,
                                     ),
                                     Text.rich(
                                       TextSpan(
@@ -87,7 +88,7 @@ class StorageLocationList extends ConsumerWidget {
                                             .textTheme
                                             .bodySmall!
                                             .copyWith(
-                                              color: Colors.grey,
+                                              color: AppColor.cardDataKeyColor,
                                             ),
                                         children: [
                                           TextSpan(
@@ -107,18 +108,19 @@ class StorageLocationList extends ConsumerWidget {
                                 ),
                                 Row(
                                   children: [
-                                    const Icon(
+                                    Icon(
                                       Icons.graphic_eq_outlined,
-                                      color: Colors.grey,
+                                      color: AppColor.cardDataIconColor,
                                     ),
                                     Text.rich(
                                       TextSpan(
-                                        text: '${HandText.prReceivedQuantity}\n',
+                                        text:
+                                            '${HandText.prReceivedQuantity}\n',
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodySmall!
                                             .copyWith(
-                                              color: Colors.grey,
+                                              color: AppColor.cardDataKeyColor,
                                             ),
                                         children: [
                                           TextSpan(
@@ -144,9 +146,9 @@ class StorageLocationList extends ConsumerWidget {
                               children: [
                                 Row(
                                   children: [
-                                    const Icon(
+                                    Icon(
                                       Icons.eject_outlined,
-                                      color: Colors.grey,
+                                      color: AppColor.cardDataIconColor,
                                     ),
                                     Text.rich(
                                       TextSpan(
@@ -155,7 +157,7 @@ class StorageLocationList extends ConsumerWidget {
                                             .textTheme
                                             .bodySmall!
                                             .copyWith(
-                                              color: Colors.grey,
+                                              color: AppColor.cardDataKeyColor,
                                             ),
                                         children: [
                                           TextSpan(
@@ -174,9 +176,9 @@ class StorageLocationList extends ConsumerWidget {
                                 ),
                                 Row(
                                   children: [
-                                    const Icon(
+                                    Icon(
                                       Icons.eject_outlined,
-                                      color: Colors.grey,
+                                      color: AppColor.cardDataIconColor,
                                     ),
                                     Text.rich(
                                       TextSpan(
@@ -185,7 +187,7 @@ class StorageLocationList extends ConsumerWidget {
                                             .textTheme
                                             .bodySmall!
                                             .copyWith(
-                                              color: Colors.grey,
+                                              color: AppColor.cardDataKeyColor,
                                             ),
                                         children: [
                                           TextSpan(

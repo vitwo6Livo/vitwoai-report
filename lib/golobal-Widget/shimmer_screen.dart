@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:vitwoai_report/src/settings/colors.dart';
 
 Widget screen_shimmer(double h, double w) {
   return SizedBox(
@@ -9,14 +10,14 @@ Widget screen_shimmer(double h, double w) {
         itemBuilder: (context, index) {
           return Shimmer.fromColors(
             direction: ShimmerDirection.ltr,
-            baseColor: Colors.grey.shade300,
-            highlightColor: Colors.grey.shade200,
+            baseColor: AppColor.shimmerBaseColor,
+            highlightColor: AppColor.shimmerHighlightColor,
             child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+              margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
               height: h,
               width: w,
               decoration: BoxDecoration(
-                color: Colors.grey.shade300,
+                color: AppColor.shimmerBoxDecorationColor,
                 borderRadius: BorderRadius.circular(20),
               ),
             ),

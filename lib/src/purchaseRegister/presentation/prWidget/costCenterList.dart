@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/purchaseRegister/data/purchesRegister_repository.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/detailsPage/hsnCodeWiseDetails.dart';
+import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
 
 class CostCenterList extends ConsumerWidget {
@@ -36,7 +37,7 @@ class CostCenterList extends ConsumerWidget {
                       );
                     },
                     child: Card(
-                      color: Colors.white,
+                      color: AppColor.cardBackgroundColor,
                       margin: const EdgeInsets.symmetric(
                           horizontal: 8, vertical: 1.8),
                       shape: RoundedRectangleBorder(
@@ -53,9 +54,9 @@ class CostCenterList extends ConsumerWidget {
                               children: [
                                 Row(
                                   children: [
-                                    const Icon(
+                                    Icon(
                                       Icons.factory,
-                                      color: Color.fromARGB(255, 158, 158, 158),
+                                      color: AppColor.cardDataIconColor,
                                     ),
                                     SizedBox(
                                       width: 150,
@@ -66,7 +67,8 @@ class CostCenterList extends ConsumerWidget {
                                               .textTheme
                                               .bodySmall!
                                               .copyWith(
-                                                color: Colors.grey,
+                                                color:
+                                                    AppColor.cardDataKeyColor,
                                               ),
                                           children: [
                                             TextSpan(
@@ -92,9 +94,9 @@ class CostCenterList extends ConsumerWidget {
                               children: [
                                 Row(
                                   children: [
-                                    const Icon(
+                                    Icon(
                                       Icons.eject_outlined,
-                                      color: Colors.grey,
+                                      color: AppColor.cardDataIconColor,
                                     ),
                                     Text.rich(
                                       TextSpan(
@@ -104,7 +106,7 @@ class CostCenterList extends ConsumerWidget {
                                             .textTheme
                                             .bodySmall!
                                             .copyWith(
-                                              color: Colors.grey,
+                                              color: AppColor.cardDataKeyColor,
                                             ),
                                         children: [
                                           TextSpan(
@@ -124,9 +126,9 @@ class CostCenterList extends ConsumerWidget {
                                 ),
                                 Row(
                                   children: [
-                                    const Icon(
+                                    Icon(
                                       Icons.graphic_eq_outlined,
-                                      color: Colors.grey,
+                                      color: AppColor.cardDataIconColor,
                                     ),
                                     Text.rich(
                                       TextSpan(
@@ -136,7 +138,7 @@ class CostCenterList extends ConsumerWidget {
                                             .textTheme
                                             .bodySmall!
                                             .copyWith(
-                                              color: Colors.grey,
+                                              color: AppColor.cardDataKeyColor,
                                             ),
                                         children: [
                                           TextSpan(
@@ -162,9 +164,9 @@ class CostCenterList extends ConsumerWidget {
                               children: [
                                 Row(
                                   children: [
-                                    const Icon(
+                                    Icon(
                                       Icons.eject_outlined,
-                                      color: Colors.grey,
+                                      color: AppColor.cardDataIconColor,
                                     ),
                                     Text.rich(
                                       TextSpan(
@@ -173,7 +175,7 @@ class CostCenterList extends ConsumerWidget {
                                             .textTheme
                                             .bodySmall!
                                             .copyWith(
-                                              color: Colors.grey,
+                                              color: AppColor.cardDataKeyColor,
                                             ),
                                         children: [
                                           TextSpan(
@@ -192,9 +194,9 @@ class CostCenterList extends ConsumerWidget {
                                 ),
                                 Row(
                                   children: [
-                                    const Icon(
+                                    Icon(
                                       Icons.eject_outlined,
-                                      color: Colors.grey,
+                                      color: AppColor.cardDataIconColor,
                                     ),
                                     Text.rich(
                                       TextSpan(
@@ -203,7 +205,7 @@ class CostCenterList extends ConsumerWidget {
                                             .textTheme
                                             .bodySmall!
                                             .copyWith(
-                                              color: Colors.grey,
+                                              color: AppColor.cardDataKeyColor,
                                             ),
                                         children: [
                                           TextSpan(

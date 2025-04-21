@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/purchaseRegister/data/purchesRegister_repository.dart';
+import 'package:vitwoai_report/src/settings/colors.dart';
 
 class VendorList extends ConsumerWidget {
   const VendorList({super.key});
@@ -21,7 +22,7 @@ class VendorList extends ConsumerWidget {
                 itemCount: data['content'].length,
                 itemBuilder: (context, index) {
                   return Card(
-                    color: Colors.white,
+                    color: AppColor.cardBackgroundColor,
                     margin:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                     shape: RoundedRectangleBorder(
@@ -35,9 +36,9 @@ class VendorList extends ConsumerWidget {
                         children: [
                           Row(
                             children: [
-                              const Icon(
+                              Icon(
                                 Icons.person_2_outlined,
-                                color: Colors.grey,
+                                color: AppColor.cardDataIconColor,
                               ),
                               const SizedBox(width: 8),
                               Expanded(
@@ -62,9 +63,9 @@ class VendorList extends ConsumerWidget {
                                 flex: 2,
                                 child: Row(
                                   children: [
-                                    const Icon(
+                                    Icon(
                                       Icons.sticky_note_2,
-                                      color: Colors.grey,
+                                      color: AppColor.cardDataIconColor,
                                     ),
                                     const SizedBox(width: 8),
                                     Expanded(
@@ -75,7 +76,8 @@ class VendorList extends ConsumerWidget {
                                               .textTheme
                                               .bodySmall!
                                               .copyWith(
-                                                color: Colors.grey,
+                                                color:
+                                                    AppColor.cardDataKeyColor,
                                               ),
                                           children: [
                                             TextSpan(
@@ -112,7 +114,8 @@ class VendorList extends ConsumerWidget {
                                               .textTheme
                                               .bodySmall!
                                               .copyWith(
-                                                color: Colors.grey,
+                                                color:
+                                                    AppColor.cardDataKeyColor,
                                               ),
                                           children: [
                                             TextSpan(
@@ -156,7 +159,8 @@ class VendorList extends ConsumerWidget {
                                               .textTheme
                                               .bodySmall!
                                               .copyWith(
-                                                color: Colors.grey,
+                                                color:
+                                                    AppColor.cardDataKeyColor,
                                               ),
                                           children: [
                                             TextSpan(
@@ -181,9 +185,9 @@ class VendorList extends ConsumerWidget {
                                 flex: 2,
                                 child: Row(
                                   children: [
-                                    const Icon(
+                                    Icon(
                                       Icons.currency_rupee_outlined,
-                                      color: Colors.grey,
+                                      color: AppColor.cardDataIconColor,
                                     ),
                                     // const SizedBox(width: 8),
                                     Text.rich(
@@ -193,7 +197,7 @@ class VendorList extends ConsumerWidget {
                                             .textTheme
                                             .bodySmall!
                                             .copyWith(
-                                              color: Colors.grey,
+                                              color: AppColor.cardDataKeyColor,
                                             ),
                                         children: [
                                           TextSpan(

@@ -6,6 +6,7 @@ import 'package:vitwoai_report/golobal-Widget/rangeCalendar.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/ageing/data/receivableAnalytics_repositry.dart';
 import 'package:vitwoai_report/src/ageing/presentation/receivabledetailsScreen.dart';
+import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
 
 final isClickedProviderReceivable = StateProvider<bool>((ref) => false);
@@ -50,7 +51,7 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                 const SizedBox(height: 16),
                 Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: AppColor.lightFontCpy,
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: [
                       BoxShadow(
@@ -71,7 +72,7 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                 ElevatedButton(
                   onPressed: () => Navigator.pop(context),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
+                    backgroundColor: AppColor.lightFontCpy,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -92,19 +93,19 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
     final coustomerListProvider = ref.watch(receivablesCustomerProvider);
 
     return Scaffold(
-      backgroundColor: const Color(0xffff9f9f9),
+      backgroundColor: AppColor.screenBgColor,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
               padding: const EdgeInsets.all(16.0),
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
-                    colors: [Color(0xfff759bec), Color(0xfff4e3986)],
+                    colors: [AppColor.appBarColor1, AppColor.appBarColor2],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight),
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(20),
                   bottomRight: Radius.circular(20),
                 ),
@@ -117,8 +118,8 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                     children: [
                       Text(
                         HandText.receivableTitle,
-                        style: const TextStyle(
-                          color: Colors.white,
+                        style: TextStyle(
+                          color: AppColor.lightFontCpy,
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                         ),
@@ -143,9 +144,9 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                               onPressed: () {
                                 showDateDialog(context);
                               },
-                              icon: const Icon(
+                              icon: Icon(
                                 Icons.settings,
-                                color: Colors.white,
+                                color: AppColor.lightFontCpy,
                               ))
                         ],
                       )
@@ -165,8 +166,8 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                         children: [
                           Text(
                             "${HandText.inr}$totalOfTotalDue",
-                            style: const TextStyle(
-                              color: Colors.white,
+                            style: TextStyle(
+                              color: AppColor.lightFontCpy,
                               fontSize: 32,
                               fontWeight: FontWeight.bold,
                             ),
@@ -176,12 +177,12 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                             children: [
                               Text(
                                 HandText.receivableOnAccountDue,
-                                style: const TextStyle(color: Colors.white70),
+                                style: TextStyle(color: AppColor.lightFontCpy2),
                               ),
                               const Spacer(),
                               Text(
                                 "${HandText.inr}$totalOnAccountDue",
-                                style: const TextStyle(color: Colors.white),
+                                style: TextStyle(color: AppColor.lightFontCpy),
                               ),
                             ],
                           ),
@@ -190,12 +191,12 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                             children: [
                               Text(
                                 HandText.receivableNetDue,
-                                style: const TextStyle(color: Colors.white70),
+                                style: TextStyle(color: AppColor.lightFontCpy2),
                               ),
                               const Spacer(),
                               Text(
                                 "${HandText.inr}$netDue",
-                                style: const TextStyle(color: Colors.white),
+                                style: TextStyle(color: AppColor.lightFontCpy),
                               ),
                             ],
                           ),
@@ -203,8 +204,8 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                       );
                     },
                     loading: () => Shimmer.fromColors(
-                      baseColor: Colors.grey.shade300,
-                      highlightColor: Colors.grey.shade200,
+                      baseColor: AppColor.shimmerBaseColor,
+                      highlightColor: AppColor.shimmerHighlightColor,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -212,7 +213,7 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                             width: 150,
                             height: 30,
                             decoration: BoxDecoration(
-                              color: Colors.grey.shade300,
+                              color: AppColor.shimmerBoxDecorationColor,
                               borderRadius: BorderRadius.circular(4),
                             ),
                           ),
@@ -223,7 +224,7 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                                 width: 100,
                                 height: 15,
                                 decoration: BoxDecoration(
-                                  color: Colors.grey[400],
+                                  color: AppColor.shimmerDecorationColor,
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                               ),
@@ -232,7 +233,7 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                                 width: 80,
                                 height: 10,
                                 decoration: BoxDecoration(
-                                  color: Colors.grey[400],
+                                  color: AppColor.shimmerDecorationColor,
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                               ),
@@ -245,7 +246,7 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                                 width: 60,
                                 height: 10,
                                 decoration: BoxDecoration(
-                                  color: Colors.grey[400],
+                                  color: AppColor.shimmerDecorationColor,
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                               ),
@@ -254,7 +255,7 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                                 width: 80,
                                 height: 10,
                                 decoration: BoxDecoration(
-                                  color: Colors.grey[400],
+                                  color: AppColor.shimmerDecorationColor,
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                               ),
@@ -274,7 +275,7 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
               margin: const EdgeInsets.all(8),
               padding: const EdgeInsets.symmetric(horizontal: 8),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColor.lightFontCpy,
                 borderRadius: BorderRadius.circular(5),
               ),
               child: Column(
@@ -305,9 +306,9 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                               hintText: HandText.searchBox,
                               prefixIcon: const Icon(Icons.search),
                               border: const OutlineInputBorder(),
-                              focusedBorder: const OutlineInputBorder(
+                              focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: Color.fromARGB(255, 104, 181, 244),
+                                  color: AppColor.searchOutlineColor,
                                   width: 2.0,
                                 ),
                               ),
@@ -315,7 +316,7 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                                   const EdgeInsets.symmetric(vertical: 8),
                             ),
                             cursorHeight: 20,
-                            cursorColor: Colors.blue,
+                            cursorColor: AppColor.cursonColor,
                           ),
                         ),
                       ),
@@ -325,11 +326,12 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                         child: Container(
                           height: 40,
                           decoration: BoxDecoration(
-                            color: Colors.blue,
-                            border: Border.all(color: Colors.blue),
+                            color: AppColor.cursonColor,
+                            border: Border.all(color: AppColor.cursonColor),
                             borderRadius: BorderRadius.circular(5),
                           ),
-                          child: const Icon(Icons.search, color: Colors.white),
+                          child:
+                              Icon(Icons.search, color: AppColor.lightFontCpy),
                         ),
                       ),
                     ],
@@ -355,7 +357,7 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                                             data: data.content, index: index)));
                           },
                           child: Card(
-                            color: Colors.white,
+                            color: AppColor.cardBackgroundColor,
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
@@ -379,18 +381,19 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                                         TextSpan(
                                             text:
                                                 "${HandText.receivableCustomerCode} \n",
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontSize: 14,
-                                              color: Colors.grey,
+                                              color: AppColor.cardDataKeyColor,
                                             ),
                                             children: [
                                               TextSpan(
                                                 text: data
                                                     .content[index].customerCode
                                                     .toString(),
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     fontSize: 16,
-                                                    color: Colors.black),
+                                                    color: AppColor
+                                                        .cardDataValueColor),
                                               )
                                             ]),
                                       ),
@@ -398,18 +401,19 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                                         TextSpan(
                                             text:
                                                 "${HandText.receivableTotalDue} \n",
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontSize: 14,
-                                              color: Colors.grey,
+                                              color: AppColor.cardDataKeyColor,
                                             ),
                                             children: [
                                               TextSpan(
                                                 text: data
                                                     .content[index].totalDue
                                                     .toString(),
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     fontSize: 16,
-                                                    color: Colors.black),
+                                                    color: AppColor
+                                                        .cardDataValueColor),
                                               )
                                             ]),
                                       ),
@@ -426,18 +430,19 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                                         TextSpan(
                                             text:
                                                 "${HandText.receivableOnAccountDue} \n",
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontSize: 14,
-                                              color: Colors.grey,
+                                              color: AppColor.cardDataKeyColor,
                                             ),
                                             children: [
                                               TextSpan(
                                                 text: data
                                                     .content[index].onAccountDue
                                                     .toString(),
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     fontSize: 16,
-                                                    color: Colors.black),
+                                                    color: AppColor
+                                                        .cardDataValueColor),
                                               )
                                             ]),
                                       ),
@@ -445,17 +450,18 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                                         TextSpan(
                                             text:
                                                 "${HandText.receivableNetDue} \n",
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontSize: 14,
-                                              color: Colors.grey,
+                                              color: AppColor.cardDataKeyColor,
                                             ),
                                             children: [
                                               TextSpan(
                                                 text: data.content[index].netDue
                                                     .toString(),
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     fontSize: 16,
-                                                    color: Colors.black),
+                                                    color: AppColor
+                                                        .cardDataValueColor),
                                               )
                                             ]),
                                       ),

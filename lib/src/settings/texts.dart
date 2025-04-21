@@ -48,6 +48,25 @@ class HandText {
   static String menuAgeingSectionTitle = 'Ageing';
   static String menuPRSectionTitle = 'Purchase Register';
   static String menuSRSectionTitle = 'Sales Register';
+  static String menuGeneralSettingsTitle = "General Setting";
+  static String menuGenSettDateFormatTitle = "Date format";
+  static String menuGenSettDefaultScrTitle = "Default use screen";
+  static String menuGenSettCurrencyTitle = "Currency";
+  // ignore: non_constant_identifier_names
+  static String menuGenSettSelect_WeekTitle = "First day of the week";
+  static String menuGenSettSelect_DayTitle = "First day of month";
+  static String menuGenSettSelect_YearTitle = "First month of year";
+  //General Settings
+  //Bottom Sheet
+  static String genSettDateBttmSheetTitle = "Choose Date Format";
+  static String genSettChooseCurrencyBttmSheetTitle = "Choose Currency";
+  static String genSettChooseDayBttmSheetTitle = "Choose Day";
+  // ignore: non_constant_identifier_names
+  static String genSettSelect_FirstDayBttmSheetTitle =
+      "Choose First Date of Month";
+  // ignore: non_constant_identifier_names
+  static String genSettSelect_FirstMonthBttmSheetTitle =
+      "Choose First Month of Year";
   // Icon Name
   //Ageing
   static String menuAgeingReceivable = 'Receivable';
@@ -95,8 +114,8 @@ class HandText {
   static String srCustomerWiseTitle = "Customer Wise";
   static String srHSNCodeWiseTitle = "HSN Code Wise";
   static String srItemGroupWiseTitle = "Item Group Wise";
-  static String srItemWiseTitle =  "Item Wise";
-  static String srSOWiseTitle =  "SO Wise";
+  static String srItemWiseTitle = "Item Wise";
+  static String srSOWiseTitle = "SO Wise";
   //Options
   static String srOptionAll = 'All';
   static String srOptionSOW = "So Wise";

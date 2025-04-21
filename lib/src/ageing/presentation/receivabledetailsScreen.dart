@@ -18,15 +18,15 @@ class ReceivableDetailsScreen extends StatelessWidget {
     final Map<String, dynamic> details = data[index];
 
     return Scaffold(
-      backgroundColor: const Color(0xffff9f9f9),
+      backgroundColor: AppColor.screenBgColor,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back,
-            color: Colors.white,
+            color: AppColor.lightFontCpy,
           ),
         ),
         title: Text(
@@ -50,7 +50,7 @@ class ReceivableDetailsScreen extends StatelessWidget {
           children: [
             Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColor.lightFontCpy,
                 border: Border.all(
                   color: Colors.grey,
                 ),
