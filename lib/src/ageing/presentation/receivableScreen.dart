@@ -326,7 +326,7 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                         child: Container(
                           height: 40,
                           decoration: BoxDecoration(
-                            color: AppColor.cursonColor,
+                            color: AppColor.searchBttnColor,
                             border: Border.all(color: AppColor.cursonColor),
                             borderRadius: BorderRadius.circular(5),
                           ),
