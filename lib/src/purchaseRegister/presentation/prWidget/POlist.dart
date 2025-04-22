@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/purchaseRegister/data/purchesRegister_repository.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/detailsPage/vendorWiseDetails.dart';
+import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
 
 class PurchaseOrderList extends ConsumerWidget {
@@ -32,7 +33,7 @@ class PurchaseOrderList extends ConsumerWidget {
                                   data: data.content, index: index)));
                     },
                     child: Card(
-                      color: Colors.white,
+                      color: AppColor.cardBackgroundColor,
                       margin: const EdgeInsets.symmetric(
                           horizontal: 8, vertical: 8),
                       shape: RoundedRectangleBorder(
@@ -46,9 +47,9 @@ class PurchaseOrderList extends ConsumerWidget {
                           children: [
                             Row(
                               children: [
-                                const Icon(
+                                Icon(
                                   Icons.person_2_outlined,
-                                  color: Colors.grey,
+                                  color: AppColor.cardDataIconColor,
                                 ),
                                 const SizedBox(width: 8),
                                 Expanded(
@@ -73,9 +74,9 @@ class PurchaseOrderList extends ConsumerWidget {
                                   flex: 2,
                                   child: Row(
                                     children: [
-                                      const Icon(
+                                      Icon(
                                         Icons.sticky_note_2,
-                                        color: Colors.grey,
+                                        color: AppColor.cardDataIconColor,
                                       ),
                                       const SizedBox(width: 8),
                                       Expanded(
@@ -86,7 +87,8 @@ class PurchaseOrderList extends ConsumerWidget {
                                                 .textTheme
                                                 .bodySmall!
                                                 .copyWith(
-                                                  color: Colors.grey,
+                                                  color:
+                                                      AppColor.cardDataKeyColor,
                                                 ),
                                             children: [
                                               TextSpan(
@@ -111,9 +113,9 @@ class PurchaseOrderList extends ConsumerWidget {
                                   flex: 2,
                                   child: Row(
                                     children: [
-                                      const Icon(
+                                      Icon(
                                         Icons.event,
-                                        color: Colors.grey,
+                                        color: AppColor.cardDataIconColor,
                                       ),
                                       const SizedBox(width: 8),
                                       Expanded(
@@ -125,7 +127,8 @@ class PurchaseOrderList extends ConsumerWidget {
                                                 .textTheme
                                                 .bodySmall!
                                                 .copyWith(
-                                                  color: Colors.grey,
+                                                  color:
+                                                      AppColor.cardDataKeyColor,
                                                 ),
                                             children: [
                                               TextSpan(
@@ -157,9 +160,9 @@ class PurchaseOrderList extends ConsumerWidget {
                                   flex: 2,
                                   child: Row(
                                     children: [
-                                      const Icon(
+                                      Icon(
                                         Icons.manage_accounts,
-                                        color: Colors.grey,
+                                        color: AppColor.cardDataIconColor,
                                       ),
                                       const SizedBox(width: 8),
                                       Expanded(
@@ -170,7 +173,8 @@ class PurchaseOrderList extends ConsumerWidget {
                                                 .textTheme
                                                 .bodySmall!
                                                 .copyWith(
-                                                  color: Colors.grey,
+                                                  color:
+                                                      AppColor.cardDataKeyColor,
                                                 ),
                                             children: [
                                               TextSpan(
@@ -196,9 +200,9 @@ class PurchaseOrderList extends ConsumerWidget {
                                   flex: 2,
                                   child: Row(
                                     children: [
-                                      const Icon(
+                                      Icon(
                                         Icons.currency_rupee_outlined,
-                                        color: Colors.grey,
+                                        color: AppColor.cardDataIconColor,
                                       ),
                                       // const SizedBox(width: 8),
                                       Text.rich(
@@ -208,7 +212,8 @@ class PurchaseOrderList extends ConsumerWidget {
                                               .textTheme
                                               .bodySmall!
                                               .copyWith(
-                                                color: Colors.grey,
+                                                color:
+                                                    AppColor.cardDataKeyColor,
                                               ),
                                           children: [
                                             TextSpan(

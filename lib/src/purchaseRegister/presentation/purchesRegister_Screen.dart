@@ -9,6 +9,7 @@ import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/itemWi
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/functionalAreaList.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/itemGroupWiseGraph.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/storageLocationList.dart';
+import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
 import 'prWidget/AllGraph.dart';
 import 'prWidget/productList.dart';
@@ -41,39 +42,39 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
     {
       'image': 'assets/images/product.svg',
       'name': 'ALL',
-      'gradient': const [Color(0xfff759bec), Color(0xfff4e3986)],
+      'gradient': [AppColor.appBarColor1, AppColor.appBarColor2],
     },
     {
       'image': 'assets/images/supplier.svg',
       'name': 'PO Wise',
-      'gradient': const [Color(0xfff759bec), Color(0xfff4e3986)],
+      'gradient': [AppColor.appBarColor1, AppColor.appBarColor2],
     },
     {
       'image': 'assets/images/cash-register.svg',
       'name': 'Vendor Wise',
-      'gradient': const [Color(0xfff759bec), Color(0xfff4e3986)],
+      'gradient': [AppColor.appBarColor1, AppColor.appBarColor2],
     },
     {
       'image': 'assets/images/chemical-flask.svg',
       'name': 'Item Wise',
-      'gradient': const [Color(0xfff759bec), Color(0xfff4e3986)],
+      'gradient': [AppColor.appBarColor1, AppColor.appBarColor2],
     },
     {
       'image': 'assets/images/server-location.svg',
       'name': 'Item Group Wise',
-      'gradient': const [Color(0xfff759bec), Color(0xfff4e3986)],
+      'gradient': [AppColor.appBarColor1, AppColor.appBarColor2],
     },
     {
       'image': 'assets/images/data-storage.svg',
       'name': 'HSN Code Wise',
-      'gradient': const [Color(0xfff759bec), Color(0xfff4e3986)],
+      'gradient': [AppColor.appBarColor1, AppColor.appBarColor2],
     },
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffff9f9f9),
+      backgroundColor: AppColor.screenBgColor,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -129,7 +130,10 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
                       gradient: LinearGradient(
                         colors: selectedIndex == index
                             ? data[index]['gradient']
-                            : [Colors.white, Colors.white],
+                            : [
+                                AppColor.indexColorLight,
+                                AppColor.indexColorLight
+                              ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
@@ -152,8 +156,8 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
                           SvgPicture.asset(
                             data[index]['image'],
                             color: selectedIndex == index
-                                ? Colors.white
-                                : Colors.black,
+                                ? AppColor.indexColorLight
+                                : AppColor.indexColorDark,
                             height: 50,
                             width: 50,
                           ),
@@ -164,8 +168,8 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: selectedIndex == index
-                                  ? Colors.white
-                                  : Colors.black,
+                                  ? AppColor.indexColorLight
+                                  : AppColor.indexColorDark,
                             ),
                           ),
                         ],
@@ -193,13 +197,13 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
             height: 200,
             width: double.infinity,
             alignment: Alignment.topLeft,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [Color(0xfff759bec), Color(0xfff4e3986)],
+                colors: [AppColor.appBarColor1, AppColor.appBarColor2],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(20),
                 bottomRight: Radius.circular(20),
               ),
@@ -211,7 +215,7 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
                 children: [
                   Text(
                     HandText.prTitle,
-                    style: const TextStyle(fontSize: 24, color: Colors.white),
+                    style: TextStyle(fontSize: 24, color: AppColor.appbarFont),
                   ),
                   Row(
                     children: [
@@ -343,9 +347,9 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
                                                     );
                                                   }
                                                 : null,
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.bar_chart,
-                          color: Colors.white,
+                          color: AppColor.appBarIcon,
                         ),
                       ),
                     ],
@@ -359,7 +363,7 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
             left: 10,
             right: 10,
             child: Card(
-              color: Colors.white,
+              color: AppColor.lightFontCpy,
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 14, vertical: 20),

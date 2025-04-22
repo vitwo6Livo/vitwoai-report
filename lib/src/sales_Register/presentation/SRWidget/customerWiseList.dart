@@ -161,7 +161,7 @@ class _CustomerWiseScreenState extends ConsumerState<CustomerWiseScreen> {
         ),
         title: Text(
           HandText.srCustomerWiseTitle,
-          style: const TextStyle(color: Colors.white),
+          style: TextStyle(color: AppColor.appbarFont),
         ),
         actions: [
           IconButton(
@@ -186,7 +186,7 @@ class _CustomerWiseScreenState extends ConsumerState<CustomerWiseScreen> {
             margin: const EdgeInsets.all(8),
             padding: const EdgeInsets.symmetric(horizontal: 8),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColor.lightFontCpy,
               border: Border.all(),
               borderRadius: BorderRadius.circular(5),
             ),
@@ -235,11 +235,12 @@ class _CustomerWiseScreenState extends ConsumerState<CustomerWiseScreen> {
                         child: Container(
                           height: 40,
                           decoration: BoxDecoration(
-                            color: Colors.blue,
-                            border: Border.all(color: Colors.blue),
+                            color: AppColor.searchBttnColor,
+                            border: Border.all(color: AppColor.cursonColor),
                             borderRadius: BorderRadius.circular(5),
                           ),
-                          child: const Icon(Icons.search, color: Colors.white),
+                          child:
+                              Icon(Icons.search, color: AppColor.lightFontCpy),
                         ),
                       ),
                     ),
@@ -263,7 +264,7 @@ class _CustomerWiseScreenState extends ConsumerState<CustomerWiseScreen> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 8, vertical: 4),
                             child: Card(
-                              color: Colors.white,
+                              color: AppColor.cardBackgroundColor,
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Column(

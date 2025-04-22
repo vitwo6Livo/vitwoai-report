@@ -62,11 +62,11 @@ class _MenuScreenState extends State<MenuScreen> {
     final crossAxisCount = MediaQuery.of(context).size.width < 600 ? 2 : 4;
 
     return Scaffold(
-      backgroundColor: const Color(0xffe9e9e9),
+      backgroundColor: AppColor.menuScreenBgColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(HandText.menuTitle,
-            style: const TextStyle(color: Colors.white)),
+            style: TextStyle(color: AppColor.appbarFont)),
         centerTitle: true,
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -277,7 +277,7 @@ class _MenuScreenState extends State<MenuScreen> {
       String title, List<Widget> items, int crossAxisCount) {
     return Card(
       elevation: 8,
-      color: Colors.white,
+      color: AppColor.cardBackgroundColor,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: Column(
@@ -304,7 +304,7 @@ class _MenuScreenState extends State<MenuScreen> {
   Widget _buildSettingsSection() {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.cardBackgroundColor,
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.1),
@@ -384,11 +384,11 @@ class _MenuScreenState extends State<MenuScreen> {
         title: Text(title,
             style: TextStyle(
               fontSize: 16,
-              color: Colors.grey[800],
+              color: AppColor.menuOptionsTitleColor,
               fontWeight: FontWeight.w500,
             )),
-        trailing:
-            Icon(Icons.arrow_forward_ios, color: Colors.grey[600], size: 16),
+        trailing: Icon(Icons.arrow_forward_ios,
+            color: AppColor.menuOptionArrowColor, size: 16),
         contentPadding: const EdgeInsets.symmetric(vertical: 4),
         minLeadingWidth: 24,
         visualDensity: const VisualDensity(vertical: -2),

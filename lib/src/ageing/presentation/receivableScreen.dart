@@ -5,6 +5,7 @@ import 'package:vitwoai_report/golobal-Widget/rangeCalendar.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/ageing/data/receivableAnalytics_repositry.dart';
 import 'package:vitwoai_report/src/ageing/presentation/receivabledetailsScreen.dart';
+import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
 
 final isClickedProviderReceivable = StateProvider<bool>((ref) => false);
@@ -102,19 +103,19 @@ class _ReceivableAnalyticsScreenState
     final coustomerListProvider = ref.watch(customerListStateProvider);
 
     return Scaffold(
-      backgroundColor: const Color(0xffff9f9f9),
+      backgroundColor: AppColor.screenBgColor,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
               padding: const EdgeInsets.all(16.0),
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
-                    colors: [Color(0xfff759bec), Color(0xfff4e3986)],
+                    colors: [AppColor.appBarColor1, AppColor.appBarColor2],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight),
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(20),
                   bottomRight: Radius.circular(20),
                 ),
@@ -127,8 +128,8 @@ class _ReceivableAnalyticsScreenState
                     children: [
                       Text(
                         HandText.receivableTitle,
-                        style: const TextStyle(
-                          color: Colors.white,
+                        style: TextStyle(
+                          color: AppColor.lightFontCpy,
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                         ),
@@ -139,9 +140,9 @@ class _ReceivableAnalyticsScreenState
                               onPressed: () {
                                 showDateDialog(context);
                               },
-                              icon: const Icon(
+                              icon: Icon(
                                 Icons.settings,
-                                color: Colors.white,
+                                color: AppColor.lightFontCpy,
                               ))
                         ],
                       )
@@ -160,8 +161,8 @@ class _ReceivableAnalyticsScreenState
                         children: [
                           Text(
                             "${HandText.inr}$totalOfTotalDue",
-                            style: const TextStyle(
-                              color: Colors.white,
+                            style: TextStyle(
+                              color: AppColor.lightFontCpy,
                               fontSize: 32,
                               fontWeight: FontWeight.bold,
                             ),
@@ -171,12 +172,12 @@ class _ReceivableAnalyticsScreenState
                             children: [
                               Text(
                                 HandText.receivableOnAccountDue,
-                                style: const TextStyle(color: Colors.white70),
+                                style: TextStyle(color: AppColor.lightFontCpy2),
                               ),
                               const Spacer(),
                               Text(
                                 "${HandText.inr}$totalOnAccountDue",
-                                style: const TextStyle(color: Colors.white),
+                                style: TextStyle(color: AppColor.lightFontCpy),
                               ),
                             ],
                           ),
@@ -185,12 +186,12 @@ class _ReceivableAnalyticsScreenState
                             children: [
                               Text(
                                 HandText.receivableNetDue,
-                                style: const TextStyle(color: Colors.white70),
+                                style: TextStyle(color: AppColor.lightFontCpy2),
                               ),
                               const Spacer(),
                               Text(
                                 "${HandText.inr}$netDue",
-                                style: const TextStyle(color: Colors.white),
+                                style: TextStyle(color: AppColor.lightFontCpy),
                               ),
                             ],
                           ),
@@ -198,8 +199,8 @@ class _ReceivableAnalyticsScreenState
                       );
                     },
                     loading: () => Shimmer.fromColors(
-                      baseColor: Colors.grey.shade300,
-                      highlightColor: Colors.grey.shade200,
+                      baseColor: AppColor.shimmerBaseColor,
+                      highlightColor: AppColor.shimmerHighlightColor,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -207,7 +208,7 @@ class _ReceivableAnalyticsScreenState
                             width: 150,
                             height: 30,
                             decoration: BoxDecoration(
-                              color: Colors.grey.shade300,
+                              color: AppColor.shimmerBoxDecorationColor,
                               borderRadius: BorderRadius.circular(4),
                             ),
                           ),
@@ -218,7 +219,7 @@ class _ReceivableAnalyticsScreenState
                                 width: 100,
                                 height: 15,
                                 decoration: BoxDecoration(
-                                  color: Colors.grey[400],
+                                  color: AppColor.shimmerDecorationColor,
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                               ),
@@ -227,7 +228,7 @@ class _ReceivableAnalyticsScreenState
                                 width: 80,
                                 height: 10,
                                 decoration: BoxDecoration(
-                                  color: Colors.grey[400],
+                                  color: AppColor.shimmerDecorationColor,
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                               ),
@@ -240,7 +241,7 @@ class _ReceivableAnalyticsScreenState
                                 width: 60,
                                 height: 10,
                                 decoration: BoxDecoration(
-                                  color: Colors.grey[400],
+                                  color: AppColor.shimmerDecorationColor,
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                               ),
@@ -249,7 +250,7 @@ class _ReceivableAnalyticsScreenState
                                 width: 80,
                                 height: 10,
                                 decoration: BoxDecoration(
-                                  color: Colors.grey[400],
+                                  color: AppColor.shimmerDecorationColor,
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                               ),
@@ -269,7 +270,7 @@ class _ReceivableAnalyticsScreenState
               margin: const EdgeInsets.all(8),
               padding: const EdgeInsets.symmetric(horizontal: 8),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColor.lightFontCpy,
                 borderRadius: BorderRadius.circular(5),
               ),
               child: Column(
@@ -300,9 +301,9 @@ class _ReceivableAnalyticsScreenState
                               hintText: HandText.searchBox,
                               prefixIcon: const Icon(Icons.search),
                               border: const OutlineInputBorder(),
-                              focusedBorder: const OutlineInputBorder(
+                              focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: Color.fromARGB(255, 104, 181, 244),
+                                  color: AppColor.searchOutlineColor,
                                   width: 2.0,
                                 ),
                               ),
@@ -310,7 +311,7 @@ class _ReceivableAnalyticsScreenState
                                   const EdgeInsets.symmetric(vertical: 8),
                             ),
                             cursorHeight: 20,
-                            cursorColor: Colors.blue,
+                            cursorColor: AppColor.cursonColor,
                           ),
                         ),
                       ),
@@ -320,11 +321,12 @@ class _ReceivableAnalyticsScreenState
                         child: Container(
                           height: 40,
                           decoration: BoxDecoration(
-                            color: Colors.blue,
-                            border: Border.all(color: Colors.blue),
+                            color: AppColor.cursonColor,
+                            border: Border.all(color: AppColor.cursonColor),
                             borderRadius: BorderRadius.circular(5),
                           ),
-                          child: const Icon(Icons.search, color: Colors.white),
+                          child:
+                              Icon(Icons.search, color: AppColor.lightFontCpy),
                         ),
                       ),
                     ],
@@ -371,11 +373,11 @@ class _ReceivableAnalyticsScreenState
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: InkWell(
             onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ReceivableDetailsScreen(
-                          data: content, index: index)));
+              // Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //         builder: (context) => ReceivableDetailsScreen(
+              //             data: content, index: index)));
             },
             child: Card(
               color: Colors.white,

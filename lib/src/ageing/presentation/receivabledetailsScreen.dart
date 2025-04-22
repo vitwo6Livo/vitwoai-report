@@ -1,32 +1,35 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
 
 class ReceivableDetailsScreen extends StatelessWidget {
-  final List<dynamic> data;
-  final int index;
+  String customerName;
+  String customerCode;
+  double totalDue;
 
-  const ReceivableDetailsScreen({
+  ReceivableDetailsScreen({
     super.key,
-    required this.data,
-    required this.index,
+    required this.customerName,
+    required this.customerCode,
+    required this.totalDue,
   });
 
   @override
   Widget build(BuildContext context) {
     // Fetching the item details based on the index
-    final Map<String, dynamic> details = data[index];
 
     return Scaffold(
-      backgroundColor: const Color(0xffff9f9f9),
+      backgroundColor: AppColor.screenBgColor,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back,
-            color: Colors.white,
+            color: AppColor.lightFontCpy,
           ),
         ),
         title: Text(
@@ -50,7 +53,7 @@ class ReceivableDetailsScreen extends StatelessWidget {
           children: [
             Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColor.lightFontCpy,
                 border: Border.all(
                   color: Colors.grey,
                 ),
@@ -62,7 +65,7 @@ class ReceivableDetailsScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      details['customer_name'],
+                      customerName.toString(),
                       style: const TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 20,
@@ -83,7 +86,7 @@ class ReceivableDetailsScreen extends StatelessWidget {
                               ),
                               children: [
                                 TextSpan(
-                                  text: details['customer_code'].toString(),
+                                  text: customerCode.toString(),
                                   style: const TextStyle(
                                       fontWeight: FontWeight.w400,
                                       color: Colors.black),
@@ -99,7 +102,7 @@ class ReceivableDetailsScreen extends StatelessWidget {
                               ),
                               children: [
                                 TextSpan(
-                                  text: details['total_due'].toString(),
+                                  text: totalDue.toString(),
                                   style: const TextStyle(
                                       fontWeight: FontWeight.w400,
                                       color: Colors.black),
@@ -123,7 +126,8 @@ class ReceivableDetailsScreen extends StatelessWidget {
                               ),
                               children: [
                                 TextSpan(
-                                  text: details['on_account_due'].toString(),
+                                  text: 'on_account_due',
+                                  // text: details['on_account_due'].toString(),
                                   style: const TextStyle(
                                       fontWeight: FontWeight.w400,
                                       color: Colors.black),
@@ -139,7 +143,8 @@ class ReceivableDetailsScreen extends StatelessWidget {
                               ),
                               children: [
                                 TextSpan(
-                                  text: details['net_due'].toString(),
+                                  text: 'net_due',
+                                  // text: details['net_due'].toString(),
                                   style: const TextStyle(
                                       fontWeight: FontWeight.w400,
                                       color: Colors.black),
@@ -180,7 +185,7 @@ class ReceivableDetailsScreen extends StatelessWidget {
                       ),
                       children: [
                         TextSpan(
-                          text: details['dueAmounts']['1'].toString(),
+                          text: 'dueAmounts',
                           style: const TextStyle(
                               fontWeight: FontWeight.w400, color: Colors.black),
                         )
@@ -193,7 +198,8 @@ class ReceivableDetailsScreen extends StatelessWidget {
                       ),
                       children: [
                         TextSpan(
-                          text: details['dueAmounts']['2'].toString(),
+                          text: 'dueAmounts',
+                          // text: details['dueAmounts']['2'].toString(),
                           style: const TextStyle(
                               fontWeight: FontWeight.w400, color: Colors.black),
                         )
@@ -206,7 +212,8 @@ class ReceivableDetailsScreen extends StatelessWidget {
                       ),
                       children: [
                         TextSpan(
-                          text: details['dueAmounts']['3'].toString(),
+                          text: 'dueAmounts',
+                          // text: details['dueAmounts']['3'].toString(),
                           style: const TextStyle(
                               fontWeight: FontWeight.w400, color: Colors.black),
                         )
@@ -219,7 +226,8 @@ class ReceivableDetailsScreen extends StatelessWidget {
                       ),
                       children: [
                         TextSpan(
-                          text: details['dueAmounts']['4'].toString(),
+                          text: 'dueAmounts',
+                          // text: details['dueAmounts']['4'].toString(),
                           style: const TextStyle(
                               fontWeight: FontWeight.w400, color: Colors.black),
                         )
@@ -232,7 +240,8 @@ class ReceivableDetailsScreen extends StatelessWidget {
                       ),
                       children: [
                         TextSpan(
-                          text: details['dueAmounts']['5'].toString(),
+                          text: 'dueAmounts',
+                          // text: details['dueAmounts']['5'].toString(),
                           style: const TextStyle(
                               fontWeight: FontWeight.w400, color: Colors.black),
                         )
@@ -245,7 +254,8 @@ class ReceivableDetailsScreen extends StatelessWidget {
                       ),
                       children: [
                         TextSpan(
-                          text: details['dueAmounts']['6'].toString(),
+                          text: 'dueAmounts',
+                          // text: details['dueAmounts']['6'].toString(),
                           style: const TextStyle(
                               fontWeight: FontWeight.w400, color: Colors.black),
                         )
@@ -279,7 +289,8 @@ class ReceivableDetailsScreen extends StatelessWidget {
                       ),
                       children: [
                         TextSpan(
-                          text: details['onAccountAmounts']['1'].toString(),
+                          text: 'onAccountAmounts',
+                          // text: details['onAccountAmounts']['1'].toString(),
                           style: const TextStyle(
                               fontWeight: FontWeight.w400, color: Colors.black),
                         )
@@ -292,7 +303,8 @@ class ReceivableDetailsScreen extends StatelessWidget {
                       ),
                       children: [
                         TextSpan(
-                          text: details['onAccountAmounts']['2'].toString(),
+                          text: 'onAccountAmounts',
+                          // text: details['onAccountAmounts']['2'].toString(),
                           style: const TextStyle(
                               fontWeight: FontWeight.w400, color: Colors.black),
                         )
@@ -305,7 +317,8 @@ class ReceivableDetailsScreen extends StatelessWidget {
                       ),
                       children: [
                         TextSpan(
-                          text: details['onAccountAmounts']['3'].toString(),
+                          text: 'onAccountAmounts',
+                          // text: details['onAccountAmounts']['3'].toString(),
                           style: const TextStyle(
                               fontWeight: FontWeight.w400, color: Colors.black),
                         )
@@ -318,7 +331,8 @@ class ReceivableDetailsScreen extends StatelessWidget {
                       ),
                       children: [
                         TextSpan(
-                          text: details['onAccountAmounts']['4'].toString(),
+                          text: 'onAccountAmounts',
+                          // text: details['onAccountAmounts']['4'].toString(),
                           style: const TextStyle(
                               fontWeight: FontWeight.w400, color: Colors.black),
                         )
@@ -331,7 +345,8 @@ class ReceivableDetailsScreen extends StatelessWidget {
                       ),
                       children: [
                         TextSpan(
-                          text: details['onAccountAmounts']['5'].toString(),
+                          text: 'onAccountAmounts',
+                          // text: details['onAccountAmounts']['5'].toString(),
                           style: const TextStyle(
                               fontWeight: FontWeight.w400, color: Colors.black),
                         )
@@ -344,7 +359,8 @@ class ReceivableDetailsScreen extends StatelessWidget {
                       ),
                       children: [
                         TextSpan(
-                          text: details['onAccountAmounts']['6'].toString(),
+                          text: 'onAccountAmounts',
+                          // text: details['onAccountAmounts']['6'].toString(),
                           style: const TextStyle(
                               fontWeight: FontWeight.w400, color: Colors.black),
                         )
