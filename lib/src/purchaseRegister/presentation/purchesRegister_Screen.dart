@@ -27,7 +27,6 @@ class PurchesregisterScreen extends ConsumerStatefulWidget {
 }
 
 class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
-  final ScrollController _scrollController = ScrollController();
   int selectedIndex = 0; // Track the selected item
   late int selectedIndexMenu;
 
@@ -36,24 +35,6 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
     super.initState();
     selectedIndexMenu = widget.initialTab;
     selectedIndex = selectedIndexMenu;
-
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        // Trigger pagination based on selected tab
-        if (selectedIndex == 0) {
-          // ref.read(productListControllerProvider.notifier).loadMore();
-        } else if (selectedIndex == 1) {
-          // Handle VendorList pagination
-        } // Add other tabs as needed
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
   }
 
   List<Map<String, dynamic>> data = [
@@ -100,7 +81,6 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
           _cardViewPurchase(),
           Flexible(
             child: SingleChildScrollView(
-              controller: _scrollController,
               child: Column(
                 children: [
                   selectedIndex == 0
