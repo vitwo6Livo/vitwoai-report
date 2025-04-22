@@ -3,7 +3,6 @@ import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/purchaseRegister/data/purchesRegister_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/detailsPage/PrAllDetails.dart';
-import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
 
 class ProductList extends ConsumerStatefulWidget {
@@ -83,31 +82,37 @@ class _ProductListState extends ConsumerState<ProductList> {
   Widget build(BuildContext context) {
     final purchesRegisterList = ref.watch(purchesRegisterListStateProvider);
 
-    return Column(
-      children: [
-        purchesRegisterList['content'].isEmpty
-            ? ref.watch(purchesRegisterProvider(0)).when(
-                data: (data) {
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    ref.read(purchesRegisterListStateProvider.notifier).state =
-                        {
-                      'content': data.content,
-                      'last': data.lastPage,
-                    };
-                  });
-                  return _buildListView(purchesRegisterList['content']);
-                },
-                error: (error, stack) => Center(child: Text('Error: $error')),
-                loading: () => screen_shimmer(120, 800))
-            : _buildListView(purchesRegisterList['content']),
-        if (_isLoadingMore)
-          const Center(
-            child: Padding(
-              padding: EdgeInsets.only(bottom: 16.0),
-              child: CircularProgressIndicator(),
-            ),
+    return Expanded(
+      child: Column(
+        children: [
+          Expanded(
+            child: purchesRegisterList['content'].isEmpty
+                ? ref.watch(purchesRegisterProvider(0)).when(
+                    data: (data) {
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        ref
+                            .read(purchesRegisterListStateProvider.notifier)
+                            .state = {
+                          'content': data.content,
+                          'last': data.lastPage,
+                        };
+                      });
+                      return _buildListView(purchesRegisterList['content']);
+                    },
+                    error: (error, stack) =>
+                        Center(child: Text('Error: $error')),
+                    loading: () => screen_shimmer(120, 500))
+                : _buildListView(purchesRegisterList['content']),
           ),
-      ],
+          if (_isLoadingMore)
+            const Center(
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 16.0),
+                child: CircularProgressIndicator(),
+              ),
+            )
+        ],
+      ),
     );
   }
 
@@ -119,8 +124,6 @@ class _ProductListState extends ConsumerState<ProductList> {
         : ListView.builder(
             controller: _scrollController,
             itemCount: content.length,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               return InkWell(
                 onTap: () {

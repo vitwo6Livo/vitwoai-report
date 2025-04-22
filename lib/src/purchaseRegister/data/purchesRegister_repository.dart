@@ -115,18 +115,19 @@ Future<Map<String, dynamic>> fetchPurchesRegisterPoWiseData() async {
 
 // Vendor wise Data Api Call
 
-final purchesRegisterVendorWiseProvider = FutureProvider((ref) async {
-  return await fetchPurchesRegisterVendorWiseData();
+final purchesRegisterVendorWiseProvider =
+    FutureProvider.family<Vendorwisemodal, int>((ref, page) async {
+  return await fetchPurchesRegisterVendorWiseData(page);
 });
 
-Future<Vendorwisemodal> fetchPurchesRegisterVendorWiseData() async {
+Future<Vendorwisemodal> fetchPurchesRegisterVendorWiseData(int pagedata) async {
   final accessToken = await getTokenData();
 
   final url = Uri.parse('$baseURL$purchaseRegisterVendorWiseUrl');
 
   final Map<String, dynamic> bodyData = {
-    "page": 0,
-    "size": 100,
+    "page": pagedata,
+    "size": 10,
     "sortBy": "Vendor Name",
     "sortDir": "desc",
     "search": ""
@@ -155,18 +156,19 @@ Future<Vendorwisemodal> fetchPurchesRegisterVendorWiseData() async {
 
 // Item Wise Data Api Call
 
-final purchesRegisterItemWiseProvider = FutureProvider((ref) async {
-  return await fetchPurchesRegisterItemWiseData();
+final purchesRegisterItemWiseProvider =
+    FutureProvider.family<Itemwisemodel, int>((ref, page) async {
+  return await fetchPurchesRegisterItemWiseData(page);
 });
 
-Future<Itemwisemodel> fetchPurchesRegisterItemWiseData() async {
+Future<Itemwisemodel> fetchPurchesRegisterItemWiseData(int pageData) async {
   final accessToken = await getTokenData();
 
   final url = Uri.parse('$baseURL$purchaseRegisterItemWiseUrl');
 
   final Map<String, dynamic> bodyData = {
-    "page": 0,
-    "size": 100,
+    "page": pageData,
+    "size": 10,
     "sortBy": "Item Code",
     "sortDir": "asc",
     "search": ""
@@ -195,18 +197,20 @@ Future<Itemwisemodel> fetchPurchesRegisterItemWiseData() async {
 
 // Item Group Wise Data Api Call
 
-final purchesRegisterItemGroupWiseProvider = FutureProvider((ref) async {
-  return await fetchPurchesRegisterItemGroupWiseData();
+final purchesRegisterItemGroupWiseProvider =
+    FutureProvider.family<ItemGroupwisemodel, int>((ref, page) async {
+  return await fetchPurchesRegisterItemGroupWiseData(page);
 });
 
-Future<ItemGroupwisemodel> fetchPurchesRegisterItemGroupWiseData() async {
+Future<ItemGroupwisemodel> fetchPurchesRegisterItemGroupWiseData(
+    int pageData) async {
   final accessToken = await getTokenData();
 
   final url = Uri.parse('$baseURL$purchaseRegisterItemGroupWiseUrl');
 
   final Map<String, dynamic> bodyData = {
-    "page": 0,
-    "size": 100,
+    "page": pageData,
+    "size": 10,
     "sortBy": "Item Group",
     "sortDir": "asc",
     "search": ""
@@ -235,18 +239,19 @@ Future<ItemGroupwisemodel> fetchPurchesRegisterItemGroupWiseData() async {
 
 // HSN Code Wise Api Data
 
-final purchesRegisterHsnCodeWiseProvider = FutureProvider((ref) async {
-  return await fetchPurchesRegisterHsnCodeWiseData();
+final purchesRegisterHsnCodeWiseProvider =
+    FutureProvider.family<Hsncodemodel, int>((ref, page) async {
+  return await fetchPurchesRegisterHsnCodeWiseData(page);
 });
 
-Future<Hsncodemodel> fetchPurchesRegisterHsnCodeWiseData() async {
+Future<Hsncodemodel> fetchPurchesRegisterHsnCodeWiseData(int pageData) async {
   final accessToken = await getTokenData();
 
   final url = Uri.parse('$baseURL$purchaseRegisterHSNCodeWiseUrl');
 
   final Map<String, dynamic> bodyData = {
-    "page": 0,
-    "size": 100,
+    "page": pageData,
+    "size": 10,
     "sortBy": "HSN Code",
     "sortDir": "asc",
     "search": ""

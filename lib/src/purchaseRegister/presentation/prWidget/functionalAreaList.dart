@@ -6,247 +6,302 @@ import 'package:vitwoai_report/src/purchaseRegister/presentation/detailsPage/ite
 import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
 
-class FunctionalAreaList extends ConsumerWidget {
+class FunctionalAreaList extends ConsumerStatefulWidget {
   const FunctionalAreaList({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final purchesRegisterItemWiseData =
-        ref.watch(purchesRegisterItemWiseProvider);
-    return purchesRegisterItemWiseData.when(
-      data: (data) {
-        return data.content.isEmpty
-            ? Center(
-                child: Text(HandText.noData),
-              )
-            : ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: data.content.length,
-                itemBuilder: (context, index) {
-                  return InkWell(
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return ItemWiseDetails(
-                            data: data.content, index: index);
-                      }));
-                    },
-                    child: Card(
-                      color: AppColor.cardBackgroundColor,
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 1.8),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+  ConsumerState<FunctionalAreaList> createState() => _FunctionalAreaListState();
+}
+
+class _FunctionalAreaListState extends ConsumerState<FunctionalAreaList> {
+  final ScrollController _scrollController = ScrollController();
+  bool _isLoadingMore = false;
+
+  final purchesRegisterItemWiseListStateProvider =
+      StateProvider<Map<String, dynamic>>((ref) => {
+            'content': [],
+            'last': false,
+          });
+  final currentPageProvider = StateProvider<int>((ref) => 0);
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+              _scrollController.position.maxScrollExtent &&
+          !_isLoadingMore) {
+        final isLastPage =
+            ref.read(purchesRegisterItemWiseListStateProvider)['last'] ?? false;
+        if (!isLastPage) {
+          _loadMoreData();
+        }
+      }
+    });
+  }
+
+  void _loadMoreData() async {
+    setState(() {
+      _isLoadingMore = true;
+    });
+
+    final currentPage = ref.read(currentPageProvider);
+    final nextPage = currentPage + 1;
+
+    final newData =
+        await ref.read(purchesRegisterItemWiseProvider(nextPage).future);
+
+    ref.read(purchesRegisterItemWiseListStateProvider.notifier).update((state) {
+      final updatedContent = [
+        ...state['content'],
+        ...newData.content,
+      ];
+      return {
+        'content': updatedContent,
+        'last': newData.lastPage,
+      };
+    });
+
+    ref.read(currentPageProvider.notifier).state = nextPage;
+
+    setState(() {
+      _isLoadingMore = false;
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final purchesRegisterItemWiseList =
+        ref.watch(purchesRegisterItemWiseListStateProvider);
+
+    return Expanded(
+      child: Column(
+        children: [
+          Expanded(
+            child: purchesRegisterItemWiseList['content'].isEmpty
+                ? ref.watch(purchesRegisterItemWiseProvider(0)).when(
+                      data: (data) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          ref
+                              .read(purchesRegisterItemWiseListStateProvider
+                                  .notifier)
+                              .state = {
+                            'content': data.content,
+                            'last': data.lastPage,
+                          };
+                        });
+                        return _buildListView(
+                            purchesRegisterItemWiseList['content']);
+                      },
+                      error: (error, stack) => Center(
+                          child: Text('${HandText.errorMessage} $error')),
+                      loading: () => screen_shimmer(120, 800),
+                    )
+                : _buildListView(purchesRegisterItemWiseList['content']),
+          ),
+          if (_isLoadingMore)
+            const Center(
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 16.0),
+                child: CircularProgressIndicator(),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildListView(List<dynamic> content) {
+    return content.isEmpty
+        ? Center(child: Text(HandText.noData))
+        : ListView.builder(
+            controller: _scrollController,
+            itemCount: content.length,
+            itemBuilder: (context, index) {
+              return InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ItemWiseDetails(
+                        data: content,
+                        index: index,
                       ),
-                      elevation: 4,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                    ),
+                  );
+                },
+                child: Card(
+                  color: AppColor.cardBackgroundColor,
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  elevation: 4,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: 150,
+                              child: Text(
+                                content[index].itemName.toString(),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall!
+                                    .copyWith(
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Text.rich(
+                              TextSpan(
+                                text: HandText.prInvoiceQuantity,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall!
+                                    .copyWith(
+                                      color: AppColor.cardDataKeyColor,
+                                    ),
+                                children: [
+                                  TextSpan(
+                                    text: content[index]
+                                        .invoiceQuantity
+                                        .toString(),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall!
+                                        .copyWith(
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: 180,
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text.rich(
+                                      TextSpan(
+                                        text: HandText.prItemCode,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall!
+                                            .copyWith(
+                                              color: AppColor.cardDataKeyColor,
+                                            ),
+                                        children: [
+                                          TextSpan(
+                                            text: content[index].itemCode,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodySmall!
+                                                .copyWith(
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                          ),
+                                        ],
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Text.rich(
+                              TextSpan(
+                                text: HandText.prReceivedQuantity,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall!
+                                    .copyWith(
+                                      color: AppColor.cardDataKeyColor,
+                                    ),
+                                children: [
+                                  TextSpan(
+                                    text: content[index]
+                                        .receivedQuantity
+                                        .toString(),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall!
+                                        .copyWith(
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.factory,
-                                      color: AppColor.cardDataIconColor,
-                                    ),
-                                    SizedBox(
-                                      width: 150,
-                                      child: Text(
-                                        data.content[index].itemName,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall!
-                                            .copyWith(
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                  ],
+                                Icon(
+                                  Icons.factory,
+                                  color: AppColor.cardDataIconColor,
                                 ),
-                                // Row(
-                                //   children: [
-                                //     const Icon(
-                                //       Icons.graphic_eq_outlined,
-                                //       color: Colors.grey,
-                                //     ),
-                                //     Text.rich(
-                                //       TextSpan(
-                                //         text: 'TDS: ',
-                                //         style: Theme.of(context)
-                                //             .textTheme
-                                //             .bodySmall!
-                                //             .copyWith(
-                                //               color: Colors.grey,
-                                //             ),
-                                //         children: [
-                                //           TextSpan(
-                                //             text: '32',
-                                //             style: Theme.of(context)
-                                //                 .textTheme
-                                //                 .bodySmall!
-                                //                 .copyWith(
-                                //                   fontWeight: FontWeight.w500,
-                                //                 ),
-                                //           ),
-                                //         ],
-                                //       ),
-                                //     ),
-                                //   ],
-                                // ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.eject_outlined,
-                                      color: AppColor.cardDataIconColor,
-                                    ),
-                                    Text.rich(
-                                      TextSpan(
-                                        text: '${HandText.prItemCode}\n',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall!
-                                            .copyWith(
-                                              color: AppColor.cardDataKeyColor,
-                                            ),
-                                        children: [
-                                          TextSpan(
-                                            text: data.content[index].itemCode,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodySmall!
-                                                .copyWith(
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                          ),
-                                        ],
+                                Text(
+                                  content[index].itemCode.toString(),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall!
+                                      .copyWith(
+                                        fontWeight: FontWeight.w500,
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.eject_outlined,
-                                      color: Colors.grey,
-                                    ),
-                                    Text.rich(
-                                      TextSpan(
-                                        text: '${HandText.prInvoiceValue}\n',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall!
-                                            .copyWith(
-                                              color: AppColor.cardDataKeyColor,
-                                            ),
-                                        children: [
-                                          TextSpan(
-                                            text: data
-                                                .content[index].invoiceValue,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodySmall!
-                                                .copyWith(
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 10),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.eject_outlined,
-                                      color: Colors.grey,
-                                    ),
-                                    Text.rich(
-                                      TextSpan(
-                                        text: '${HandText.prInvoiceQuantity}\n',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall!
-                                            .copyWith(
-                                              color: AppColor.cardDataKeyColor,
-                                            ),
-                                        children: [
-                                          TextSpan(
-                                            text: data
-                                                .content[index].invoiceQuantity,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodySmall!
-                                                .copyWith(
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
+                                Icon(
+                                  Icons.currency_rupee_outlined,
+                                  color: AppColor.cardDataIconColor,
                                 ),
-                                Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.currency_rupee_outlined,
-                                      color: Colors.grey,
-                                    ),
-                                    Text.rich(
-                                      TextSpan(
-                                        text: '${HandText.prReceivedQuantity}\n',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall!
-                                            .copyWith(
-                                              color: AppColor.cardDataKeyColor,
-                                            ),
-                                        children: [
-                                          TextSpan(
-                                            text: data.content[index]
-                                                .receivedQuantity,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodySmall!
-                                                .copyWith(
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                          ),
-                                        ],
+                                Text(
+                                  content[index].invoiceValue.toString(),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall!
+                                      .copyWith(
+                                        fontWeight: FontWeight.w500,
                                       ),
-                                    ),
-                                  ],
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ],
                             ),
                           ],
                         ),
-                      ),
+                      ],
                     ),
-                  );
-                },
+                  ),
+                ),
               );
-      },
-      error: (error, stack) =>
-          Center(child: Text('${HandText.errorMessage} $error')),
-      loading: () => screen_shimmer(120, 800),
-    );
+            },
+          );
   }
 }

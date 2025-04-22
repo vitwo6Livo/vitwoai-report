@@ -6,245 +6,305 @@ import 'package:vitwoai_report/src/purchaseRegister/presentation/detailsPage/ven
 import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
 
-class PurchaseOrderList extends ConsumerWidget {
+class PurchaseOrderList extends ConsumerStatefulWidget {
   const PurchaseOrderList({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<PurchaseOrderList> createState() => _PurchaseOrderListState();
+}
+
+class _PurchaseOrderListState extends ConsumerState<PurchaseOrderList> {
+  final ScrollController _scrollController = ScrollController();
+  bool _isLoadingMore = false;
+
+  final purchaseRegisterVendorWiseListStateProvider =
+      StateProvider<Map<String, dynamic>>((ref) => {
+            'content': [],
+            'last': false,
+          });
+  final currentPageProvider = StateProvider<int>((ref) => 0);
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+              _scrollController.position.maxScrollExtent &&
+          !_isLoadingMore) {
+        final isLastPage =
+            ref.read(purchaseRegisterVendorWiseListStateProvider)['last'] ??
+                false;
+        if (!isLastPage) {
+          _loadMoreData();
+        }
+      }
+    });
+  }
+
+  void _loadMoreData() async {
+    setState(() {
+      _isLoadingMore = true;
+    });
+
+    final currentPage = ref.read(currentPageProvider);
+    final nextPage = currentPage + 1;
+
+    final newData =
+        await ref.read(purchesRegisterVendorWiseProvider(nextPage).future);
+
+    ref
+        .read(purchaseRegisterVendorWiseListStateProvider.notifier)
+        .update((state) {
+      final updatedContent = [
+        ...state['content'],
+        ...newData.content,
+      ];
+      return {
+        'content': updatedContent,
+        'last': newData.lastPage,
+      };
+    });
+
+    ref.read(currentPageProvider.notifier).state = nextPage;
+
+    setState(() {
+      _isLoadingMore = false;
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final purchaseRegisterVendorWiseList =
-        ref.watch(purchesRegisterVendorWiseProvider);
-    return purchaseRegisterVendorWiseList.when(
-      data: (data) {
-        return data.content.isEmpty
-            ? Center(
-                child: Text(HandText.noData),
-              )
-            : ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: data.content.length,
-                itemBuilder: (context, index) {
-                  return InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => VendorWiseDetails(
-                                  data: data.content, index: index)));
-                    },
-                    child: Card(
-                      color: AppColor.cardBackgroundColor,
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 8),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+        ref.watch(purchaseRegisterVendorWiseListStateProvider);
+
+    return Expanded(
+      child: Column(
+        children: [
+          Expanded(
+            child: purchaseRegisterVendorWiseList['content'].isEmpty
+                ? ref.watch(purchesRegisterVendorWiseProvider(0)).when(
+                      data: (data) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          ref
+                              .read(purchaseRegisterVendorWiseListStateProvider
+                                  .notifier)
+                              .state = {
+                            'content': data.content,
+                            'last': data.lastPage,
+                          };
+                        });
+                        return _buildListView(
+                            purchaseRegisterVendorWiseList['content']);
+                      },
+                      error: (error, stack) => Center(
+                          child: Text('${HandText.errorMessage} $error')),
+                      loading: () => screen_shimmer(120, 800),
+                    )
+                : _buildListView(purchaseRegisterVendorWiseList['content']),
+          ),
+          if (_isLoadingMore)
+            const Center(
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 16.0),
+                child: CircularProgressIndicator(),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildListView(List<dynamic> content) {
+    return content.isEmpty
+        ? Center(child: Text(HandText.noData))
+        : ListView.builder(
+            controller: _scrollController,
+            itemCount: content.length,
+            itemBuilder: (context, index) {
+              return InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => VendorWiseDetails(
+                        data: content,
+                        index: index,
                       ),
-                      elevation: 4,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                    ),
+                  );
+                },
+                child: Card(
+                  color: AppColor.cardBackgroundColor,
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  elevation: 4,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.person_2_outlined,
-                                  color: AppColor.cardDataIconColor,
-                                ),
-                                const SizedBox(width: 8),
-                                Expanded(
-                                  child: Text(
-                                    data.content[index].vendorName,
+                            SizedBox(
+                              width: 150,
+                              child: Text(
+                                content[index].vendorName.toString(),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall!
+                                    .copyWith(
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Text.rich(
+                              TextSpan(
+                                text: HandText.prInvoiceQuantity,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall!
+                                    .copyWith(
+                                      color: AppColor.cardDataKeyColor,
+                                    ),
+                                children: [
+                                  TextSpan(
+                                    text: content[index]
+                                        .invoiceQuantity
+                                        .toString(),
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodySmall!
                                         .copyWith(
                                           fontWeight: FontWeight.w500,
                                         ),
-                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                            const SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Flexible(
-                                  flex: 2,
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.sticky_note_2,
-                                        color: AppColor.cardDataIconColor,
-                                      ),
-                                      const SizedBox(width: 8),
-                                      Expanded(
-                                        child: Text.rich(
-                                          TextSpan(
-                                            text: HandText.prVendorCode,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodySmall!
-                                                .copyWith(
-                                                  color:
-                                                      AppColor.cardDataKeyColor,
-                                                ),
-                                            children: [
-                                              TextSpan(
-                                                text: data
-                                                    .content[index].vendorCode,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodySmall!
-                                                    .copyWith(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Flexible(
-                                  flex: 2,
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.event,
-                                        color: AppColor.cardDataIconColor,
-                                      ),
-                                      const SizedBox(width: 8),
-                                      Expanded(
-                                        child: Text.rich(
-                                          TextSpan(
-                                            text:
-                                                '${HandText.prInvoiceQuantity}\n',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodySmall!
-                                                .copyWith(
-                                                  color:
-                                                      AppColor.cardDataKeyColor,
-                                                ),
-                                            children: [
-                                              TextSpan(
-                                                text: data.content[index]
-                                                    .invoiceQuantity
-                                                    .toString(),
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodySmall!
-                                                    .copyWith(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Flexible(
-                                  flex: 2,
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.manage_accounts,
-                                        color: AppColor.cardDataIconColor,
-                                      ),
-                                      const SizedBox(width: 8),
-                                      Expanded(
-                                        child: Text.rich(
-                                          TextSpan(
-                                            text: HandText.prReceivedQuantity,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodySmall!
-                                                .copyWith(
-                                                  color:
-                                                      AppColor.cardDataKeyColor,
-                                                ),
-                                            children: [
-                                              TextSpan(
-                                                text: data.content[index]
-                                                    .receivedQuantity
-                                                    .toString(),
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodySmall!
-                                                    .copyWith(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Flexible(
-                                  flex: 2,
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.currency_rupee_outlined,
-                                        color: AppColor.cardDataIconColor,
-                                      ),
-                                      // const SizedBox(width: 8),
-                                      Text.rich(
-                                        TextSpan(
-                                          text: '${HandText.prInvoiceValue}\n',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall!
-                                              .copyWith(
-                                                color:
-                                                    AppColor.cardDataKeyColor,
-                                              ),
-                                          children: [
-                                            TextSpan(
-                                              text: data
-                                                  .content[index].invoiceValue
-                                                  .toString(),
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodySmall!
-                                                  .copyWith(
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: 180,
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text.rich(
+                                      TextSpan(
+                                        text: HandText.prVendorCode,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall!
+                                            .copyWith(
+                                              color: AppColor.cardDataKeyColor,
                                             ),
-                                          ],
-                                        ),
+                                        children: [
+                                          TextSpan(
+                                            text: content[index].vendorCode,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodySmall!
+                                                .copyWith(
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                          ),
+                                        ],
                                       ),
-                                    ],
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                    ),
                                   ),
+                                ],
+                              ),
+                            ),
+                            Text.rich(
+                              TextSpan(
+                                text: HandText.prReceivedQuantity,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall!
+                                    .copyWith(
+                                      color: AppColor.cardDataKeyColor,
+                                    ),
+                                children: [
+                                  TextSpan(
+                                    text: content[index]
+                                        .receivedQuantity
+                                        .toString(),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall!
+                                        .copyWith(
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.person,
+                                  color: AppColor.cardDataIconColor,
+                                ),
+                                Text(
+                                  content[index].vendorCode.toString(),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall!
+                                      .copyWith(
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.currency_rupee_outlined,
+                                  color: AppColor.cardDataIconColor,
+                                ),
+                                Text(
+                                  content[index].invoiceValue.toString(),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall!
+                                      .copyWith(
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ],
                             ),
                           ],
                         ),
-                      ),
+                      ],
                     ),
-                  );
-                });
-      },
-      error: (error, stack) =>
-          Center(child: Text('${HandText.errorMessage} $error')),
-      loading: () => screen_shimmer(120, 800),
-    );
+                  ),
+                ),
+              );
+            },
+          );
   }
 }
