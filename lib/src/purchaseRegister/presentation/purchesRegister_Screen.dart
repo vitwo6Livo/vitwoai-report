@@ -9,6 +9,7 @@ import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/itemWi
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/functionalAreaList.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/itemGroupWiseGraph.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/storageLocationList.dart';
+import 'package:vitwoai_report/src/settings/texts.dart';
 import 'prWidget/AllGraph.dart';
 import 'prWidget/productList.dart';
 import 'prWidget/vendorGraph.dart';
@@ -26,6 +27,7 @@ class PurchesregisterScreen extends ConsumerStatefulWidget {
 }
 
 class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
+  final ScrollController _scrollController = ScrollController();
   int selectedIndex = 0; // Track the selected item
   late int selectedIndexMenu;
 
@@ -34,6 +36,24 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
     super.initState();
     selectedIndexMenu = widget.initialTab;
     selectedIndex = selectedIndexMenu;
+
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        // Trigger pagination based on selected tab
+        if (selectedIndex == 0) {
+          // ref.read(productListControllerProvider.notifier).loadMore();
+        } else if (selectedIndex == 1) {
+          // Handle VendorList pagination
+        } // Add other tabs as needed
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   List<Map<String, dynamic>> data = [
@@ -80,6 +100,7 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
           _cardViewPurchase(),
           Flexible(
             child: SingleChildScrollView(
+              controller: _scrollController,
               child: Column(
                 children: [
                   selectedIndex == 0
@@ -208,9 +229,9 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    "Purchase Register",
-                    style: TextStyle(fontSize: 24, color: Colors.white),
+                  Text(
+                    HandText.prTitle,
+                    style: const TextStyle(fontSize: 24, color: Colors.white),
                   ),
                   Row(
                     children: [
@@ -370,9 +391,10 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
                       children: [
                         Column(
                           children: [
-                            const Text(
-                              "Total Amount",
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                            Text(
+                              HandText.prTotalAmount,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
                             ),
                             Text(selectedIndex == 0
                                 ? "1440265.55"
@@ -391,9 +413,10 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
                         ),
                         Column(
                           children: [
-                            const Text(
-                              "Total CGST",
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                            Text(
+                              HandText.prTotalCGST,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
                             ),
                             Text(selectedIndex == 0
                                 ? "2304"
@@ -418,9 +441,10 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
                       children: [
                         Column(
                           children: [
-                            const Text(
-                              "Total SGST",
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                            Text(
+                              HandText.prTotalSGST,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
                             ),
                             Text(selectedIndex == 0
                                 ? "19781.57"
@@ -439,9 +463,9 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
                         ),
                         Column(
                           children: [
-                            const Text(
-                              "Total IGST",
-                              style: TextStyle(
+                            Text(
+                              HandText.prTotalIGST,
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),

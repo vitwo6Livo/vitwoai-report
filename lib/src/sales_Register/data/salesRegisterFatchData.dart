@@ -11,11 +11,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 //All Sales Register Data
 
-final salesRegisterProvider = FutureProvider.family((ref, String key) async {
-  return await fetchSalesRegisterData(key);
-});
+typedef SalesRegisterArgument = ({String key, int page});
 
-Future<SalesAllDetailsmodel> fetchSalesRegisterData(String searchKey) async {
+final salesRegisterProvider =
+    FutureProvider.family<SalesAllDetailsmodel, SalesRegisterArgument>(
+  (ref, params) async {
+    return await fetchSalesRegisterData(params.key, params.page);
+  },
+);
+
+Future<SalesAllDetailsmodel> fetchSalesRegisterData(
+    String searchKey, int pageData) async {
   final accessToken = await getTokenData();
 
   final url = Uri.parse('$baseURL$salesRegisterAllListUrl');
@@ -57,8 +63,8 @@ Future<SalesAllDetailsmodel> fetchSalesRegisterData(String searchKey) async {
         "value": searchKey
       }
     ],
-    "page": 0,
-    "size": 500,
+    "page": pageData,
+    "size": 20,
     "sortDir": "asc",
     "sortBy": "invoice_date"
   };
@@ -85,15 +91,20 @@ Future<SalesAllDetailsmodel> fetchSalesRegisterData(String searchKey) async {
 }
 
 //SO Wise Sales Register Data
+
+typedef SOWiseArgument = ({String key, int page});
+
 final salesRegisterSOProvider =
-    FutureProvider.family((ref, String searchItem) async {
-  return await fetchSalesRegisterSOData(searchData: searchItem);
+    FutureProvider.family<SalesSOwisemodel, SOWiseArgument>(
+        (ref, soParams) async {
+  return await fetchSalesRegisterSOData(
+      searchData: soParams.key, pageData: soParams.page);
 });
 
 Future<SalesSOwisemodel> fetchSalesRegisterSOData({
-  required String searchData,
-  int page = 0,
-  int size = 100,
+  pageData,
+  searchData,
+  int size = 20,
   String sortBy = "Invoice Value",
   String sortDir = "desc",
 }) async {
@@ -102,7 +113,7 @@ Future<SalesSOwisemodel> fetchSalesRegisterSOData({
   final url = Uri.parse('$baseURL$salesRegisterSOWiseUrl');
 
   final Map<String, dynamic> bodyData = {
-    "page": page,
+    "page": pageData,
     "size": size,
     "sortBy": sortBy,
     "sortDir": sortDir,
@@ -131,15 +142,20 @@ Future<SalesSOwisemodel> fetchSalesRegisterSOData({
 }
 
 //Customer Wise Sales Register Data
+
+typedef slCWWiseArgument = ({String key, int page});
+
 final salesRegisterCustomerProvider =
-    FutureProvider.family((ref, String searchItem) async {
-  return await fetchSalesRegisterCustomerData(searchData: searchItem);
+    FutureProvider.family<SalesCustomerwisemodel, slCWWiseArgument>(
+        (ref, params) async {
+  return await fetchSalesRegisterCustomerData(
+      searchData: params.key, pageData: params.page);
 });
 
 Future<SalesCustomerwisemodel> fetchSalesRegisterCustomerData({
-  required String searchData,
-  int page = 0,
-  int size = 100,
+  searchData,
+  pageData,
+  int size = 20,
   String sortBy = "Customer Name",
   String sortDir = "desc",
 }) async {
@@ -148,7 +164,7 @@ Future<SalesCustomerwisemodel> fetchSalesRegisterCustomerData({
   final url = Uri.parse('$baseURL$salesRegisterCustomerWiseUrl');
 
   final Map<String, dynamic> bodyData = {
-    "page": page,
+    "page": pageData,
     "size": size,
     "sortBy": sortBy,
     "sortDir": sortDir,
@@ -177,15 +193,20 @@ Future<SalesCustomerwisemodel> fetchSalesRegisterCustomerData({
 }
 
 //item Wise Sales Register Data
+
+typedef ItemWiseArgument = ({String key, int page});
+
 final salesRegisterItemProvider =
-    FutureProvider.family((ref, String searchItem) async {
-  return await fetchSalesRegisterItemData(searchData: searchItem);
+    FutureProvider.family<Salesitemwisemodel, ItemWiseArgument>(
+        (ref, params) async {
+  return await fetchSalesRegisterItemData(
+      searchData: params.key, pageData: params.page);
 });
 
 Future<Salesitemwisemodel> fetchSalesRegisterItemData({
   required String searchData,
-  int page = 0,
-  int size = 100,
+  pageData,
+  int size = 20,
   String sortBy = "Invoice Value",
   String sortDir = "desc",
 }) async {
@@ -194,7 +215,7 @@ Future<Salesitemwisemodel> fetchSalesRegisterItemData({
   final url = Uri.parse('$baseURL$salesRegisterItemWiseUrl');
 
   final Map<String, dynamic> bodyData = {
-    "page": page,
+    "page": pageData,
     "size": size,
     "sortBy": sortBy,
     "sortDir": sortDir,
@@ -223,15 +244,20 @@ Future<Salesitemwisemodel> fetchSalesRegisterItemData({
 }
 
 //Item Group Wise Sales Register Data
+
+typedef ItemGroupWiseArgument = ({String key, int page});
+
 final salesRegisterItemGroupProvider =
-    FutureProvider.family((ref, String searchItem) async {
-  return await fetchSalesRegisterItemGroupData(searchData: searchItem);
+    FutureProvider.family<SalesItemGroupwisemodel, ItemGroupWiseArgument>(
+        (ref, params) async {
+  return await fetchSalesRegisterItemGroupData(
+      searchData: params.key, pageData: params.page);
 });
 
 Future<SalesItemGroupwisemodel> fetchSalesRegisterItemGroupData({
   required String searchData,
-  int page = 0,
-  int size = 100,
+  pageData,
+  int size = 20,
   String sortBy = "Item Group Name",
   String sortDir = "desc",
 }) async {
@@ -240,7 +266,7 @@ Future<SalesItemGroupwisemodel> fetchSalesRegisterItemGroupData({
   final url = Uri.parse('$baseURL$salesRegisterItemGroupWiseUrl');
 
   final Map<String, dynamic> bodyData = {
-    "page": page,
+    "page": pageData,
     "size": size,
     "sortBy": sortBy,
     "sortDir": sortDir,
@@ -269,15 +295,20 @@ Future<SalesItemGroupwisemodel> fetchSalesRegisterItemGroupData({
 }
 
 //HSN Code Wise Sales Register Data
+
+typedef HSNCodeWiseArgument = ({String key, int page});
+
 final salesRegisterHSNCodeProvider =
-    FutureProvider.family((ref, String searchItem) async {
-  return await fetchSalesRegisterHSNCodeData(searchData: searchItem);
+    FutureProvider.family<SalesHSNCodewisemodel, HSNCodeWiseArgument>(
+        (ref, params) async {
+  return await fetchSalesRegisterHSNCodeData(
+      searchData: params.key, pageData: params.page);
 });
 
 Future<SalesHSNCodewisemodel> fetchSalesRegisterHSNCodeData({
   required String searchData,
-  int page = 0,
-  int size = 100,
+  pageData,
+  int size = 20,
   String sortBy = "HSN Code",
   String sortDir = "desc",
 }) async {
@@ -286,7 +317,7 @@ Future<SalesHSNCodewisemodel> fetchSalesRegisterHSNCodeData({
   final url = Uri.parse('$baseURL$salesRegisterHSNCodeWiseUrl');
 
   final Map<String, dynamic> bodyData = {
-    "page": page,
+    "page": pageData,
     "size": size,
     "sortBy": sortBy,
     "sortDir": sortDir,

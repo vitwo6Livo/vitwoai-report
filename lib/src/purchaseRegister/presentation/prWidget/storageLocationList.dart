@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/purchaseRegister/data/purchesRegister_repository.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/detailsPage/itemGroupWiseDetails.dart';
+import 'package:vitwoai_report/src/settings/texts.dart';
 
 class StorageLocationList extends ConsumerWidget {
   const StorageLocationList({super.key});
@@ -13,9 +14,9 @@ class StorageLocationList extends ConsumerWidget {
         ref.watch(purchesRegisterItemGroupWiseProvider);
     return purchesRegisterItemGroupData.when(
       data: (data) {
-        return data.content.length == 0
-            ? const Center(
-                child: Text("No Data Found"),
+        return data.content.isEmpty
+            ? Center(
+                child: Text(HandText.noData),
               )
             : ListView.builder(
                 shrinkWrap: true,
@@ -81,7 +82,7 @@ class StorageLocationList extends ConsumerWidget {
                                     ),
                                     Text.rich(
                                       TextSpan(
-                                        text: 'Invoice Quantity: \n',
+                                        text: '${HandText.prInvoiceQuantity}\n',
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodySmall!
@@ -112,7 +113,7 @@ class StorageLocationList extends ConsumerWidget {
                                     ),
                                     Text.rich(
                                       TextSpan(
-                                        text: 'Received Quantity: \n',
+                                        text: '${HandText.prReceivedQuantity}\n',
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodySmall!
@@ -149,7 +150,7 @@ class StorageLocationList extends ConsumerWidget {
                                     ),
                                     Text.rich(
                                       TextSpan(
-                                        text: 'Base Value: \n',
+                                        text: '${HandText.prBaseValue}\n',
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodySmall!
@@ -179,7 +180,7 @@ class StorageLocationList extends ConsumerWidget {
                                     ),
                                     Text.rich(
                                       TextSpan(
-                                        text: 'Invoice Value: \n',
+                                        text: '${HandText.prInvoiceValue}\n',
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodySmall!
@@ -245,7 +246,7 @@ class StorageLocationList extends ConsumerWidget {
               );
       },
       loading: () => screen_shimmer(120, 800),
-      error: (error, stackTrace) => Text('Error: $error'),
+      error: (error, stackTrace) => Text('${HandText.errorMessage} $error'),
     );
   }
 }

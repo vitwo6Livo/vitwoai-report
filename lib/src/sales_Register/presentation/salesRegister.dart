@@ -9,6 +9,7 @@ import 'package:vitwoai_report/src/sales_Register/presentation/SRWidget/itemWise
 import 'package:vitwoai_report/src/sales_Register/presentation/SRWidget/soWiseList.dart';
 import 'package:vitwoai_report/src/sales_Register/presentation/lineChart.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
+import 'package:vitwoai_report/src/settings/texts.dart';
 
 final isClickedProviderSales = StateProvider<bool>((ref) => false);
 
@@ -33,9 +34,9 @@ class SalesRegister extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Text(
-          "Sales Register",
-          style: TextStyle(color: Colors.white),
+        title: Text(
+          HandText.srTitle,
+          style: const TextStyle(color: Colors.white),
         ),
         actions: [
           IconButton(
@@ -93,7 +94,7 @@ class SalesRegister extends ConsumerWidget {
                     ),
                     child: ListTile(
                       title: Text(
-                        "All",
+                        HandText.srOptionAll,
                         style: Theme.of(context)
                             .textTheme
                             .bodyMedium!
@@ -142,7 +143,7 @@ class SalesRegister extends ConsumerWidget {
                     ),
                     child: ListTile(
                       title: Text(
-                        "So Wise",
+                        HandText.srOptionSOW,
                         style: Theme.of(context)
                             .textTheme
                             .bodyMedium!
@@ -191,7 +192,7 @@ class SalesRegister extends ConsumerWidget {
                     ),
                     child: ListTile(
                       title: Text(
-                        "Customer Wise",
+                        HandText.srOptionCustomerW,
                         style: Theme.of(context)
                             .textTheme
                             .bodyMedium!
@@ -240,7 +241,7 @@ class SalesRegister extends ConsumerWidget {
                     ),
                     child: ListTile(
                       title: Text(
-                        "Item Wise",
+                        HandText.srOptionItemW,
                         style: Theme.of(context)
                             .textTheme
                             .bodyMedium!
@@ -289,7 +290,7 @@ class SalesRegister extends ConsumerWidget {
                     ),
                     child: ListTile(
                       title: Text(
-                        "Item Group Wise",
+                        HandText.srOptionItemGW,
                         style: Theme.of(context)
                             .textTheme
                             .bodyMedium!
@@ -341,7 +342,7 @@ class SalesRegister extends ConsumerWidget {
                     ),
                     child: ListTile(
                       title: Text(
-                        "HSN Code Wise",
+                        HandText.srOptionHSNCW,
                         style: Theme.of(context)
                             .textTheme
                             .bodyMedium!

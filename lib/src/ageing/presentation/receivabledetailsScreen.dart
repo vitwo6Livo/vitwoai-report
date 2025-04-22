@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
+import 'package:vitwoai_report/src/settings/texts.dart';
 
 class ReceivableDetailsScreen extends StatelessWidget {
   final List<dynamic> data;
@@ -28,9 +29,9 @@ class ReceivableDetailsScreen extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        title: const Text(
-          "Details Receivable",
-          style: TextStyle(color: Colors.white),
+        title: Text(
+          HandText.receivableDetails,
+          style: const TextStyle(color: Colors.white),
         ),
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -75,7 +76,7 @@ class ReceivableDetailsScreen extends StatelessWidget {
                       children: [
                         Text.rich(
                           TextSpan(
-                              text: "Customer Code: \n",
+                              text: "${HandText.receivableCustomerCode} \n",
                               style: const TextStyle(
                                 fontSize: 14,
                                 color: Colors.grey,
@@ -91,7 +92,7 @@ class ReceivableDetailsScreen extends StatelessWidget {
                         ),
                         Text.rich(
                           TextSpan(
-                              text: "Total Due: \n",
+                              text: "${HandText.receivableTotalDue} \n",
                               style: const TextStyle(
                                 fontSize: 14,
                                 color: Colors.grey,
@@ -115,7 +116,7 @@ class ReceivableDetailsScreen extends StatelessWidget {
                       children: [
                         Text.rich(
                           TextSpan(
-                              text: "On Account Due: \n",
+                              text: "${HandText.receivableOnAccountDue} \n",
                               style: const TextStyle(
                                 fontSize: 14,
                                 color: Colors.grey,
@@ -131,7 +132,7 @@ class ReceivableDetailsScreen extends StatelessWidget {
                         ),
                         Text.rich(
                           TextSpan(
-                              text: "Net Due: \n",
+                              text: "${HandText.receivableNetDue} \n",
                               style: const TextStyle(
                                 fontSize: 14,
                                 color: Colors.grey,
@@ -164,9 +165,9 @@ class ReceivableDetailsScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "Due Amounts",
-                    style: TextStyle(
+                  Text(
+                    HandText.receivableDueAmounts,
+                    style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
                         color: Colors.green),
@@ -263,9 +264,9 @@ class ReceivableDetailsScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "On Account Amounts",
-                    style: TextStyle(
+                  Text(
+                    HandText.receivableOnAccountAmounts,
+                    style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
                         color: Colors.red),

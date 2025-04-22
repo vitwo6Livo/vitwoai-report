@@ -8,11 +8,12 @@ import 'package:vitwoai_report/src/purchaseRegister/model/vendorWiseModal.dart';
 import 'package:vitwoai_report/src/utils/api_urls.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final purchesRegisterProvider = FutureProvider((ref) async {
-  return await fetchPurchesRegisterData();
+final purchesRegisterProvider =
+    FutureProvider.family<AllPurchasemodel, int>((ref, page) async {
+  return await fetchPurchesRegisterData(page);
 });
 
-Future<AllPurchasemodel> fetchPurchesRegisterData() async {
+Future<AllPurchasemodel> fetchPurchesRegisterData(int pagedata) async {
   final accessToken = await getTokenData();
 
   final url = Uri.parse('$baseURL$purchaseRegisterAllListUrl');
@@ -47,8 +48,8 @@ Future<AllPurchasemodel> fetchPurchesRegisterData() async {
     ],
     "groupBy": [],
     "filter": [],
-    "page": 0,
-    "size": 500,
+    "page": pagedata,
+    "size": 10,
     "sortBy": "grn.vendors.vendor_code",
     "sortDir": "asc"
   };

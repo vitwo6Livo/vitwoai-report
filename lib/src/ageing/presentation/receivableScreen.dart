@@ -1,16 +1,86 @@
 import 'package:flutter/material.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:vitwoai_report/golobal-Widget/rangeCalendar.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/ageing/data/receivableAnalytics_repositry.dart';
 import 'package:vitwoai_report/src/ageing/presentation/receivabledetailsScreen.dart';
+import 'package:vitwoai_report/src/settings/texts.dart';
 
 final isClickedProviderReceivable = StateProvider<bool>((ref) => false);
 
-class ReceivableAnalyticsScreen extends ConsumerWidget {
+class ReceivableAnalyticsScreen extends ConsumerStatefulWidget {
   const ReceivableAnalyticsScreen({super.key});
+
+  @override
+  ConsumerState<ReceivableAnalyticsScreen> createState() =>
+      _ReceivableAnalyticsScreenState();
+}
+
+class _ReceivableAnalyticsScreenState
+    extends ConsumerState<ReceivableAnalyticsScreen> {
+  final ScrollController _scrollController = ScrollController();
+  bool _isLoadingMore = false;
+
+  final customerListStateProvider =
+      StateProvider<Map<String, dynamic>>((ref) => {
+            'content': [],
+            'last': false,
+          });
+  final currentPageProvider = StateProvider<int>((ref) => 0);
+
+  @override
+  void initState() {
+    super.initState();
+    // Add listener to detect when user reaches the end of the list
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+              _scrollController.position.maxScrollExtent &&
+          !_isLoadingMore) {
+        final isLastPage = ref.read(customerListStateProvider)['last'] ?? false;
+        if (!isLastPage) {
+          _loadMoreData();
+        }
+      }
+    });
+  }
+
+  void _loadMoreData() async {
+    setState(() {
+      _isLoadingMore = true;
+    });
+
+    final currentPage = ref.read(currentPageProvider);
+    final nextPage = currentPage + 1;
+
+    final newData =
+        await ref.read(receivablesCustomerProvider(nextPage).future);
+
+    // Update the state with new data
+    ref.read(customerListStateProvider.notifier).update((state) {
+      final updatedContent = [
+        ...state['content'],
+        ...newData.content,
+      ];
+      return {
+        'content': updatedContent,
+        'last': newData.lastPage,
+      };
+    });
+
+    // Update the current page
+    ref.read(currentPageProvider.notifier).state = nextPage;
+
+    setState(() {
+      _isLoadingMore = false;
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   void showDateDialog(BuildContext context) {
     showDialog(
@@ -19,76 +89,17 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
         initialFromDate: DateTime.now(),
         initialToDate: DateTime.now(),
         onSave: (fromDate, toDate) {
-          // Navigator.pop(context);
+          // Handle date range selection
+          Navigator.pop(context);
         },
       ),
     );
   }
 
-  void showChartsPopup(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Container(
-            padding: const EdgeInsets.all(16),
-            width: MediaQuery.of(context).size.width * 0.9,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text(
-                  'Charts Overview',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.2),
-                        spreadRadius: 3,
-                        blurRadius: 5,
-                        offset: const Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  padding: const EdgeInsets.all(8),
-                  child: const SizedBox(
-                    height: 200,
-                    child: PieChartWidget(),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  child: const Text('Close'),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final receivablesAsync = ref.watch(receivablesTotalDueProvider);
-    final coustomerListProvider = ref.watch(receivablesCustomerProvider(0));
+    final coustomerListProvider = ref.watch(customerListStateProvider);
 
     return Scaffold(
       backgroundColor: const Color(0xffff9f9f9),
@@ -114,9 +125,9 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'Receivable Analytics',
-                        style: TextStyle(
+                      Text(
+                        HandText.receivableTitle,
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -148,7 +159,7 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "₹$totalOfTotalDue",
+                            "${HandText.inr}$totalOfTotalDue",
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 32,
@@ -158,13 +169,13 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                           const SizedBox(height: 8),
                           Row(
                             children: [
-                              const Text(
-                                'On account due',
-                                style: TextStyle(color: Colors.white70),
+                              Text(
+                                HandText.receivableOnAccountDue,
+                                style: const TextStyle(color: Colors.white70),
                               ),
                               const Spacer(),
                               Text(
-                                "₹$totalOnAccountDue",
+                                "${HandText.inr}$totalOnAccountDue",
                                 style: const TextStyle(color: Colors.white),
                               ),
                             ],
@@ -172,13 +183,13 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                           const SizedBox(height: 8),
                           Row(
                             children: [
-                              const Text(
-                                'Net due',
-                                style: TextStyle(color: Colors.white70),
+                              Text(
+                                HandText.receivableNetDue,
+                                style: const TextStyle(color: Colors.white70),
                               ),
                               const Spacer(),
                               Text(
-                                "₹$netDue",
+                                "${HandText.inr}$netDue",
                                 style: const TextStyle(color: Colors.white),
                               ),
                             ],
@@ -248,7 +259,7 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                       ),
                     ),
                     error: (error, stack) =>
-                        Center(child: Text('Error: $error')),
+                        Center(child: Text('${HandText.errorMessage} $error')),
                   ),
                 ],
               ),
@@ -264,17 +275,17 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  coustomerListProvider.when(
-                    data: (value) {
-                      return Text(
-                        "Total Records: ${value.totalElements.toString()}",
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      );
-                    },
-                    error: (error, stack) =>
-                        Center(child: Text('Error: $error')),
-                    loading: () => const Text("Loding.."),
-                  ),
+                  ref.watch(receivablesCustomerProvider(0)).when(
+                        data: (value) {
+                          return Text(
+                            "${HandText.totalRecords} ${value.totalElements.toString()}",
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          );
+                        },
+                        error: (error, stack) => Center(
+                            child: Text('${HandText.errorMessage} $error')),
+                        loading: () => Text(HandText.loadingMessage),
+                      ),
                   const SizedBox(height: 8),
                   Row(
                     children: [
@@ -284,18 +295,19 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                         child: Container(
                           margin: const EdgeInsets.only(right: 8),
                           height: 40,
-                          child: const TextField(
+                          child: TextField(
                             decoration: InputDecoration(
-                              hintText: "Search",
-                              prefixIcon: Icon(Icons.search),
-                              border: OutlineInputBorder(),
-                              focusedBorder: OutlineInputBorder(
+                              hintText: HandText.searchBox,
+                              prefixIcon: const Icon(Icons.search),
+                              border: const OutlineInputBorder(),
+                              focusedBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Color.fromARGB(255, 104, 181, 244),
                                   width: 2.0,
                                 ),
                               ),
-                              contentPadding: EdgeInsets.symmetric(vertical: 8),
+                              contentPadding:
+                                  const EdgeInsets.symmetric(vertical: 8),
                             ),
                             cursorHeight: 20,
                             cursorColor: Colors.blue,
@@ -320,182 +332,148 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                 ],
               ),
             ),
-            coustomerListProvider.when(
-              data: (data) {
-                return Expanded(
-                  child: ListView.builder(
-                    itemCount: data.content.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        ReceivableDetailsScreen(
-                                            data: data.content, index: index)));
-                          },
-                          child: Card(
-                            color: Colors.white,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    data.content[index].customerName,
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 12,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text.rich(
-                                        TextSpan(
-                                            text: "Customer Code: \n",
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.grey,
-                                            ),
-                                            children: [
-                                              TextSpan(
-                                                text: data
-                                                    .content[index].customerCode
-                                                    .toString(),
-                                                style: const TextStyle(
-                                                    fontSize: 16,
-                                                    color: Colors.black),
-                                              )
-                                            ]),
-                                      ),
-                                      Text.rich(
-                                        TextSpan(
-                                            text: "Total Due: \n",
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.grey,
-                                            ),
-                                            children: [
-                                              TextSpan(
-                                                text: data
-                                                    .content[index].totalDue
-                                                    .toString(),
-                                                style: const TextStyle(
-                                                    fontSize: 16,
-                                                    color: Colors.black),
-                                              )
-                                            ]),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text.rich(
-                                        TextSpan(
-                                            text: "On Account Due: \n",
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.grey,
-                                            ),
-                                            children: [
-                                              TextSpan(
-                                                text: data
-                                                    .content[index].onAccountDue
-                                                    .toString(),
-                                                style: const TextStyle(
-                                                    fontSize: 16,
-                                                    color: Colors.black),
-                                              )
-                                            ]),
-                                      ),
-                                      Text.rich(
-                                        TextSpan(
-                                            text: "Net Due: \n",
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.grey,
-                                            ),
-                                            children: [
-                                              TextSpan(
-                                                text: data.content[index].netDue
-                                                    .toString(),
-                                                style: const TextStyle(
-                                                    fontSize: 16,
-                                                    color: Colors.black),
-                                              )
-                                            ]),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                );
-              },
-              error: (error, stack) => Center(child: Text('Error: $error')),
-              loading: () => screen_shimmer(120, 800),
-            )
+            Expanded(
+              child: coustomerListProvider['content'].isEmpty
+                  ? ref.watch(receivablesCustomerProvider(0)).when(
+                      data: (data) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          ref.read(customerListStateProvider.notifier).state = {
+                            'content': data.content,
+                            'last': data.lastPage,
+                          };
+                        });
+                        return _buildListView(coustomerListProvider['content']);
+                      },
+                      error: (error, stack) =>
+                          Center(child: Text('Error: $error')),
+                      loading: () => screen_shimmer(120, 800))
+                  : _buildListView(coustomerListProvider['content']),
+            ),
+            if (_isLoadingMore)
+              const Center(
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: 16.0),
+                  child: CircularProgressIndicator(),
+                ),
+              )
           ],
         ),
       ),
     );
   }
-}
 
-class PieChartWidget extends StatelessWidget {
-  const PieChartWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return PieChart(
-      PieChartData(
-        sections: [
-          PieChartSectionData(
-            value: 40,
-            color: Colors.blue,
-            title: '40%',
-            titleStyle: const TextStyle(fontSize: 14, color: Colors.white),
+  Widget _buildListView(List<dynamic> content) {
+    return ListView.builder(
+      controller: _scrollController,
+      itemCount: content.length,
+      itemBuilder: (context, index) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: InkWell(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ReceivableDetailsScreen(
+                          data: content, index: index)));
+            },
+            child: Card(
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      content[index].customerName,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text.rich(
+                          TextSpan(
+                              text: "${HandText.receivableCustomerCode} \n",
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: content[index].customerCode.toString(),
+                                  style: const TextStyle(
+                                      fontSize: 16, color: Colors.black),
+                                )
+                              ]),
+                        ),
+                        Text.rich(
+                          TextSpan(
+                              text: "${HandText.receivableTotalDue} \n",
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: content[index].totalDue.toString(),
+                                  style: const TextStyle(
+                                      fontSize: 16, color: Colors.black),
+                                )
+                              ]),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text.rich(
+                          TextSpan(
+                              text: "${HandText.receivableOnAccountDue} \n",
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: content[index].onAccountDue.toString(),
+                                  style: const TextStyle(
+                                      fontSize: 16, color: Colors.black),
+                                )
+                              ]),
+                        ),
+                        Text.rich(
+                          TextSpan(
+                              text: "${HandText.receivableNetDue} \n",
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: content[index].netDue.toString(),
+                                  style: const TextStyle(
+                                      fontSize: 16, color: Colors.black),
+                                )
+                              ]),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
           ),
-          PieChartSectionData(
-            value: 30,
-            color: Colors.green,
-            title: '30%',
-            titleStyle: const TextStyle(fontSize: 14, color: Colors.white),
-          ),
-          PieChartSectionData(
-            value: 20,
-            color: Colors.orange,
-            title: '20%',
-            titleStyle: const TextStyle(fontSize: 14, color: Colors.white),
-          ),
-          PieChartSectionData(
-            value: 10,
-            color: Colors.red,
-            title: '10%',
-            titleStyle: const TextStyle(fontSize: 14, color: Colors.white),
-          ),
-        ],
-        sectionsSpace: 2,
-        centerSpaceRadius: 40,
-      ),
+        );
+      },
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:vitwoai_report/src/login/data/loginApi.dart';
+import 'package:vitwoai_report/src/settings/texts.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -47,9 +48,9 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text(
-                    "Welcome Back!",
-                    style: TextStyle(
+                  Text(
+                    HandText.greetings,
+                    style: const TextStyle(
                       fontSize: 30,
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -67,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: TextField(
                       controller: usernameController,
                       decoration: InputDecoration(
-                        hintText: "Username",
+                        hintText: HandText.loginUsername,
                         labelStyle: const TextStyle(color: Colors.white),
                         filled: true,
                         fillColor: Colors.white.withOpacity(0.8),
@@ -85,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       controller: passwordController,
                       obscureText: true,
                       decoration: InputDecoration(
-                        hintText: 'Password',
+                        hintText: HandText.loginPassword,
                         labelStyle: const TextStyle(color: Colors.white),
                         filled: true,
                         fillColor: Colors.white.withOpacity(0.8),
@@ -118,9 +119,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      child: const Text(
-                        'Login',
-                        style: TextStyle(color: Colors.white),
+                      child: Text(
+                        HandText.loginBttn,
+                        style: const TextStyle(color: Colors.white),
                       ),
                     ),
                   ),

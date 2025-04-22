@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/purchaseRegister/data/purchesRegister_repository.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/detailsPage/vendorWiseDetails.dart';
+import 'package:vitwoai_report/src/settings/texts.dart';
 
 class PurchaseOrderList extends ConsumerWidget {
   const PurchaseOrderList({super.key});
@@ -13,9 +14,9 @@ class PurchaseOrderList extends ConsumerWidget {
         ref.watch(purchesRegisterVendorWiseProvider);
     return purchaseRegisterVendorWiseList.when(
       data: (data) {
-        return data.content.length == 0
-            ? const Center(
-                child: Text("No Data Found"),
+        return data.content.isEmpty
+            ? Center(
+                child: Text(HandText.noData),
               )
             : ListView.builder(
                 shrinkWrap: true,
@@ -80,7 +81,7 @@ class PurchaseOrderList extends ConsumerWidget {
                                       Expanded(
                                         child: Text.rich(
                                           TextSpan(
-                                            text: 'Vendor Code: ',
+                                            text: HandText.prVendorCode,
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .bodySmall!
@@ -118,7 +119,8 @@ class PurchaseOrderList extends ConsumerWidget {
                                       Expanded(
                                         child: Text.rich(
                                           TextSpan(
-                                            text: 'Invoice Quantity: \n',
+                                            text:
+                                                '${HandText.prInvoiceQuantity}\n',
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .bodySmall!
@@ -163,7 +165,7 @@ class PurchaseOrderList extends ConsumerWidget {
                                       Expanded(
                                         child: Text.rich(
                                           TextSpan(
-                                            text: 'Received Quantity: ',
+                                            text: HandText.prReceivedQuantity,
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .bodySmall!
@@ -201,7 +203,7 @@ class PurchaseOrderList extends ConsumerWidget {
                                       // const SizedBox(width: 8),
                                       Text.rich(
                                         TextSpan(
-                                          text: 'Invoice Value: \n',
+                                          text: '${HandText.prInvoiceValue}\n',
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodySmall!
@@ -235,7 +237,8 @@ class PurchaseOrderList extends ConsumerWidget {
                   );
                 });
       },
-      error: (error, stack) => Center(child: Text('Error: $error')),
+      error: (error, stack) =>
+          Center(child: Text('${HandText.errorMessage} $error')),
       loading: () => screen_shimmer(120, 800),
     );
   }
