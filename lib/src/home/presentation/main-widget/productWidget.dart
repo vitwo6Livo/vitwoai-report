@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/home/data/dashboardDataFatch.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
 import '../../../settings/colors.dart';
@@ -55,9 +56,7 @@ class ProductWidget extends ConsumerWidget {
                   );
                 },
                 error: (error, stack) => Center(child: Text('Error: $error')),
-                loading: () => const Center(
-                      child: CircularProgressIndicator(),
-                    ))
+                loading: () => screen_shimmer(50, 800))
           ],
         ),
       ),

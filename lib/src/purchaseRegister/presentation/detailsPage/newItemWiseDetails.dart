@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
+import 'package:vitwoai_report/src/settings/texts.dart';
 
 class newItemWiseDetailsScreen extends StatelessWidget {
   final List<dynamic> data;
@@ -13,9 +14,9 @@ class newItemWiseDetailsScreen extends StatelessWidget {
     final item = data[index];
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Item Details",
-          style: TextStyle(color: Colors.white),
+        title:  Text(
+          HandText.prItemWiseDetailsTitle,
+          style:const TextStyle(color: Colors.white),
         ),
         iconTheme: const IconThemeData(color: Colors.white),
         flexibleSpace: Container(
@@ -33,7 +34,7 @@ class newItemWiseDetailsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildSectionHeader("Item Information"),
+            _buildSectionHeader(HandText.prItemW_ItemInfo),
             _buildCard([
               _buildDetailRow(Icons.qr_code, "Item Code", item.itemCode),
               _buildDetailRow(Icons.label, "Item Name", item.itemName),
@@ -44,7 +45,7 @@ class newItemWiseDetailsScreen extends StatelessWidget {
                   Icons.confirmation_number, "HSN Code", item.HSNCode),
             ]),
             const SizedBox(height: 16),
-            _buildSectionHeader("Quantity & Value"),
+            _buildSectionHeader(HandText.prItemWQtyVal),
             _buildCard([
               _buildDetailRow(
                   Icons.playlist_add_check, "PO Quantity", item.poQuantity),
@@ -60,7 +61,7 @@ class newItemWiseDetailsScreen extends StatelessWidget {
                   Icons.price_check, "Invoice Value", item.invoiceValue),
             ]),
             const SizedBox(height: 16),
-            _buildSectionHeader("Tax Summary"),
+            _buildSectionHeader(HandText.prItemWTaxAmt),
             _buildCard([
               Row(
                 children: [

@@ -91,7 +91,35 @@ class HandText {
 
   //////////////////// Purchase Register /////////////////////////////
   static String prTitle = 'Purchase Register';
+  // Details
+  // Details - All
   static String prAllDetailsTitle = 'Purchase Register Details';
+  static String prAllVendor = "Vendor Information";
+  static String prAllPO = "Purchase Order Details";
+  static String prAllUOM_ItemInfo = "UOM & Item Info";
+  static String prAllTaxSummary = "Tax Summary";
+//Details- HSN Wise
+  static String prHSNWiseDetailsTitle = "HSN Code Details";
+  static String prHSNCodeInfo = "HSN Code Info";
+  static String prHSNQtyVal = "Quantity & Value";
+  static String prHSNTaxSummary = "Tax Summary";
+  //Details- Item Wise
+  static String prItemWiseDetailsTitle = "Item Wise Details";
+  static String prItemWQtyVal = "Quantity & Value";
+  static String prItemW_ItemInfo = "Item Information";
+  static String prItemWTaxAmt = "Tax Summary";
+  //Details- Item Group Wise
+  static String prItemGWiseDetailsTitle = "Item Group Details";
+  static String prItemGWQtyVal = "Quantity & Value";
+  static String prItemGW_ItemInfo = "Item Group Info";
+  static String prItemGWTaxAmt = "Tax Summary";
+  //Details- Vendor Wise
+  static String prVendorDetailsTitle = "Vendor Wise Details";
+  static String prVendorInfoDetails = "Vendor Information";
+  static String prVendorOrderQty = "Order & Quantity Details";
+  static String prVendor_ItemInfo = "Item Group Info";
+  static String prVendorTaxAmt = "Tax Summary";
+
   // Code
   static String prHSNCode = 'HSN Code: ';
   static String prItemCode = 'Item Code: ';
@@ -117,6 +145,22 @@ class HandText {
   static String srItemGroupWiseTitle = "Item Group Wise";
   static String srItemWiseTitle = "Item Wise";
   static String srSOWiseTitle = "SO Wise";
+  // Details
+  //Details- HSN Wise
+  static String srHSNWiseDetailsTitle = "Sales HSN Code Details";
+  static String srHSNItemDetails = "Item Details";
+  static String srHSNTaxAmt = "Tax & Amounts";
+  //Details- Item Wise
+  static String srItemWiseDetailsTitle = "Sales Item Code Details";
+  static String srItemWQtyVal = "Quantity & Value";
+  static String srItemW_ItemInfo = "Item Info";
+  static String srItemWTaxAmt = "Tax & Amounts";
+  //Details- Item Group Wise
+  static String srItemGWiseDetailsTitle = "Sales Item Group Details";
+  static String srItemGWQtyVal = "Quantity & Value";
+  static String srItemGW_ItemInfo = "Item Info";
+  static String srItemGWTaxAmt = "Tax & Amounts";
+
   //Options
   static String srOptionAll = 'All';
   static String srOptionSOW = "So Wise";

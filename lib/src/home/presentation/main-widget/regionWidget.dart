@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/home/data/dashboardDataFatch.dart';
 
 class RegionWidget extends ConsumerWidget {
@@ -26,42 +27,39 @@ class RegionWidget extends ConsumerWidget {
             ),
             const SizedBox(height: 5),
             trandingRegionList.when(
-              data: (data) {
-                return ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: data['topList'].length,
-                  itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        ListTile(
-                          leading: CircleAvatar(
-                            backgroundColor: Colors.purple[200],
-                            radius: 8,
+                data: (data) {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: data['topList'].length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          ListTile(
+                            leading: CircleAvatar(
+                              backgroundColor: Colors.purple[200],
+                              radius: 8,
+                            ),
+                            title: Text(
+                              data['topList'][index]['Region'],
+                              style: Theme.of(context).textTheme.bodyMedium!,
+                            ),
+                            trailing: Text(
+                              data['topList'][index]['Total Price'].toString(),
+                              style: Theme.of(context).textTheme.bodySmall!,
+                            ),
                           ),
-                          title: Text(
-                            data['topList'][index]['Region'],
-                            style: Theme.of(context).textTheme.bodyMedium!,
+                          const Divider(
+                            height: 1,
+                            thickness: 0,
                           ),
-                          trailing: Text(
-                            data['topList'][index]['Total Price'].toString(),
-                            style: Theme.of(context).textTheme.bodySmall!,
-                          ),
-                        ),
-                        const Divider(
-                          height: 1,
-                          thickness: 0,
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-              error: (error, stack) => Center(child: Text('Error: $error')),
-              loading: () => const Center(
-                child: CircularProgressIndicator(),
-              ),
-            ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                error: (error, stack) => Center(child: Text('Error: $error')),
+                loading: () => screen_shimmer(50, 800)),
           ],
         ),
       ),

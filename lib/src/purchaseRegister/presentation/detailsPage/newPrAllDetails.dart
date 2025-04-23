@@ -41,7 +41,7 @@ class newAllPRDetailsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildSectionHeader("Vendor Information"),
+            _buildSectionHeader(HandText.prAllVendor),
             _buildCard([
               _buildDetailRow(
                   Icons.person, "Vendor Document No:", item.vendorDocumentNo),
@@ -58,7 +58,7 @@ class newAllPRDetailsScreen extends StatelessWidget {
               _buildDetailRow(Icons.qr_code, "GRN IV Code:", item.grnIvCode),
             ]),
             const SizedBox(height: 16),
-            _buildSectionHeader("Purchase Order Details"),
+            _buildSectionHeader(HandText.prAllPO),
             _buildCard([
               _buildDoubleColumn([
                 _buildDetailColumn(
@@ -78,7 +78,7 @@ class newAllPRDetailsScreen extends StatelessWidget {
                   Icons.attach_money, "GRN SUB Total:", item.grnSubTotal),
             ]),
             const SizedBox(height: 16),
-            _buildSectionHeader("UOM & Item Info"),
+            _buildSectionHeader(HandText.prAllUOM_ItemInfo),
             _buildCard([
               _buildDoubleColumn([
                 _buildDetailColumn(Icons.straighten, "Alternate UOM",
@@ -103,7 +103,7 @@ class newAllPRDetailsScreen extends StatelessWidget {
                   item.grnInvoiceItems_GoodCode),
             ]),
             const SizedBox(height: 16),
-            _buildSectionHeader("Tax Summary"),
+            _buildSectionHeader(HandText.prAllTaxSummary),
             _buildCard([
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,

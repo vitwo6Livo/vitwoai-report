@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
+import 'package:vitwoai_report/src/settings/texts.dart';
 
 class newHsnCodeWiseDetailsScreen extends StatelessWidget {
   final List<dynamic> data;
@@ -13,9 +14,9 @@ class newHsnCodeWiseDetailsScreen extends StatelessWidget {
     final item = data[index];
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "HSN Code Details",
-          style: TextStyle(color: Colors.white),
+        title: Text(
+          HandText.prHSNWiseDetailsTitle,
+          style: const TextStyle(color: Colors.white),
         ),
         iconTheme: const IconThemeData(color: Colors.white),
         flexibleSpace: Container(
@@ -33,12 +34,12 @@ class newHsnCodeWiseDetailsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildSectionHeader("HSN Code Info"),
+            _buildSectionHeader(HandText.prHSNCodeInfo),
             _buildCard([
               _buildDetailRow(Icons.qr_code, "HSN Code", item.HSNCode),
             ]),
             const SizedBox(height: 16),
-            _buildSectionHeader("Quantity & Value"),
+            _buildSectionHeader(HandText.prHSNQtyVal),
             _buildCard([
               _buildDetailRow(
                   Icons.playlist_add_check, "PO Quantity", item.poQuantity),
@@ -54,7 +55,7 @@ class newHsnCodeWiseDetailsScreen extends StatelessWidget {
                   Icons.price_check, "Invoice Value", item.invoiceValue),
             ]),
             const SizedBox(height: 16),
-            _buildSectionHeader("Tax Summary"),
+            _buildSectionHeader(HandText.prHSNTaxSummary),
             _buildCard([
               Row(
                 // scrollDirection: Axis.horizontal,

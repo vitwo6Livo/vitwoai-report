@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/sales_Register/data/salesRegisterFatchData.dart';
+import 'package:vitwoai_report/src/sales_Register/presentation/SRDetails/newSRHSNCodeDetails.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
 
@@ -262,37 +263,51 @@ class _HsnCodeWiseScreenState extends ConsumerState<HsnCodeWiseScreen> {
                         itemBuilder: (context, index) {
                           final item =
                               salesRegisterHsnCodeList['content'][index];
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4),
-                            child: Card(
-                              color: Colors.white,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      item.hsnCode,
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
+                          return InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          newSRHsnCodeWiseDetailsScreen(
+                                            data: salesRegisterHsnCodeList[
+                                                'content'],
+                                            index: index,
+                                          )));
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 4),
+                              child: Card(
+                                color: Colors.white,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        item.hsnCode,
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                    ),
-                                    const SizedBox(height: 8),
-                                    _buildTextRow(
-                                        HandText.srSOQuantity, item.soQuantity),
-                                    _buildTextRow(HandText.srInvoiceQuantity,
-                                        item.invoiceQuantity),
-                                    _buildTextRow(
-                                        HandText.srSOValueNet, item.soValueNet),
-                                    _buildTextRow(HandText.srSOValueGross,
-                                        item.soValueGross),
-                                    _buildTextRow(
-                                        HandText.srBaseValue, item.baseValue),
-                                    _buildTextRow(HandText.srInvoiceValue,
-                                        item.invoiceValue),
-                                  ],
+                                      const SizedBox(height: 8),
+                                      _buildTextRow(HandText.srSOQuantity,
+                                          item.soQuantity),
+                                      _buildTextRow(HandText.srInvoiceQuantity,
+                                          item.invoiceQuantity),
+                                      _buildTextRow(HandText.srSOValueNet,
+                                          item.soValueNet),
+                                      _buildTextRow(HandText.srSOValueGross,
+                                          item.soValueGross),
+                                      _buildTextRow(
+                                          HandText.srBaseValue, item.baseValue),
+                                      _buildTextRow(HandText.srInvoiceValue,
+                                          item.invoiceValue),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
