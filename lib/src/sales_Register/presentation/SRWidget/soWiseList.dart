@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/sales_Register/data/salesRegisterFatchData.dart';
+import 'package:vitwoai_report/src/sales_Register/presentation/SRDetails/soWiseDetails.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
 
@@ -257,39 +258,53 @@ class _SalesRegisterSOScreenState extends ConsumerState<SalesRegisterSOScreen> {
                           return Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 8, vertical: 4),
-                            child: Card(
-                              color: Colors.white,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      item.soNumber,
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SoWiseDetails(
+                                      data: salesRegisterSOList['content'],
+                                      index: index,
                                     ),
-                                    const SizedBox(height: 8),
-                                    _buildTextRow(
-                                        HandText.srSODate, item.soDate),
-                                    _buildTextRow(
-                                        HandText.srSOQuantity, item.soQuantity),
-                                    _buildTextRow(HandText.srInvoiceQuantity,
-                                        item.invoiceQuantity),
-                                    _buildTextRow(
-                                        HandText.srSOValueNet, item.soValueNet),
-                                    _buildTextRow(HandText.srSOValueGross,
-                                        item.soValueGross),
-                                    _buildTextRow(
-                                        HandText.srBaseValue, item.baseValue),
-                                    _buildTextRow(HandText.srCGST, item.cgst),
-                                    _buildTextRow(HandText.srSGST, item.sgst),
-                                    _buildTextRow(HandText.srIGST, item.igst),
-                                    _buildTextRow(HandText.srInvoiceValue,
-                                        item.invoiceValue),
-                                  ],
+                                  ),
+                                );
+                              },
+                              child: Card(
+                                color: Colors.white,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        item.soNumber,
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      _buildTextRow(
+                                          HandText.srSODate, item.soDate),
+                                      _buildTextRow(HandText.srSOQuantity,
+                                          item.soQuantity),
+                                      _buildTextRow(HandText.srInvoiceQuantity,
+                                          item.invoiceQuantity),
+                                      _buildTextRow(HandText.srSOValueNet,
+                                          item.soValueNet),
+                                      _buildTextRow(HandText.srSOValueGross,
+                                          item.soValueGross),
+                                      _buildTextRow(
+                                          HandText.srBaseValue, item.baseValue),
+                                      _buildTextRow(HandText.srCGST, item.cgst),
+                                      _buildTextRow(HandText.srSGST, item.sgst),
+                                      _buildTextRow(HandText.srIGST, item.igst),
+                                      _buildTextRow(HandText.srInvoiceValue,
+                                          item.invoiceValue),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
