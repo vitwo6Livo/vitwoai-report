@@ -57,11 +57,16 @@ class newItemGroupWiseDetailsScreen extends StatelessWidget {
             const SizedBox(height: 16),
             _buildSectionHeader("Tax Summary"),
             _buildCard([
-              _buildDetailRow(Icons.percent, "Base Value", item.baseValue),
-              _buildDetailRow(Icons.percent, "IGST", item.igst),
-              _buildDetailRow(Icons.percent, "SGST", item.sgst),
-              _buildDetailRow(Icons.percent, "CGST", item.cgst),
-              _buildDetailRow(Icons.percent, "TDS", item.tds),
+              Row(
+                children: [
+                  _buildDetailColumn(
+                      Icons.percent, "Base Value", item.baseValue),
+                  _buildDetailColumn(Icons.percent, "IGST", item.igst),
+                  _buildDetailColumn(Icons.percent, "SGST", item.sgst),
+                  _buildDetailColumn(Icons.percent, "CGST", item.cgst),
+                  _buildDetailColumn(Icons.percent, "TDS", item.tds),
+                ],
+              ),
             ]),
           ],
         ),
