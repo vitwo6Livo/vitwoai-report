@@ -6,7 +6,7 @@ import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
 
 class newReceivableDetailsScreen extends StatelessWidget {
-  final List<ContentList> data;
+  final List<dynamic> data;
   final int index;
   newReceivableDetailsScreen({
     super.key,

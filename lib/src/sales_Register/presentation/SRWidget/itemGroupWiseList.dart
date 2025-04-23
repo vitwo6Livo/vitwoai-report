@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
@@ -6,52 +7,169 @@ import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
 
 class ItemGroupWiseScreen extends ConsumerStatefulWidget {
+  const ItemGroupWiseScreen({super.key});
+
   @override
-  _ItemGroupWiseScreenState createState() => _ItemGroupWiseScreenState();
+  ConsumerState<ItemGroupWiseScreen> createState() =>
+      _ItemGroupWiseScreenState();
 }
 
 class _ItemGroupWiseScreenState extends ConsumerState<ItemGroupWiseScreen> {
   late final TextEditingController itemGroupWiseSearchController;
+  final ScrollController _scrollController = ScrollController();
+  bool _isLoadingMore = false;
+  bool _isInitialLoading = true;
+
+  // State provider for item group wise sales register list
+  final salesRegisterItemGroupListStateProvider =
+      StateProvider<Map<String, dynamic>>(
+    (ref) => {
+      'content': [],
+      'last': false,
+      'totalElements': 0,
+    },
+  );
+
+  // State provider for current page
+  final currentPageProvider = StateProvider<int>((ref) => 0);
+
+  // State provider for search key
+  final searchKeyProvider = StateProvider<String>((ref) => '');
 
   @override
   void initState() {
     super.initState();
     itemGroupWiseSearchController = TextEditingController();
+    // Fetch initial data
+    _fetchInitialData();
+    // Add scroll listener for pagination
+    _scrollController.addListener(_handleScroll);
+  }
+
+  // Fetch initial data for the first page
+  Future<void> _fetchInitialData() async {
+    setState(() {
+      _isInitialLoading = true;
+    });
+
+    try {
+      final searchKey = ref.read(searchKeyProvider);
+      final data = await ref.read(
+          salesRegisterItemGroupProvider((key: searchKey, page: 0)).future);
+      if (mounted) {
+        ref.read(salesRegisterItemGroupListStateProvider.notifier).state = {
+          'content': data.content,
+          'last': data.lastPage,
+          'totalElements': data.totalElements,
+        };
+        ref.read(currentPageProvider.notifier).state = 0;
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to load data: $e')),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isInitialLoading = false;
+        });
+      }
+    }
+  }
+
+  // Handle scroll to load more data
+  void _handleScroll() {
+    if (_scrollController.position.pixels >=
+            _scrollController.position.maxScrollExtent * 0.9 &&
+        !_isLoadingMore &&
+        !ref.read(salesRegisterItemGroupListStateProvider)['last']) {
+      _loadMoreData();
+    }
+  }
+
+  // Load more data for pagination
+  Future<void> _loadMoreData() async {
+    if (_isLoadingMore) return;
+
+    setState(() {
+      _isLoadingMore = true;
+    });
+
+    try {
+      final searchKey = ref.read(searchKeyProvider);
+      final currentPage = ref.read(currentPageProvider);
+      final nextPage = currentPage + 1;
+      final newData = await ref.read(
+          salesRegisterItemGroupProvider((key: searchKey, page: nextPage))
+              .future);
+
+      if (mounted) {
+        ref
+            .read(salesRegisterItemGroupListStateProvider.notifier)
+            .update((state) {
+          final updatedContent = [...state['content'], ...newData.content];
+          return {
+            'content': updatedContent,
+            'last': newData.lastPage,
+            'totalElements': newData.totalElements,
+          };
+        });
+
+        ref.read(currentPageProvider.notifier).state = nextPage;
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to load more data: $e')),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoadingMore = false;
+        });
+      }
+    }
+  }
+
+  // Handle search with debounce
+  void _handleSearch() {
+    ref.read(searchKeyProvider.notifier).state =
+        itemGroupWiseSearchController.text;
+    ref.invalidate(salesRegisterItemGroupProvider); // Clear cache
+    _fetchInitialData();
   }
 
   @override
   void dispose() {
     itemGroupWiseSearchController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final salesRegisterItemGroupWiseList = ref.watch(
-        salesRegisterItemGroupProvider(
-            itemGroupWiseSearchController.text.toString()));
+    final salesRegisterItemGroupList =
+        ref.watch(salesRegisterItemGroupListStateProvider);
+
     return Scaffold(
-      backgroundColor: AppColor.screenBgColor,
+      backgroundColor: const Color(0xfff9f9f9),
       appBar: AppBar(
         leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(
-              Icons.arrow_back,
-              color: AppColor.appBarIcon,
-            )),
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+        ),
         title: Text(
           HandText.srItemGroupWiseTitle,
           style: TextStyle(color: AppColor.appbarFont),
         ),
         actions: [
           IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.settings,
-                color: AppColor.appBarIcon,
-              )),
+            onPressed: () {},
+            icon: const Icon(Icons.settings, color: Colors.white),
+          ),
         ],
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -77,16 +195,9 @@ class _ItemGroupWiseScreenState extends ConsumerState<ItemGroupWiseScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                salesRegisterItemGroupWiseList.when(
-                  data: (value) {
-                    return Text(
-                      "${HandText.totalRecords} ${value.totalElements.toString()}",
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    );
-                  },
-                  error: (error, stack) =>
-                      Center(child: Text('${HandText.errorMessage} $error')),
-                  loading: () => Text(HandText.loadingMessage),
+                Text(
+                  "${HandText.totalRecords} ${salesRegisterItemGroupList['totalElements']}",
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
                 Row(
@@ -113,7 +224,8 @@ class _ItemGroupWiseScreenState extends ConsumerState<ItemGroupWiseScreen> {
                                 const EdgeInsets.symmetric(vertical: 8),
                           ),
                           cursorHeight: 20,
-                          cursorColor: AppColor.cursonColor,
+                          cursorColor: Colors.blue,
+                          onSubmitted: (_) => _handleSearch(),
                         ),
                       ),
                     ),
@@ -121,12 +233,7 @@ class _ItemGroupWiseScreenState extends ConsumerState<ItemGroupWiseScreen> {
                       fit: FlexFit.tight,
                       flex: 1,
                       child: InkWell(
-                        onTap: () {
-                          setState(() {
-                            ref.read(salesRegisterItemGroupProvider(
-                                itemGroupWiseSearchController.text.toString()));
-                          });
-                        },
+                        onTap: _handleSearch,
                         child: Container(
                           height: 40,
                           decoration: BoxDecoration(
@@ -147,207 +254,77 @@ class _ItemGroupWiseScreenState extends ConsumerState<ItemGroupWiseScreen> {
             ),
           ),
           Expanded(
-            child: salesRegisterItemGroupWiseList.when(
-                data: (data) {
-                  return data.content.isEmpty
-                      ? Center(
-                          child: Text(HandText.noData),
-                        )
-                      : ListView.builder(
-                          itemCount: data.content.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 4),
-                              child: Card(
-                                color: AppColor.cardBackgroundColor,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        data.content[index].itemGroupName,
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+            child: _isInitialLoading
+                ? screen_shimmer(120, 800)
+                : salesRegisterItemGroupList['content'].isEmpty
+                    ? Center(child: Text(HandText.noData))
+                    : ListView.builder(
+                        controller: _scrollController,
+                        itemCount: salesRegisterItemGroupList['content'].length,
+                        itemBuilder: (context, index) {
+                          final item =
+                              salesRegisterItemGroupList['content'][index];
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 4),
+                            child: Card(
+                              color: Colors.white,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      item.itemGroupName,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
                                       ),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
-                                      Text.rich(
-                                        TextSpan(
-                                            text: HandText.srSOQuantity,
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: AppColor.cardDataKeyColor,
-                                            ),
-                                            children: [
-                                              TextSpan(
-                                                text: data
-                                                    .content[index].soQuantity,
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    color: AppColor
-                                                        .cardDataValueColor),
-                                              )
-                                            ]),
-                                      ),
-                                      Text.rich(
-                                        TextSpan(
-                                            text: HandText.srInvoiceQuantity,
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: AppColor.cardDataKeyColor,
-                                            ),
-                                            children: [
-                                              TextSpan(
-                                                text: data.content[index]
-                                                    .invoiceQuantity,
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    color: AppColor
-                                                        .cardDataValueColor),
-                                              )
-                                            ]),
-                                      ),
-                                      Text.rich(
-                                        TextSpan(
-                                            text: HandText.srSOValueNet,
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: AppColor.cardDataKeyColor,
-                                            ),
-                                            children: [
-                                              TextSpan(
-                                                text: data
-                                                    .content[index].soValueNet,
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    color: AppColor
-                                                        .cardDataValueColor),
-                                              )
-                                            ]),
-                                      ),
-                                      Text.rich(
-                                        TextSpan(
-                                            text: HandText.srSOValueGross,
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: AppColor.cardDataKeyColor,
-                                            ),
-                                            children: [
-                                              TextSpan(
-                                                text: data.content[index]
-                                                    .soValueGross,
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    color: AppColor
-                                                        .cardDataValueColor),
-                                              )
-                                            ]),
-                                      ),
-                                      Text.rich(
-                                        TextSpan(
-                                            text: HandText.srBaseValue,
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: AppColor.cardDataKeyColor,
-                                            ),
-                                            children: [
-                                              TextSpan(
-                                                text: data
-                                                    .content[index].baseValue,
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    color: AppColor
-                                                        .cardDataValueColor),
-                                              )
-                                            ]),
-                                      ),
-                                      Text.rich(
-                                        TextSpan(
-                                            text: HandText.srCGST,
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: AppColor.cardDataKeyColor,
-                                            ),
-                                            children: [
-                                              TextSpan(
-                                                text: data.content[index].cgst,
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    color: AppColor
-                                                        .cardDataValueColor),
-                                              )
-                                            ]),
-                                      ),
-                                      Text.rich(
-                                        TextSpan(
-                                            text: HandText.srSGST,
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: AppColor.cardDataKeyColor,
-                                            ),
-                                            children: [
-                                              TextSpan(
-                                                text: data.content[index].sgst,
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    color: AppColor
-                                                        .cardDataValueColor),
-                                              )
-                                            ]),
-                                      ),
-                                      Text.rich(
-                                        TextSpan(
-                                            text: HandText.srIGST,
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: AppColor.cardDataKeyColor,
-                                            ),
-                                            children: [
-                                              TextSpan(
-                                                text: data.content[index].igst,
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    color: AppColor
-                                                        .cardDataValueColor),
-                                              )
-                                            ]),
-                                      ),
-                                      Text.rich(
-                                        TextSpan(
-                                            text: HandText.srInvoiceValue,
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: AppColor.cardDataKeyColor,
-                                            ),
-                                            children: [
-                                              TextSpan(
-                                                text: data.content[index]
-                                                    .invoiceValue,
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: AppColor
-                                                      .cardDataValueColor,
-                                                ),
-                                              )
-                                            ]),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    _buildTextRow(
+                                        HandText.srSOQuantity, item.soQuantity),
+                                    _buildTextRow(HandText.srInvoiceQuantity,
+                                        item.invoiceQuantity),
+                                    _buildTextRow(
+                                        HandText.srSOValueNet, item.soValueNet),
+                                    _buildTextRow(HandText.srSOValueGross,
+                                        item.soValueGross),
+                                    _buildTextRow(
+                                        HandText.srBaseValue, item.baseValue),
+                                    _buildTextRow(HandText.srCGST, item.cgst),
+                                    _buildTextRow(HandText.srSGST, item.sgst),
+                                    _buildTextRow(HandText.srIGST, item.igst),
+                                    _buildTextRow(HandText.srInvoiceValue,
+                                        item.invoiceValue),
+                                  ],
                                 ),
                               ),
-                            );
-                          },
-                        );
-                },
-                error: (error, stack) =>
-                    Center(child: Text('${HandText.errorMessage} $error')),
-                loading: () => screen_shimmer(120, 800)),
+                            ),
+                          );
+                        },
+                      ),
+          ),
+          if (_isLoadingMore)
+            const Padding(
+              padding: EdgeInsets.only(bottom: 16),
+              child: CircularProgressIndicator(),
+            ),
+        ],
+      ),
+    );
+  }
+
+  // Helper method to build Text.rich rows
+  Widget _buildTextRow(String label, dynamic value) {
+    return Text.rich(
+      TextSpan(
+        text: label,
+        style: const TextStyle(fontSize: 14, color: Colors.grey),
+        children: [
+          TextSpan(
+            text: value?.toString() ?? 'N/A',
+            style: const TextStyle(fontSize: 16, color: Colors.black),
           ),
         ],
       ),

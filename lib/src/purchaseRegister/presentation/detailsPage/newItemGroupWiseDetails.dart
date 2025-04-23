@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:vitwoai_report/src/purchaseRegister/model/ItemGroupWiseModel.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 
 class newItemGroupWiseDetailsScreen extends StatelessWidget {
-  final List<ItemGrContentList> data;
+  final List<dynamic> data;
   final int index;
 
   const newItemGroupWiseDetailsScreen(

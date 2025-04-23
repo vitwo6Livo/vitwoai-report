@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:vitwoai_report/src/purchaseRegister/model/vendorWiseModal.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
 
 class newVendorWiseDetails extends StatelessWidget {
-  final List<VendorContentList> data;
+  final List<dynamic> data;
   final int index;
 
   const newVendorWiseDetails({

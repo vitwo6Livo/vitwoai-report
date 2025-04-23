@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:vitwoai_report/src/purchaseRegister/model/purchaseModel.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
 
 class newAllPRDetailsScreen extends StatelessWidget {
-  final List<PurchaseContentList> data;
+  final List<dynamic> data;
   final int index;
 
   const newAllPRDetailsScreen({

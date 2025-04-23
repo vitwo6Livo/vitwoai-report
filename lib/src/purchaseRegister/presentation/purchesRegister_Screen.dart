@@ -77,30 +77,23 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
       backgroundColor: AppColor.screenBgColor,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: 0,
         children: [
           _purchaseSummary(context),
           _cardViewPurchase(),
-          Flexible(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  selectedIndex == 0
-                      ? const ProductList()
-                      : selectedIndex == 1
-                          ? const VendorList()
-                          : selectedIndex == 2
-                              ? const PurchaseOrderList()
-                              : selectedIndex == 3
-                                  ? const FunctionalAreaList()
-                                  : selectedIndex == 4
-                                      ? const StorageLocationList()
-                                      : selectedIndex == 5
-                                          ? const CostCenterList()
-                                          : const SizedBox(),
-                ],
-              ),
-            ),
-          ),
+          selectedIndex == 0
+              ? const ProductList()
+              : selectedIndex == 1
+                  ? const VendorList()
+                  : selectedIndex == 2
+                      ? const PurchaseOrderList()
+                      : selectedIndex == 3
+                          ? const FunctionalAreaList()
+                          : selectedIndex == 4
+                              ? const StorageLocationList()
+                              : selectedIndex == 5
+                                  ? const CostCenterList()
+                                  : const SizedBox(),
         ],
       ),
     );

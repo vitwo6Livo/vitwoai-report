@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:vitwoai_report/src/purchaseRegister/model/ItemWiseModel.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 
 class newItemWiseDetailsScreen extends StatelessWidget {
-  final List<ItemContentList> data;
+  final List<dynamic> data;
   final int index;
 
   const newItemWiseDetailsScreen(
@@ -63,19 +62,15 @@ class newItemWiseDetailsScreen extends StatelessWidget {
             const SizedBox(height: 16),
             _buildSectionHeader("Tax Summary"),
             _buildCard([
-              SizedBox(
-                width: double.infinity,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    _buildDetailColumn(
-                        Icons.percent, "Base Value", item.baseValue),
-                    _buildDetailColumn(Icons.percent, "IGST", item.igst),
-                    _buildDetailColumn(Icons.percent, "SGST", item.sgst),
-                    _buildDetailColumn(Icons.percent, "CGST", item.cgst),
-                    _buildDetailColumn(Icons.percent, "TDS", item.tds),
-                  ],
-                ),
+              Row(
+                children: [
+                  _buildDetailColumn(
+                      Icons.percent, "Base Value", item.baseValue),
+                  _buildDetailColumn(Icons.percent, "IGST", item.igst),
+                  _buildDetailColumn(Icons.percent, "SGST", item.sgst),
+                  _buildDetailColumn(Icons.percent, "CGST", item.cgst),
+                  _buildDetailColumn(Icons.percent, "TDS", item.tds),
+                ],
               ),
             ]),
           ],
