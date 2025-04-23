@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:vitwoai_report/src/purchaseRegister/model/vendorWiseModal.dart';
 
 class VendorWiseDetails extends StatelessWidget {
-  final List<dynamic> data;
+  final List<VendorContentList> data;
   final int index;
   const VendorWiseDetails({
     super.key,
@@ -75,15 +76,15 @@ class VendorWiseDetails extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildSectionHeaderTitle(data[index]["Vendor Name"]),
+                    _buildSectionHeaderTitle(data[index].vendorName),
                     Column(
                       children: [
                         _buildDetailRow(Icons.person, "Vendor Code:",
-                            _getValue(data[index]["Vendor Code"])),
+                            _getValue(data[index].vendorCode)),
                         _buildDetailRow(Icons.code, "Invoice Quantity:",
-                            _getValue(data[index]["Invoice Quantity"])),
+                            _getValue(data[index].invoiceQuantity)),
                         _buildDetailRow(Icons.store, "Received Quantity:",
-                            _getValue(data[index]["Received Quantity"])),
+                            _getValue(data[index].receivedQuantity)),
                       ],
                     ),
                     const Divider(thickness: 1, color: Colors.grey),
@@ -91,17 +92,17 @@ class VendorWiseDetails extends StatelessWidget {
                     Column(
                       children: [
                         _buildDetailRow(Icons.calendar_today, "Base Value:",
-                            _getValue(data[index]["Base Value"])),
-                        _buildDetailRow(Icons.money, "IGST:",
-                            _getValue(data[index]["IGST"])),
-                        _buildDetailRow(Icons.money, "SGST:",
-                            _getValue(data[index]["SGST"])),
-                        _buildDetailRow(Icons.money, "CGST:",
-                            _getValue(data[index]["CGST"])),
-                        _buildDetailRow(Icons.money_off, "Total TDS:",
-                            _getValue(data[index]["grnTotalTds"])),
+                            _getValue(data[index].baseValue)),
+                        _buildDetailRow(
+                            Icons.money, "IGST:", _getValue(data[index].igst)),
+                        _buildDetailRow(
+                            Icons.money, "SGST:", _getValue(data[index].sgst)),
+                        _buildDetailRow(
+                            Icons.money, "CGST:", _getValue(data[index].cgst)),
+                        // _buildDetailRow(Icons.money_off, "Total TDS:",
+                        //     _getValue(data[index]["grnTotalTds"])),
                         _buildDetailRow(Icons.money, "Total TDS:",
-                            _getValue(data[index]["TDS"])),
+                            _getValue(data[index].tds)),
                       ],
                     ),
                   ],

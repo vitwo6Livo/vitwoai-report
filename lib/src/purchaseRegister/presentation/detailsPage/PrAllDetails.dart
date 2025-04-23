@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:vitwoai_report/src/purchaseRegister/model/purchaseModel.dart';
 
 class AllPRDetailsScreen extends StatelessWidget {
-  final List<dynamic> data;
+  final List<PurchaseContentList> data;
   final int index;
 
   const AllPRDetailsScreen({
@@ -80,11 +81,11 @@ class AllPRDetailsScreen extends StatelessWidget {
                     Column(
                       children: [
                         _buildDetailRow(Icons.person, "Vendor NO:",
-                            _getValue(data[index]['vendorDocumentNo'])),
+                            _getValue(data[index].vendorDocumentNo)),
                         _buildDetailRow(Icons.code, "Vendor Code:",
-                            _getValue(data[index]["grn.vendors.vendor_code"])),
+                            _getValue(data[index].grnVendors_Vendor_code)),
                         _buildDetailRow(Icons.store, "Vendor Name:",
-                            _getValue(data[index]["grn.vendors.trade_name"])),
+                            _getValue(data[index].grn_vendors_tradename)),
                       ],
                     ),
                     const Divider(thickness: 1, color: Colors.grey),
@@ -92,48 +93,44 @@ class AllPRDetailsScreen extends StatelessWidget {
                     Column(
                       children: [
                         _buildDetailRow(Icons.calendar_today, "Posting Date:",
-                            _getValue(data[index]["postingDate"])),
+                            _getValue(data[index].postingDate)),
                         _buildDetailRow(Icons.date_range, "Document Date:",
-                            _getValue(data[index]["vendorDocumentDate"])),
+                            _getValue(data[index].vendorDocumentDate)),
                         _buildDetailRow(Icons.attach_money, "GRN Sub Total:",
-                            _getValue(data[index]["grnSubTotal"])),
+                            _getValue(data[index].grnSubTotal)),
                         _buildDetailRow(Icons.money, "SGST:",
-                            _getValue(data[index]["grnTotalSgst"])),
+                            _getValue(data[index].grnTotalSgst)),
                         _buildDetailRow(Icons.money, "IGST:",
-                            _getValue(data[index]["grnTotalIgst"])),
+                            _getValue(data[index].grnTotalIgst)),
                         _buildDetailRow(Icons.money, "CGST:",
-                            _getValue(data[index]["grnTotalCgst"])),
+                            _getValue(data[index].grnTotalCgst)),
                         _buildDetailRow(Icons.money_off, "Total TDS:",
-                            _getValue(data[index]["grnTotalTds"])),
+                            _getValue(data[index].grnTotalTds)),
                         _buildDetailRow(Icons.money, "Total Amount:",
-                            _getValue(data[index]["grnTotalAmount"])),
+                            _getValue(data[index].grnTotalAmount)),
                       ],
                     ),
                     const Divider(thickness: 1, color: Colors.grey),
                     _buildSectionHeader("Item Details"),
                     Column(
                       children: [
-                        _buildDetailRow(
-                            Icons.shopping_bag,
-                            "Item Name:",
-                            _getValue(
-                                data[index]["grnInvoiceItems.items.itemName"])),
+                        _buildDetailRow(Icons.shopping_bag, "Item Name:",
+                            _getValue(data[index].grnInvoiceItems_ItemName)),
                         _buildDetailRow(Icons.inventory, "Good Quantity:",
-                            _getValue(data[index]["grnInvoiceItems.goodQty"])),
+                            _getValue(data[index].grnInvoiceItems_goodQty)),
                         _buildDetailRow(
                             Icons.check_circle,
                             "Received Quantity:",
-                            _getValue(
-                                data[index]["grnInvoiceItems.receivedQty"])),
+                            _getValue(data[index].grnInvoiceItemsReceivedQty)),
                         _buildDetailRow(Icons.qr_code, "Good Code:",
-                            _getValue(data[index]["grnInvoiceItems.goodCode"])),
+                            _getValue(data[index].grnInvoiceItems_GoodCode)),
                         _buildDetailRow(Icons.numbers, "HSN No:",
-                            _getValue(data[index]["grnInvoiceItems.goodHsn"])),
+                            _getValue(data[index].grnInvoiceItems_GoodHSN)),
                         _buildDetailRow(
                             Icons.category,
                             "Item Group Name:",
-                            _getValue(data[index][
-                                "grnInvoiceItems.items.goodsGroup.goodGroupName"])),
+                            _getValue(data[index]
+                                .grnInvoiceItems_GoodsGroup_GoodGroupName)),
                       ],
                     ),
                     const Divider(thickness: 1, color: Colors.grey),
@@ -143,13 +140,10 @@ class AllPRDetailsScreen extends StatelessWidget {
                         _buildDetailRow(
                             Icons.format_list_numbered,
                             "Alternate UOM:",
-                            _getValue(data[index][
-                                "grnInvoiceItems.items.alternateUom.uomName"])),
-                        _buildDetailRow(
-                            Icons.format_list_numbered,
-                            "Base UOM:",
-                            _getValue(data[index]
-                                ["grnInvoiceItems.items.baseUom.uomName"])),
+                            _getValue(
+                                data[index].grnInvoiceItemsAlternateUomName)),
+                        _buildDetailRow(Icons.format_list_numbered, "Base UOM:",
+                            _getValue(data[index].grnInvoiceItemsBaseUomName)),
                       ],
                     ),
                     const Divider(thickness: 1, color: Colors.grey),
@@ -157,7 +151,7 @@ class AllPRDetailsScreen extends StatelessWidget {
                     Column(
                       children: [
                         _buildDetailRow(Icons.code, "GRN Iv Code:",
-                            _getValue(data[index]["grnIvCode"])),
+                            _getValue(data[index].grnIvCode)),
                       ],
                     ),
                   ],

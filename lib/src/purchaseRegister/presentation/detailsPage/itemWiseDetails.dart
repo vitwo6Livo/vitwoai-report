@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:vitwoai_report/src/purchaseRegister/model/ItemWiseModel.dart';
 
 class ItemWiseDetails extends StatelessWidget {
-  final List<dynamic> data;
+  final List<ItemContentList> data;
   final int index;
   const ItemWiseDetails({
     super.key,
@@ -75,27 +76,27 @@ class ItemWiseDetails extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildSectionHeaderTitle(data[index]["Item Name"]),
+                    _buildSectionHeaderTitle(data[index].itemName),
                     Column(
                       children: [
                         _buildDetailRow(Icons.person, "Item Code:",
-                            _getValue(data[index]["Item Code"])),
+                            _getValue(data[index].itemCode)),
                         _buildDetailRow(Icons.code, "Item Group Name:",
-                            _getValue(data[index]["Item Group Name"])),
+                            _getValue(data[index].ItemGroupName)),
                         _buildDetailRow(Icons.store, "Base UOM:",
-                            _getValue(data[index]["Base UoM"])),
+                            _getValue(data[index].BaseUoM)),
                         _buildDetailRow(Icons.store, "Alternate UoM:",
-                            _getValue(data[index]["Alternate UOM"])),
+                            _getValue(data[index].AlternateUoM)),
                         _buildDetailRow(Icons.store, "HSN Code:",
-                            _getValue(data[index]["HSN Code"])),
+                            _getValue(data[index].HSNCode)),
                         _buildDetailRow(Icons.store, "Invoice Quantity:",
-                            _getValue(data[index]["Invoice Quantity"])),
+                            _getValue(data[index].invoiceQuantity)),
                         _buildDetailRow(Icons.store, "Received Quantity:",
-                            _getValue(data[index]["Received Quantity"])),
+                            _getValue(data[index].receivedQuantity)),
                         _buildDetailRow(Icons.store, "PO Value (Net):",
-                            _getValue(data[index]["PO Value (Net)"])),
+                            _getValue(data[index].poValueNet)),
                         _buildDetailRow(Icons.store, "PO Value (Gross):",
-                            _getValue(data[index]["PO Value (Gross)"])),
+                            _getValue(data[index].poValueGross)),
                       ],
                     ),
                     const Divider(thickness: 1, color: Colors.grey),
@@ -103,17 +104,17 @@ class ItemWiseDetails extends StatelessWidget {
                     Column(
                       children: [
                         _buildDetailRow(Icons.calendar_today, "Base Value:",
-                            _getValue(data[index]["Base Value"])),
-                        _buildDetailRow(Icons.money, "IGST:",
-                            _getValue(data[index]["IGST"])),
-                        _buildDetailRow(Icons.money, "SGST:",
-                            _getValue(data[index]["SGST"])),
-                        _buildDetailRow(Icons.money, "CGST:",
-                            _getValue(data[index]["CGST"])),
+                            _getValue(data[index].baseValue)),
+                        _buildDetailRow(
+                            Icons.money, "IGST:", _getValue(data[index].igst)),
+                        _buildDetailRow(
+                            Icons.money, "SGST:", _getValue(data[index].sgst)),
+                        _buildDetailRow(
+                            Icons.money, "CGST:", _getValue(data[index].cgst)),
                         _buildDetailRow(Icons.money_off, "Total TDS:",
-                            _getValue(data[index]["TDS"])),
+                            _getValue(data[index].tds)),
                         _buildDetailRow(Icons.money, "Invoice Value:",
-                            _getValue(data[index]["Invoice Value"])),
+                            _getValue(data[index].invoiceValue)),
                       ],
                     ),
                   ],

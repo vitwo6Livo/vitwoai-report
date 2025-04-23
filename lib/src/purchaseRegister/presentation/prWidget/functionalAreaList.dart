@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/purchaseRegister/data/purchesRegister_repository.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/detailsPage/itemWiseDetails.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/detailsPage/newItemWiseDetails.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
 
@@ -28,7 +29,7 @@ class FunctionalAreaList extends ConsumerWidget {
                     onTap: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return ItemWiseDetails(
+                        return newItemWiseDetailsScreen(
                             data: data.content, index: index);
                       }));
                     },
@@ -211,7 +212,8 @@ class FunctionalAreaList extends ConsumerWidget {
                                     ),
                                     Text.rich(
                                       TextSpan(
-                                        text: '${HandText.prReceivedQuantity}\n',
+                                        text:
+                                            '${HandText.prReceivedQuantity}\n',
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodySmall!

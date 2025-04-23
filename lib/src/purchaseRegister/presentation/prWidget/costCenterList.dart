@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/purchaseRegister/data/purchesRegister_repository.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/detailsPage/hsnCodeWiseDetails.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/detailsPage/newHSNCodeWiseDetails.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
 
@@ -29,7 +30,7 @@ class CostCenterList extends ConsumerWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => HsnCodeWiseDetails(
+                          builder: (context) => newHsnCodeWiseDetailsScreen(
                             data: data.content,
                             index: index,
                           ),

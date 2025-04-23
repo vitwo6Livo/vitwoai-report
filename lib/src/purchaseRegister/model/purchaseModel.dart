@@ -96,7 +96,7 @@ class PurchaseContentList {
   });
 
   factory PurchaseContentList.fromJson(Map<String, dynamic> json) {
-    String _toString(dynamic value) => value != null ? value.toString() : '';
+    String _toString(dynamic value) => value != null ? value.toString() : 'N/A';
 
     return PurchaseContentList(
       vendorDocumentNo: _toString(json['vendorDocumentNo']),
@@ -105,7 +105,7 @@ class PurchaseContentList {
       grnSubTotal: _toString(json['grnSubTotal']),
       grnInvoiceItemsAlternateUomName:
           _toString(json['grnInvoiceItems.items.alternateUom.uomName']),
-      grnIvCode: _toString(json['grnIvCode)']),
+      grnIvCode: _toString(json['grnIvCode']),
       grnInvoiceItemsReceivedQty:
           _toString(json['grnInvoiceItems.receivedQty']),
       grnInvoiceItemsBaseUomName:

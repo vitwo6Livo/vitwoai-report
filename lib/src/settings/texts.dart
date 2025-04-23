@@ -91,6 +91,7 @@ class HandText {
 
   //////////////////// Purchase Register /////////////////////////////
   static String prTitle = 'Purchase Register';
+  static String prAllDetailsTitle = 'Purchase Register Details';
   // Code
   static String prHSNCode = 'HSN Code: ';
   static String prItemCode = 'Item Code: ';

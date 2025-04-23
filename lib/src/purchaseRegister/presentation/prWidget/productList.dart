@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/purchaseRegister/data/purchesRegister_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vitwoai_report/src/purchaseRegister/presentation/detailsPage/PrAllDetails.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/detailsPage/newPrAllDetails.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
 
@@ -29,7 +29,7 @@ class ProductList extends ConsumerWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => AllPRDetailsScreen(
+                          builder: (context) => newAllPRDetailsScreen(
                             data: data.content,
                             index: index,
                           ),

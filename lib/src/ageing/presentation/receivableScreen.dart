@@ -5,6 +5,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:vitwoai_report/golobal-Widget/rangeCalendar.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/ageing/data/receivableAnalytics_repositry.dart';
+import 'package:vitwoai_report/src/ageing/presentation/newReceivableDetailsScreen.dart';
 import 'package:vitwoai_report/src/ageing/presentation/receivabledetailsScreen.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
@@ -345,16 +346,22 @@ class ReceivableAnalyticsScreen extends ConsumerWidget {
                   child: ListView.builder(
                     itemCount: data.content.length,
                     itemBuilder: (context, index) {
+                      print(
+                          "Customer Names: ${data.content[index].onAccountAmounts.amount[4]?.toString()}}");
+
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: InkWell(
                           onTap: () {
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        ReceivableDetailsScreen(
-                                            data: data.content, index: index)));
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => newReceivableDetailsScreen(
+                                  data: data.content,
+                                  index: index,
+                                ),
+                              ),
+                            );
                           },
                           child: Card(
                             color: AppColor.cardBackgroundColor,

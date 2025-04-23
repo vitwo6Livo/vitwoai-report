@@ -107,7 +107,7 @@ class AmountMap {
   factory AmountMap.fromJson(Map<String, dynamic> json) {
     return AmountMap(
       amount: json.map(
-        (key, value) => MapEntry(key, (value as num).toDouble()),
+        (key, value) => MapEntry(key, (value is num) ? value.toDouble() : 0.0),
       ),
     );
   }
