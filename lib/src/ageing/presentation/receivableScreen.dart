@@ -4,7 +4,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:vitwoai_report/golobal-Widget/rangeCalendar.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/ageing/data/receivableAnalytics_repositry.dart';
-import 'package:vitwoai_report/src/ageing/presentation/receivabledetailsScreen.dart';
+import 'package:vitwoai_report/src/ageing/presentation/newReceivableDetailsScreen.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
 
@@ -321,7 +321,7 @@ class _ReceivableAnalyticsScreenState
                         child: Container(
                           height: 40,
                           decoration: BoxDecoration(
-                            color: AppColor.cursonColor,
+                            color: AppColor.searchBttnColor,
                             border: Border.all(color: AppColor.cursonColor),
                             borderRadius: BorderRadius.circular(5),
                           ),

@@ -69,7 +69,7 @@ class HSNContentList {
   });
 
   factory HSNContentList.fromJson(Map<String, dynamic> json) {
-    String _toString(dynamic value) => value != null ? value.toString() : '';
+    String _toString(dynamic value) => value != null ? value.toString() : 'N/A';
 
     return HSNContentList(
       HSNCode: _toString(json['HSN Code']),

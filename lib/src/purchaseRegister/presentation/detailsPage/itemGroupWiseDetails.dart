@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:vitwoai_report/src/purchaseRegister/model/ItemGroupWiseModel.dart';
 
 class ItemGroupWiseDetails extends StatelessWidget {
-  final List<dynamic> data;
+  final List<ItemGrContentList> data;
   final int index;
   const ItemGroupWiseDetails({
     super.key,
@@ -75,19 +76,19 @@ class ItemGroupWiseDetails extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildSectionHeaderTitle(data[index]["Item Group Name"]),
+                    _buildSectionHeaderTitle(data[index].ItemGroupName),
                     Column(
                       children: [
                         _buildDetailRow(Icons.person, "Invoice Quantity:",
-                            _getValue(data[index]["Invoice Quantity"])),
+                            _getValue(data[index].invoiceQuantity)),
                         _buildDetailRow(Icons.code, "Received Quantity:",
-                            _getValue(data[index]["Received Quantity"])),
+                            _getValue(data[index].receivedQuantity)),
                         _buildDetailRow(Icons.store, "PO Quantity:",
-                            _getValue(data[index]["PO Quantity"])),
+                            _getValue(data[index].poQuantity)),
                         _buildDetailRow(Icons.store, "PO Value (Net):",
-                            _getValue(data[index]["PO Value (Net)"])),
+                            _getValue(data[index].poValueNet)),
                         _buildDetailRow(Icons.store, "PO Value (Gross):",
-                            _getValue(data[index]["PO Value (Gross)"])),
+                            _getValue(data[index].poValueGross)),
                       ],
                     ),
                     const Divider(thickness: 1, color: Colors.grey),
@@ -95,17 +96,17 @@ class ItemGroupWiseDetails extends StatelessWidget {
                     Column(
                       children: [
                         _buildDetailRow(Icons.calendar_today, "Base Value:",
-                            _getValue(data[index]["Base Value"])),
-                        _buildDetailRow(Icons.money, "IGST:",
-                            _getValue(data[index]["IGST"])),
-                        _buildDetailRow(Icons.money, "SGST:",
-                            _getValue(data[index]["SGST"])),
-                        _buildDetailRow(Icons.money, "CGST:",
-                            _getValue(data[index]["CGST"])),
+                            _getValue(data[index].baseValue)),
+                        _buildDetailRow(
+                            Icons.money, "IGST:", _getValue(data[index].igst)),
+                        _buildDetailRow(
+                            Icons.money, "SGST:", _getValue(data[index].sgst)),
+                        _buildDetailRow(
+                            Icons.money, "CGST:", _getValue(data[index].cgst)),
                         _buildDetailRow(Icons.money_off, "Total TDS:",
-                            _getValue(data[index]["TDS"])),
+                            _getValue(data[index].tds)),
                         _buildDetailRow(Icons.money, "Invoice Value:",
-                            _getValue(data[index]["Invoice Value"])),
+                            _getValue(data[index].invoiceValue)),
                       ],
                     ),
                   ],

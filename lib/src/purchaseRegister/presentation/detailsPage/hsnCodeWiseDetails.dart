@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:vitwoai_report/src/purchaseRegister/model/HsnCodeModel.dart';
 
 class HsnCodeWiseDetails extends StatelessWidget {
-  final List<dynamic> data;
+  final List<HSNContentList> data;
   final int index;
   const HsnCodeWiseDetails({
     super.key,
@@ -78,17 +79,17 @@ class HsnCodeWiseDetails extends StatelessWidget {
                     Column(
                       children: [
                         _buildDetailRow(Icons.person, "HSN Code:",
-                            _getValue(data[index]["HSN Code"])),
+                            _getValue(data[index].HSNCode)),
                         _buildDetailRow(Icons.code, "PO Quantity:",
-                            _getValue(data[index]["PO Quantity"])),
+                            _getValue(data[index].poQuantity)),
                         _buildDetailRow(Icons.code, "Invoice Quantity:",
-                            _getValue(data[index]["Invoice Quantity"])),
+                            _getValue(data[index].invoiceQuantity)),
                         _buildDetailRow(Icons.store, "Received Quantity:",
-                            _getValue(data[index]["Received Quantity"])),
+                            _getValue(data[index].receivedQuantity)),
                         _buildDetailRow(Icons.money, "PO Value (Net):",
-                            _getValue(data[index]["PO Value (Net)"])),
+                            _getValue(data[index].poValueNet)),
                         _buildDetailRow(Icons.money, "PO Value (Gross):",
-                            _getValue(data[index]["PO Value (Gross)"])),
+                            _getValue(data[index].poValueGross)),
                       ],
                     ),
                     const Divider(thickness: 1, color: Colors.grey),
@@ -96,17 +97,17 @@ class HsnCodeWiseDetails extends StatelessWidget {
                     Column(
                       children: [
                         _buildDetailRow(Icons.calendar_today, "Base Value:",
-                            _getValue(data[index]["Base Value"])),
-                        _buildDetailRow(Icons.money, "IGST:",
-                            _getValue(data[index]["IGST"])),
-                        _buildDetailRow(Icons.money, "SGST:",
-                            _getValue(data[index]["SGST"])),
-                        _buildDetailRow(Icons.money, "CGST:",
-                            _getValue(data[index]["CGST"])),
-                        _buildDetailRow(Icons.money_off, "Total TDS:",
-                            _getValue(data[index]["grnTotalTds"])),
+                            _getValue(data[index].baseValue)),
+                        _buildDetailRow(
+                            Icons.money, "IGST:", _getValue(data[index].igst)),
+                        _buildDetailRow(
+                            Icons.money, "SGST:", _getValue(data[index].sgst)),
+                        _buildDetailRow(
+                            Icons.money, "CGST:", _getValue(data[index].cgst)),
+                        // _buildDetailRow(Icons.money_off, "Total TDS:",
+                        //     _getValue(data[index]["grnTotalTds"])),
                         _buildDetailRow(Icons.money, "Total TDS:",
-                            _getValue(data[index]["TDS"])),
+                            _getValue(data[index].tds)),
                       ],
                     ),
                   ],

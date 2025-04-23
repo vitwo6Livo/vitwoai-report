@@ -79,7 +79,7 @@ class ItemContentList {
   });
 
   factory ItemContentList.fromJson(Map<String, dynamic> json) {
-    String _toString(dynamic value) => value != null ? value.toString() : '';
+    String _toString(dynamic value) => value != null ? value.toString() : 'N/A';
 
     return ItemContentList(
       itemCode: _toString(json['Item Code']),

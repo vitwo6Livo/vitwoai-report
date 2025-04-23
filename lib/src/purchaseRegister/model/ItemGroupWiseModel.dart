@@ -69,7 +69,7 @@ class ItemGrContentList {
   });
 
   factory ItemGrContentList.fromJson(Map<String, dynamic> json) {
-    String _toString(dynamic value) => value != null ? value.toString() : '';
+    String _toString(dynamic value) => value != null ? value.toString() : 'N/A';
 
     return ItemGrContentList(
       ItemGroupName: _toString(json['Item Group Name']),

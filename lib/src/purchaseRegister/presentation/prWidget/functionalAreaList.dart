@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/purchaseRegister/data/purchesRegister_repository.dart';
-import 'package:vitwoai_report/src/purchaseRegister/presentation/detailsPage/itemWiseDetails.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/detailsPage/newItemWiseDetails.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
 
@@ -129,7 +129,7 @@ class _FunctionalAreaListState extends ConsumerState<FunctionalAreaList> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ItemWiseDetails(
+                      builder: (context) => newItemWiseDetailsScreen(
                         data: content,
                         index: index,
                       ),
@@ -145,7 +145,7 @@ class _FunctionalAreaListState extends ConsumerState<FunctionalAreaList> {
                   ),
                   elevation: 4,
                   child: Padding(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(8),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
