@@ -186,7 +186,7 @@ class SalesRegister extends ConsumerWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => CustomerWiseScreen()));
+                            builder: (context) => const CustomerWiseScreen()));
                   },
                   child: Container(
                     margin: const EdgeInsets.symmetric(horizontal: 10),

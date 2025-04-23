@@ -373,11 +373,11 @@ class _ReceivableAnalyticsScreenState
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: InkWell(
             onTap: () {
-              // Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //         builder: (context) => ReceivableDetailsScreen(
-              //             data: content, index: index)));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => newReceivableDetailsScreen(
+                          data: content, index: index)));
             },
             child: Card(
               color: Colors.white,

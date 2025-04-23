@@ -1,25 +1,38 @@
-// ignore_for_file: must_be_immutable
-
 import 'package:flutter/material.dart';
+import 'package:vitwoai_report/src/ageing/model/receivableModel.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
 
-class ReceivableDetailsScreen extends StatelessWidget {
-  String customerName;
-  String customerCode;
-  double totalDue;
-
-  ReceivableDetailsScreen({
+class newReceivableDetailsScreen extends StatelessWidget {
+  final List<dynamic> data;
+  final int index;
+  newReceivableDetailsScreen({
     super.key,
-    required this.customerName,
-    required this.customerCode,
-    required this.totalDue,
+    required this.data,
+    required this.index,
   });
 
   @override
   Widget build(BuildContext context) {
     // Fetching the item details based on the index
-
+    List<String> dueAmounts = [
+      "0 - 30 Days Total Due: ",
+      "31 - 60 Days Total Due: ",
+      "61 - 90 Days Total Due: ",
+      "91 - 120 Days Total Due: ",
+      "121 - 150 Days Total Due: ",
+      "151 - 180 Days Total Due: ",
+      ">180 Days Total Due: ",
+    ];
+    List<String> onAccountAmounts = [
+      "0 - 30 Days Total Due: ",
+      "31 - 60 Days Total Due: ",
+      "61 - 90 Days Total Due: ",
+      "91 - 120 Days Total Due: ",
+      "121 - 150 Days Total Due: ",
+      "151 - 180 Days Total Due: ",
+      ">180 Days Total Due: ",
+    ];
     return Scaffold(
       backgroundColor: AppColor.screenBgColor,
       appBar: AppBar(
@@ -34,7 +47,7 @@ class ReceivableDetailsScreen extends StatelessWidget {
         ),
         title: Text(
           HandText.receivableDetails,
-          style: const TextStyle(color: Colors.white),
+          style: TextStyle(color: AppColor.appbarFont),
         ),
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -65,7 +78,7 @@ class ReceivableDetailsScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      customerName.toString(),
+                      data[index].customerName,
                       style: const TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 20,
@@ -86,7 +99,7 @@ class ReceivableDetailsScreen extends StatelessWidget {
                               ),
                               children: [
                                 TextSpan(
-                                  text: customerCode.toString(),
+                                  text: data[index].customerCode,
                                   style: const TextStyle(
                                       fontWeight: FontWeight.w400,
                                       color: Colors.black),
@@ -102,7 +115,7 @@ class ReceivableDetailsScreen extends StatelessWidget {
                               ),
                               children: [
                                 TextSpan(
-                                  text: totalDue.toString(),
+                                  text: data[index].totalDue.toString(),
                                   style: const TextStyle(
                                       fontWeight: FontWeight.w400,
                                       color: Colors.black),
@@ -126,7 +139,7 @@ class ReceivableDetailsScreen extends StatelessWidget {
                               ),
                               children: [
                                 TextSpan(
-                                  text: 'on_account_due',
+                                  text: data[index].onAccountDue.toString(),
                                   // text: details['on_account_due'].toString(),
                                   style: const TextStyle(
                                       fontWeight: FontWeight.w400,
@@ -143,7 +156,7 @@ class ReceivableDetailsScreen extends StatelessWidget {
                               ),
                               children: [
                                 TextSpan(
-                                  text: 'net_due',
+                                  text: data[index].netDue.toString(),
                                   // text: details['net_due'].toString(),
                                   style: const TextStyle(
                                       fontWeight: FontWeight.w400,
@@ -160,213 +173,63 @@ class ReceivableDetailsScreen extends StatelessWidget {
             const SizedBox(
               height: 16,
             ),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.green.shade100,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    HandText.receivableDueAmounts,
-                    style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.green),
-                  ),
-                  Text.rich(TextSpan(
-                      text: "0 - 30 Days Total Due: ",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w400,
-                        // color: Colors.grey,
+            Expanded(
+              child: ListView.builder(
+                  itemCount: 7,
+                  itemBuilder: (context, ind) {
+                    return Card(
+                        child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                dueAmounts[ind],
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.green
+                                    // color: Colors.grey,
+                                    ),
+                              ),
+                              Text(
+                                data[index]
+                                    .dueAmounts
+                                    .values['$ind']
+                                    .toString(),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.green),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                onAccountAmounts[ind],
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  color: Color.fromARGB(255, 102, 20, 14),
+                                ),
+                              ),
+                              Text(
+                                data[index]
+                                    .onAccountAmounts
+                                    .amount['$ind']
+                                    .toString(),
+                                // text: details['onAccountAmounts']['1'].toString(),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    color: Color.fromARGB(255, 102, 20, 14)),
+                              ),
+                            ],
+                          )
+                        ],
                       ),
-                      children: [
-                        TextSpan(
-                          text: 'dueAmounts',
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w400, color: Colors.black),
-                        )
-                      ])),
-                  Text.rich(TextSpan(
-                      text: "31 - 60 Days Total Due: ",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w400,
-                        // color: Colors.grey,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: 'dueAmounts',
-                          // text: details['dueAmounts']['2'].toString(),
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w400, color: Colors.black),
-                        )
-                      ])),
-                  Text.rich(TextSpan(
-                      text: "61 - 90 Days Total Due: ",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w400,
-                        // color: Colors.grey,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: 'dueAmounts',
-                          // text: details['dueAmounts']['3'].toString(),
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w400, color: Colors.black),
-                        )
-                      ])),
-                  Text.rich(TextSpan(
-                      text: "90 - 120 Days Total Due: ",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w400,
-                        // color: Colors.grey,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: 'dueAmounts',
-                          // text: details['dueAmounts']['4'].toString(),
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w400, color: Colors.black),
-                        )
-                      ])),
-                  Text.rich(TextSpan(
-                      text: "121 - 150 Days Total Due: ",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w400,
-                        // color: Colors.grey,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: 'dueAmounts',
-                          // text: details['dueAmounts']['5'].toString(),
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w400, color: Colors.black),
-                        )
-                      ])),
-                  Text.rich(TextSpan(
-                      text: ">150 Days Total Due: ",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w400,
-                        // color: Colors.grey,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: 'dueAmounts',
-                          // text: details['dueAmounts']['6'].toString(),
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w400, color: Colors.black),
-                        )
-                      ])),
-                ],
-              ),
-            ),
-            const SizedBox(height: 8),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.red.shade100,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    HandText.receivableOnAccountAmounts,
-                    style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.red),
-                  ),
-                  Text.rich(TextSpan(
-                      text: "0 - 30 Days Total Due: ",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w400,
-                        // color: Colors.grey,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: 'onAccountAmounts',
-                          // text: details['onAccountAmounts']['1'].toString(),
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w400, color: Colors.black),
-                        )
-                      ])),
-                  Text.rich(TextSpan(
-                      text: "31 - 60 Days Total Due: ",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w400,
-                        // color: Colors.grey,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: 'onAccountAmounts',
-                          // text: details['onAccountAmounts']['2'].toString(),
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w400, color: Colors.black),
-                        )
-                      ])),
-                  Text.rich(TextSpan(
-                      text: "61 - 90 Days Total Due: ",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w400,
-                        // color: Colors.grey,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: 'onAccountAmounts',
-                          // text: details['onAccountAmounts']['3'].toString(),
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w400, color: Colors.black),
-                        )
-                      ])),
-                  Text.rich(TextSpan(
-                      text: "90 - 120 Days Total Due: ",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w400,
-                        // color: Colors.grey,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: 'onAccountAmounts',
-                          // text: details['onAccountAmounts']['4'].toString(),
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w400, color: Colors.black),
-                        )
-                      ])),
-                  Text.rich(TextSpan(
-                      text: "121 - 150 Days Total Due: ",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w400,
-                        // color: Colors.grey,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: 'onAccountAmounts',
-                          // text: details['onAccountAmounts']['5'].toString(),
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w400, color: Colors.black),
-                        )
-                      ])),
-                  Text.rich(TextSpan(
-                      text: ">150 Days Total Due: ",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w400,
-                        // color: Colors.grey,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: 'onAccountAmounts',
-                          // text: details['onAccountAmounts']['6'].toString(),
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w400, color: Colors.black),
-                        )
-                      ])),
-                ],
-              ),
+                    ));
+                  }),
             ),
           ],
         ),

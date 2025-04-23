@@ -17,9 +17,8 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
   late final TextEditingController receivableSearchController;
   final ScrollController _scrollController = ScrollController();
   bool _isLoadingMore = false;
-  bool _isInitialLoading = true; // Track initial loading state
+  bool _isInitialLoading = true;
 
-  // State provider for sales register list
   final salesRegisterListStateProvider = StateProvider<Map<String, dynamic>>(
     (ref) => {
       'content': [],
@@ -28,26 +27,23 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
     },
   );
 
-  // State provider for current page
   final currentPageProvider = StateProvider<int>((ref) => 0);
 
-  // State provider for search key
   final searchKeyProvider = StateProvider<String>((ref) => '');
 
   @override
   void initState() {
     super.initState();
     receivableSearchController = TextEditingController();
-    // Fetch initial data
+
     _fetchInitialData();
-    // Add scroll listener for pagination
+
     _scrollController.addListener(_handleScroll);
   }
 
-  // Fetch initial data for the first page
   Future<void> _fetchInitialData() async {
     setState(() {
-      _isInitialLoading = true; // Show loading indicator
+      _isInitialLoading = true;
     });
 
     try {
@@ -71,13 +67,12 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
     } finally {
       if (mounted) {
         setState(() {
-          _isInitialLoading = false; // Hide loading indicator
+          _isInitialLoading = false;
         });
       }
     }
   }
 
-  // Handle scroll to load more data
   void _handleScroll() {
     if (_scrollController.position.pixels >=
             _scrollController.position.maxScrollExtent * 0.9 &&
@@ -87,12 +82,11 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
     }
   }
 
-  // Load more data for pagination
   Future<void> _loadMoreData() async {
     if (_isLoadingMore) return;
 
     setState(() {
-      _isLoadingMore = true; // Show loading indicator
+      _isLoadingMore = true;
     });
 
     try {
@@ -123,17 +117,16 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
     } finally {
       if (mounted) {
         setState(() {
-          _isLoadingMore = false; // Hide loading indicator
+          _isLoadingMore = false;
         });
       }
     }
   }
 
-  // Handle search
   void _handleSearch() {
     ref.read(searchKeyProvider.notifier).state =
         receivableSearchController.text;
-    ref.invalidate(salesRegisterProvider); // Clear cache
+    ref.invalidate(salesRegisterProvider);
     _fetchInitialData();
   }
 
@@ -258,42 +251,80 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      item.items_ItemName,
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          item.items_ItemCode,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                        Text(
+                                          item.invoiceDate,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w400),
+                                        )
+                                      ],
                                     ),
-                                    const SizedBox(height: 8),
-                                    _buildTextRow(HandText.srItemCode,
-                                        item.items_ItemCode),
-                                    _buildTextRow(HandText.srItemGroupName,
-                                        item.items_GoodsItems_goodGroupName),
-                                    _buildTextRow(HandText.srCustomerName,
-                                        item.customer_Trade_name),
-                                    _buildTextRow(HandText.srCustomerCode,
-                                        item.customer_Customer_code),
-                                    _buildTextRow(HandText.srCustomerGSTNo,
-                                        item.customer_Customer_gstin),
-                                    _buildTextRow(
-                                        HandText.srKamCode, item.kam_KamCode),
-                                    _buildTextRow(
-                                        HandText.srKamName, item.kam_KamName),
-                                    _buildTextRow(
-                                        HandText.srInvoiceNo, item.invoiceNo),
-                                    _buildTextRow(HandText.srInvoiceDate,
-                                        item.invoiceDate),
-                                    _buildTextRow(HandText.srInvoiceQuantity,
-                                        item.items_Qty),
-                                    _buildTextRow(HandText.srBaseValue,
-                                        item.sub_total_amt),
-                                    _buildTextRow(HandText.srInvoiceValue,
-                                        item.allTotalAmount),
-                                    _buildTextRow(HandText.srCustomerAddress,
-                                        item.customer_Customer_address_state),
-                                    _buildTextRow(HandText.srFunctionalArea,
-                                        item.companyFunction_functionalities_name),
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          item.customer_Trade_name.length > 17
+                                              ? '${item.customer_Trade_name.substring(0, 17)}...'
+                                              : item.customer_Trade_name,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                        Text(
+                                          item.allTotalAmount,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w400),
+                                        )
+                                      ],
+                                    )
+                                    // Text(
+                                    //   item.items_ItemName,
+                                    //   style: const TextStyle(
+                                    //     fontSize: 16,
+                                    //     fontWeight: FontWeight.bold,
+                                    //   ),
+                                    // ),
+                                    // const SizedBox(height: 8),
+                                    // _buildTextRow(HandText.srItemCode,
+                                    //     item.items_ItemCode),
+                                    // _buildTextRow(HandText.srItemGroupName,
+                                    //     item.items_GoodsItems_goodGroupName),
+                                    // _buildTextRow(HandText.srCustomerName,
+                                    //     item.customer_Trade_name),
+                                    // _buildTextRow(HandText.srCustomerCode,
+                                    //     item.customer_Customer_code),
+                                    // _buildTextRow(HandText.srCustomerGSTNo,
+                                    //     item.customer_Customer_gstin),
+                                    // _buildTextRow(
+                                    //     HandText.srKamCode, item.kam_KamCode),
+                                    // _buildTextRow(
+                                    //     HandText.srKamName, item.kam_KamName),
+                                    // _buildTextRow(
+                                    //     HandText.srInvoiceNo, item.invoiceNo),
+                                    // _buildTextRow(HandText.srInvoiceDate,
+                                    //     item.invoiceDate),
+                                    // _buildTextRow(HandText.srInvoiceQuantity,
+                                    //     item.items_Qty),
+                                    // _buildTextRow(HandText.srBaseValue,
+                                    //     item.sub_total_amt),
+                                    // _buildTextRow(HandText.srInvoiceValue,
+                                    //     item.allTotalAmount),
+                                    // _buildTextRow(HandText.srCustomerAddress,
+                                    //     item.customer_Customer_address_state),
+                                    // _buildTextRow(HandText.srFunctionalArea,
+                                    //     item.companyFunction_functionalities_name),
                                   ],
                                 ),
                               ),
@@ -312,7 +343,6 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
     );
   }
 
-  // Helper method to build Text.rich rows
   Widget _buildTextRow(String label, dynamic value) {
     return Text.rich(
       TextSpan(
