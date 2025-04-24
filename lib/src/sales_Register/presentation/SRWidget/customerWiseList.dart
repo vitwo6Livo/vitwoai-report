@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/sales_Register/data/salesRegisterFatchData.dart';
+import 'package:vitwoai_report/src/sales_Register/model/salesCustomerWiseModel.dart';
 import 'package:vitwoai_report/src/sales_Register/presentation/SRDetails/customerWise.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
@@ -22,13 +23,14 @@ class _CustomerWiseScreenState extends ConsumerState<CustomerWiseScreen> {
 
   // State provider for customer-wise sales register list
   final salesRegisterCustomerListStateProvider =
-      StateProvider<Map<String, dynamic>>(
-    (ref) => {
-      'content': [],
-      'last': false,
-      'totalElements': 0,
-    },
-  );
+      StateProvider<SalesCustomerwisemodel>((ref) => SalesCustomerwisemodel(
+            content: [],
+            pageNumber: 0,
+            pageSize: 0,
+            totalElements: 0,
+            totalPages: 0,
+            lastPage: false,
+          ));
 
   // State provider for current page
   final currentPageProvider = StateProvider<int>((ref) => 0);
@@ -57,11 +59,7 @@ class _CustomerWiseScreenState extends ConsumerState<CustomerWiseScreen> {
       final data = await ref.read(
           salesRegisterCustomerProvider((key: searchKey, page: 0)).future);
       if (mounted) {
-        ref.read(salesRegisterCustomerListStateProvider.notifier).state = {
-          'content': data.content,
-          'last': data.lastPage,
-          'totalElements': data.totalElements,
-        };
+        ref.read(salesRegisterCustomerListStateProvider.notifier).state = data;
         ref.read(currentPageProvider.notifier).state = 0;
       }
     } catch (e) {
@@ -81,10 +79,11 @@ class _CustomerWiseScreenState extends ConsumerState<CustomerWiseScreen> {
 
   // Handle scroll to load more data
   void _handleScroll() {
+    final model = ref.read(salesRegisterCustomerListStateProvider);
     if (_scrollController.position.pixels >=
             _scrollController.position.maxScrollExtent * 0.9 &&
         !_isLoadingMore &&
-        !ref.read(salesRegisterCustomerListStateProvider)['last']) {
+        !model.lastPage) {
       _loadMoreData();
     }
   }
@@ -109,12 +108,14 @@ class _CustomerWiseScreenState extends ConsumerState<CustomerWiseScreen> {
         ref
             .read(salesRegisterCustomerListStateProvider.notifier)
             .update((state) {
-          final updatedContent = [...state['content'], ...newData.content];
-          return {
-            'content': updatedContent,
-            'last': newData.lastPage,
-            'totalElements': newData.totalElements,
-          };
+          return SalesCustomerwisemodel(
+            content: [...state.content, ...newData.content],
+            pageNumber: newData.pageNumber,
+            pageSize: newData.pageSize,
+            totalElements: newData.totalElements,
+            totalPages: newData.totalPages,
+            lastPage: newData.lastPage,
+          );
         });
 
         ref.read(currentPageProvider.notifier).state = nextPage;
@@ -195,7 +196,7 @@ class _CustomerWiseScreenState extends ConsumerState<CustomerWiseScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "${HandText.totalRecords} ${salesRegisterCustomerList['totalElements']}",
+                  "${HandText.totalRecords} ${salesRegisterCustomerList.totalElements}",
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
@@ -253,14 +254,13 @@ class _CustomerWiseScreenState extends ConsumerState<CustomerWiseScreen> {
           Expanded(
             child: _isInitialLoading
                 ? screen_shimmer(120, 800)
-                : salesRegisterCustomerList['content'].isEmpty
+                : salesRegisterCustomerList.content.isEmpty
                     ? Center(child: Text(HandText.noData))
                     : ListView.builder(
                         controller: _scrollController,
-                        itemCount: salesRegisterCustomerList['content'].length,
+                        itemCount: salesRegisterCustomerList.content.length,
                         itemBuilder: (context, index) {
-                          final item =
-                              salesRegisterCustomerList['content'][index];
+                          final item = salesRegisterCustomerList.content[index];
                           return Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 8, vertical: 4),
@@ -271,8 +271,8 @@ class _CustomerWiseScreenState extends ConsumerState<CustomerWiseScreen> {
                                     MaterialPageRoute(
                                         builder: (context) =>
                                             CustomerWiseDetailsPage(
-                                              data: salesRegisterCustomerList[
-                                                  'content'],
+                                              data: salesRegisterCustomerList
+                                                  .content,
                                               index: index,
                                             )));
                               },

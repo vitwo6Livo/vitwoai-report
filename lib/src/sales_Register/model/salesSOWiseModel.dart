@@ -15,18 +15,31 @@ class SalesSOwisemodel {
     required this.lastPage,
   });
 
+  // factory SalesSOwisemodel.fromJson(Map<String, dynamic> json) {
+  //   return SalesSOwisemodel(
+  //     content: (json['content'] as List)
+  //         .map((e) => SalesSOContentList.fromJson(e))
+  //         .toList(),
+  //     pageNumber: json['pageNumber'],
+  //     pageSize: json['pageSize'],
+  //     totalElements: json['totalElements'],
+  //     totalPages: json['totalPages'],
+  //     lastPage: json['lastPage'],
+  //   );
+  // }
   factory SalesSOwisemodel.fromJson(Map<String, dynamic> json) {
-    return SalesSOwisemodel(
-      content: (json['content'] as List)
-          .map((e) => SalesSOContentList.fromJson(e))
-          .toList(),
-      pageNumber: json['pageNumber'],
-      pageSize: json['pageSize'],
-      totalElements: json['totalElements'],
-      totalPages: json['totalPages'],
-      lastPage: json['lastPage'],
-    );
-  }
+  return SalesSOwisemodel(
+    content: (json['content'] as List? ?? [])
+        .map((e) => SalesSOContentList.fromJson(e))
+        .toList(),
+    pageNumber: json['pageNumber'] ?? 0,
+    pageSize: json['pageSize'] ?? 0,
+    totalElements: json['totalElements'] ?? 0,
+    totalPages: json['totalPages'] ?? 0,
+    lastPage: json['lastPage'] ?? false,
+  );
+}
+
   Map<String, dynamic> toJson() {
     return {
       'content': content.map((index) => index.toJson()).toList(),

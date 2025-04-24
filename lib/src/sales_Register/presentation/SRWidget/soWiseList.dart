@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/sales_Register/data/salesRegisterFatchData.dart';
+import 'package:vitwoai_report/src/sales_Register/model/salesSOWiseModel.dart';
 import 'package:vitwoai_report/src/sales_Register/presentation/SRDetails/soWiseDetails.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
@@ -18,53 +19,49 @@ class SalesRegisterSOScreen extends ConsumerStatefulWidget {
 class _SalesRegisterSOScreenState extends ConsumerState<SalesRegisterSOScreen> {
   late final TextEditingController searchItem;
   final ScrollController _scrollController = ScrollController();
+
   bool _isLoadingMore = false;
   bool _isInitialLoading = true;
 
-  // State provider for sales register SO list
-  final salesRegisterSOListStateProvider = StateProvider<Map<String, dynamic>>(
-    (ref) => {
-      'content': [],
-      'last': false,
-      'totalElements': 0,
-    },
-  );
+// Changes
+  final salesRegisterSOListStateProvider =
+      StateProvider<SalesSOwisemodel>((ref) {
+    return SalesSOwisemodel(
+      content: [],
+      pageNumber: 0,
+      pageSize: 0,
+      totalElements: 0,
+      totalPages: 0,
+      lastPage: false,
+    );
+  });
 
-  // State provider for current page
   final currentPageProvider = StateProvider<int>((ref) => 0);
-
-  // State provider for search key
   final searchKeyProvider = StateProvider<String>((ref) => '');
 
   @override
   void initState() {
     super.initState();
     searchItem = TextEditingController();
-    // Fetch initial data
     _fetchInitialData();
-    // Add scroll listener for pagination
     _scrollController.addListener(_handleScroll);
   }
 
-  // Fetch initial data for the first page
   Future<void> _fetchInitialData() async {
-    setState(() {
-      _isInitialLoading = true;
-    });
+    setState(() => _isInitialLoading = true);
 
     try {
       final searchKey = ref.read(searchKeyProvider);
-      final data = await ref
-          .read(salesRegisterSOProvider((key: searchKey, page: 0)).future);
+      final data = await ref.read(
+        salesRegisterSOProvider((key: searchKey, page: 0)).future,
+      );
+// Changes
       if (mounted) {
-        ref.read(salesRegisterSOListStateProvider.notifier).state = {
-          'content': data.content,
-          'last': data.lastPage,
-          'totalElements': data.totalElements,
-        };
+        ref.read(salesRegisterSOListStateProvider.notifier).state = data;
         ref.read(currentPageProvider.notifier).state = 0;
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      debugPrint('Error: $e\n$stackTrace');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Failed to load data: $e')),
@@ -72,48 +69,46 @@ class _SalesRegisterSOScreenState extends ConsumerState<SalesRegisterSOScreen> {
       }
     } finally {
       if (mounted) {
-        setState(() {
-          _isInitialLoading = false;
-        });
+        setState(() => _isInitialLoading = false);
       }
     }
   }
 
-  // Handle scroll to load more data
+// Changes
   void _handleScroll() {
+    final model = ref.read(salesRegisterSOListStateProvider);
     if (_scrollController.position.pixels >=
             _scrollController.position.maxScrollExtent * 0.9 &&
         !_isLoadingMore &&
-        !ref.read(salesRegisterSOListStateProvider)['last']) {
+        !model.lastPage) {
       _loadMoreData();
     }
   }
 
-  // Load more data for pagination
   Future<void> _loadMoreData() async {
     if (_isLoadingMore) return;
-
-    setState(() {
-      _isLoadingMore = true;
-    });
+    setState(() => _isLoadingMore = true);
 
     try {
       final searchKey = ref.read(searchKeyProvider);
       final currentPage = ref.read(currentPageProvider);
       final nextPage = currentPage + 1;
-      final newData = await ref.read(
-          salesRegisterSOProvider((key: searchKey, page: nextPage)).future);
 
+      final newData = await ref.read(
+        salesRegisterSOProvider((key: searchKey, page: nextPage)).future,
+      );
+// Changes
       if (mounted) {
         ref.read(salesRegisterSOListStateProvider.notifier).update((state) {
-          final updatedContent = [...state['content'], ...newData.content];
-          return {
-            'content': updatedContent,
-            'last': newData.lastPage,
-            'totalElements': newData.totalElements,
-          };
+          return SalesSOwisemodel(
+            content: [...state.content, ...newData.content],
+            pageNumber: newData.pageNumber,
+            pageSize: newData.pageSize,
+            totalElements: newData.totalElements,
+            totalPages: newData.totalPages,
+            lastPage: newData.lastPage,
+          );
         });
-
         ref.read(currentPageProvider.notifier).state = nextPage;
       }
     } catch (e) {
@@ -124,17 +119,14 @@ class _SalesRegisterSOScreenState extends ConsumerState<SalesRegisterSOScreen> {
       }
     } finally {
       if (mounted) {
-        setState(() {
-          _isLoadingMore = false;
-        });
+        setState(() => _isLoadingMore = false);
       }
     }
   }
 
-  // Handle search with debounce
   void _handleSearch() {
     ref.read(searchKeyProvider.notifier).state = searchItem.text;
-    ref.invalidate(salesRegisterSOProvider); // Clear cache
+    ref.invalidate(salesRegisterSOProvider);
     _fetchInitialData();
   }
 
@@ -153,19 +145,13 @@ class _SalesRegisterSOScreenState extends ConsumerState<SalesRegisterSOScreen> {
       backgroundColor: AppColor.screenBgColor,
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () => Navigator.pop(context),
           icon: Icon(Icons.arrow_back, color: AppColor.appBarIcon),
+          onPressed: () => Navigator.pop(context),
         ),
         title: Text(
           HandText.srSOWiseTitle,
           style: TextStyle(color: AppColor.appbarFont),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon:  Icon(Icons.settings, color: AppColor.appBarIcon),
-          ),
-        ],
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -178,84 +164,17 @@ class _SalesRegisterSOScreenState extends ConsumerState<SalesRegisterSOScreen> {
       ),
       body: Column(
         children: [
-          Container(
-            height: 80,
-            margin: const EdgeInsets.all(8),
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            decoration: BoxDecoration(
-              color: AppColor.lightFontCpy,
-              border: Border.all(),
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "${HandText.totalRecords} ${salesRegisterSOList['totalElements']}",
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    Flexible(
-                      fit: FlexFit.tight,
-                      flex: 9,
-                      child: Container(
-                        margin: const EdgeInsets.only(right: 8),
-                        height: 40,
-                        child: TextField(
-                          controller: searchItem,
-                          decoration: InputDecoration(
-                            hintText: HandText.searchBox,
-                            prefixIcon: const Icon(Icons.search),
-                            border: const OutlineInputBorder(),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: AppColor.appBarGradiant,
-                                width: 2.0,
-                              ),
-                            ),
-                            contentPadding:
-                                const EdgeInsets.symmetric(vertical: 8),
-                          ),
-                          cursorHeight: 20,
-                          cursorColor: AppColor.appBarGradiant,
-                          onSubmitted: (_) => _handleSearch(),
-                        ),
-                      ),
-                    ),
-                    Flexible(
-                      fit: FlexFit.tight,
-                      flex: 1,
-                      child: InkWell(
-                        onTap: _handleSearch,
-                        child: Container(
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: AppColor.appBarGradiant,
-                            border: Border.all(color: AppColor.appBarGradiant),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child:
-                              Icon(Icons.search, color: AppColor.lightFontCpy),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
+          _buildSearchBox(salesRegisterSOList.totalElements),
           Expanded(
             child: _isInitialLoading
                 ? screen_shimmer(120, 800)
-                : salesRegisterSOList['content'].isEmpty
+                : salesRegisterSOList.content.isEmpty
                     ? Center(child: Text(HandText.noData))
                     : ListView.builder(
                         controller: _scrollController,
-                        itemCount: salesRegisterSOList['content'].length,
+                        itemCount: salesRegisterSOList.content.length,
                         itemBuilder: (context, index) {
-                          final item = salesRegisterSOList['content'][index];
+                          final item = salesRegisterSOList.content[index];
                           return Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 8, vertical: 4),
@@ -265,7 +184,7 @@ class _SalesRegisterSOScreenState extends ConsumerState<SalesRegisterSOScreen> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => SoWiseDetails(
-                                      data: salesRegisterSOList['content'],
+                                      data: salesRegisterSOList.content,
                                       index: index,
                                     ),
                                   ),
@@ -321,37 +240,78 @@ class _SalesRegisterSOScreenState extends ConsumerState<SalesRegisterSOScreen> {
     );
   }
 
-  // Helper method to build Text.rich rows
-  // Widget _buildTextRow(String label, dynamic value) {
-  //   return Text.rich(
-  //     TextSpan(
-  //       text: label,
-  //       style: const TextStyle(fontSize: 14, color: Colors.grey),
-  //       children: [
-  //         TextSpan(
-  //           text: value?.toString() ?? 'N/A',
-  //           style: const TextStyle(fontSize: 16, color: Colors.black),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
+  Widget _buildSearchBox(int totalElements) {
+    return Container(
+      height: 80,
+      margin: const EdgeInsets.all(8),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      decoration: BoxDecoration(
+        color: AppColor.lightFontCpy,
+        border: Border.all(),
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("${HandText.totalRecords} $totalElements",
+              style: const TextStyle(fontWeight: FontWeight.bold)),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              Expanded(
+                flex: 9,
+                child: Container(
+                  margin: const EdgeInsets.only(right: 8),
+                  height: 40,
+                  child: TextField(
+                    controller: searchItem,
+                    decoration: InputDecoration(
+                      hintText: HandText.searchBox,
+                      prefixIcon: const Icon(Icons.search),
+                      border: const OutlineInputBorder(),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: AppColor.appBarGradiant, width: 2.0),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 8),
+                    ),
+                    cursorHeight: 20,
+                    cursorColor: AppColor.appBarGradiant,
+                    onSubmitted: (_) => _handleSearch(),
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: InkWell(
+                  onTap: _handleSearch,
+                  child: Container(
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: AppColor.appBarGradiant,
+                      border: Border.all(color: AppColor.appBarGradiant),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Icon(Icons.search, color: AppColor.lightFontCpy),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget _buildDataRow(IconData iconName, String data) {
     return Row(
       children: [
-        Icon(
-          iconName,
-          color: AppColor.appBarGradiant,
-          size: 20,
-        ),
-        Text(
-          " $data",
-          style: TextStyle(
-              fontWeight: FontWeight.w500,
-              color: AppColor.lightFont,
-              fontSize: 16),
-        ),
+        Icon(iconName, color: AppColor.appBarGradiant, size: 20),
+        Text(" $data",
+            style: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: AppColor.lightFont,
+                fontSize: 16)),
       ],
     );
   }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/sales_Register/data/salesRegisterFatchData.dart';
+import 'package:vitwoai_report/src/sales_Register/model/salesHSNCodeModel.dart';
 import 'package:vitwoai_report/src/sales_Register/presentation/SRDetails/newSRHSNCodeDetails.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
@@ -22,12 +23,15 @@ class _HsnCodeWiseScreenState extends ConsumerState<HsnCodeWiseScreen> {
 
   // State provider for HSN code wise sales register list
   final salesRegisterHsnCodeListStateProvider =
-      StateProvider<Map<String, dynamic>>(
-    (ref) => {
-      'content': [],
-      'last': false,
-      'totalElements': 0,
-    },
+      StateProvider<SalesHSNCodewisemodel>(
+    (ref) => SalesHSNCodewisemodel(
+      content: [],
+      pageNumber: 0,
+      pageSize: 0,
+      totalElements: 0,
+      totalPages: 0,
+      lastPage: false,
+    ),
   );
 
   // State provider for current page
@@ -57,11 +61,7 @@ class _HsnCodeWiseScreenState extends ConsumerState<HsnCodeWiseScreen> {
       final data = await ref
           .read(salesRegisterHSNCodeProvider((key: searchKey, page: 0)).future);
       if (mounted) {
-        ref.read(salesRegisterHsnCodeListStateProvider.notifier).state = {
-          'content': data.content,
-          'last': data.lastPage,
-          'totalElements': data.totalElements,
-        };
+        ref.read(salesRegisterHsnCodeListStateProvider.notifier).state = data;
         ref.read(currentPageProvider.notifier).state = 0;
       }
     } catch (e) {
@@ -81,10 +81,11 @@ class _HsnCodeWiseScreenState extends ConsumerState<HsnCodeWiseScreen> {
 
   // Handle scroll to load more data
   void _handleScroll() {
+    final model = ref.read(salesRegisterHsnCodeListStateProvider);
     if (_scrollController.position.pixels >=
             _scrollController.position.maxScrollExtent * 0.9 &&
         !_isLoadingMore &&
-        !ref.read(salesRegisterHsnCodeListStateProvider)['last']) {
+        !model.lastPage) {
       _loadMoreData();
     }
   }
@@ -109,12 +110,14 @@ class _HsnCodeWiseScreenState extends ConsumerState<HsnCodeWiseScreen> {
         ref
             .read(salesRegisterHsnCodeListStateProvider.notifier)
             .update((state) {
-          final updatedContent = [...state['content'], ...newData.content];
-          return {
-            'content': updatedContent,
-            'last': newData.lastPage,
-            'totalElements': newData.totalElements,
-          };
+          return SalesHSNCodewisemodel(
+            content: [...state.content, ...newData.content],
+            pageNumber: newData.pageNumber,
+            pageSize: newData.pageSize,
+            totalElements: newData.totalElements,
+            totalPages: newData.totalPages,
+            lastPage: newData.lastPage,
+          );
         });
 
         ref.read(currentPageProvider.notifier).state = nextPage;
@@ -195,7 +198,7 @@ class _HsnCodeWiseScreenState extends ConsumerState<HsnCodeWiseScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "${HandText.totalRecords} ${salesRegisterHsnCodeList['totalElements']}",
+                  "${HandText.totalRecords} ${salesRegisterHsnCodeList.totalElements}",
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
@@ -255,14 +258,13 @@ class _HsnCodeWiseScreenState extends ConsumerState<HsnCodeWiseScreen> {
           Expanded(
             child: _isInitialLoading
                 ? screen_shimmer(120, 800)
-                : salesRegisterHsnCodeList['content'].isEmpty
+                : salesRegisterHsnCodeList.content.isEmpty
                     ? Center(child: Text(HandText.noData))
                     : ListView.builder(
                         controller: _scrollController,
-                        itemCount: salesRegisterHsnCodeList['content'].length,
+                        itemCount: salesRegisterHsnCodeList.content.length,
                         itemBuilder: (context, index) {
-                          final item =
-                              salesRegisterHsnCodeList['content'][index];
+                          final item = salesRegisterHsnCodeList.content[index];
                           return InkWell(
                             onTap: () {
                               Navigator.push(
@@ -270,8 +272,8 @@ class _HsnCodeWiseScreenState extends ConsumerState<HsnCodeWiseScreen> {
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           newSRHsnCodeWiseDetailsScreen(
-                                            data: salesRegisterHsnCodeList[
-                                                'content'],
+                                            data: salesRegisterHsnCodeList
+                                                .content,
                                             index: index,
                                           )));
                             },
