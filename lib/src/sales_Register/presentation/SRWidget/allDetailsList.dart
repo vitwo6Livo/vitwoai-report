@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/sales_Register/data/salesRegisterFatchData.dart';
+import 'package:vitwoai_report/src/sales_Register/presentation/SRDetails/allDetailsPage.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
 
@@ -244,88 +245,63 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
                           return Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 8, vertical: 4),
-                            child: Card(
-                              color: Colors.white,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          item.items_ItemCode,
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                        Text(
-                                          item.invoiceDate,
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.w400),
-                                        )
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 8,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          item.customer_Trade_name.length > 17
-                                              ? '${item.customer_Trade_name.substring(0, 17)}...'
-                                              : item.customer_Trade_name,
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.w400,
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => AllDetailsPage(
+                                            data: salesRegisterList['content'],
+                                            index: index)));
+                              },
+                              child: Card(
+                                color: Colors.white,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            item.items_ItemCode,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.w400),
                                           ),
-                                        ),
-                                        Text(
-                                          item.allTotalAmount,
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.w400),
-                                        )
-                                      ],
-                                    )
-                                    // Text(
-                                    //   item.items_ItemName,
-                                    //   style: const TextStyle(
-                                    //     fontSize: 16,
-                                    //     fontWeight: FontWeight.bold,
-                                    //   ),
-                                    // ),
-                                    // const SizedBox(height: 8),
-                                    // _buildTextRow(HandText.srItemCode,
-                                    //     item.items_ItemCode),
-                                    // _buildTextRow(HandText.srItemGroupName,
-                                    //     item.items_GoodsItems_goodGroupName),
-                                    // _buildTextRow(HandText.srCustomerName,
-                                    //     item.customer_Trade_name),
-                                    // _buildTextRow(HandText.srCustomerCode,
-                                    //     item.customer_Customer_code),
-                                    // _buildTextRow(HandText.srCustomerGSTNo,
-                                    //     item.customer_Customer_gstin),
-                                    // _buildTextRow(
-                                    //     HandText.srKamCode, item.kam_KamCode),
-                                    // _buildTextRow(
-                                    //     HandText.srKamName, item.kam_KamName),
-                                    // _buildTextRow(
-                                    //     HandText.srInvoiceNo, item.invoiceNo),
-                                    // _buildTextRow(HandText.srInvoiceDate,
-                                    //     item.invoiceDate),
-                                    // _buildTextRow(HandText.srInvoiceQuantity,
-                                    //     item.items_Qty),
-                                    // _buildTextRow(HandText.srBaseValue,
-                                    //     item.sub_total_amt),
-                                    // _buildTextRow(HandText.srInvoiceValue,
-                                    //     item.allTotalAmount),
-                                    // _buildTextRow(HandText.srCustomerAddress,
-                                    //     item.customer_Customer_address_state),
-                                    // _buildTextRow(HandText.srFunctionalArea,
-                                    //     item.companyFunction_functionalities_name),
-                                  ],
+                                          Text(
+                                            item.invoiceDate,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.w400),
+                                          )
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            item.customer_Trade_name.length > 17
+                                                ? '${item.customer_Trade_name.substring(0, 17)}...'
+                                                : item.customer_Trade_name,
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                          Text(
+                                            item.allTotalAmount,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.w400),
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -338,21 +314,6 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
               padding: EdgeInsets.only(bottom: 16),
               child: CircularProgressIndicator(),
             ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTextRow(String label, dynamic value) {
-    return Text.rich(
-      TextSpan(
-        text: label,
-        style: const TextStyle(fontSize: 14, color: Colors.grey),
-        children: [
-          TextSpan(
-            text: value?.toString() ?? 'N/A',
-            style: const TextStyle(fontSize: 16, color: Colors.black),
-          ),
         ],
       ),
     );

@@ -23,7 +23,7 @@ class newVendorWiseDetails extends StatelessWidget {
           icon: Icon(Icons.arrow_back, color: AppColor.lightFontCpy),
         ),
         title: Text(
-          HandText.prAllDetailsTitle,
+          HandText.prVendorDetailsTitle,
           style: TextStyle(color: AppColor.appbarFont),
         ),
         flexibleSpace: Container(
@@ -41,13 +41,13 @@ class newVendorWiseDetails extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildSectionHeader("Vendor Information"),
+            _buildSectionHeader(HandText.prVendorInfoDetails),
             _buildCard([
               _buildDetailRow(Icons.person, "Vendor Name", item.vendorName),
               _buildDetailRow(Icons.code, "Vendor Code", item.vendorCode),
             ]),
             const SizedBox(height: 16),
-            _buildSectionHeader("Order & Quantity Details"),
+            _buildSectionHeader(HandText.prVendorOrderQty),
             _buildCard([
               _buildDetailRow(Icons.shopping_cart, "Received Quantity",
                   item.receivedQuantity),
@@ -60,7 +60,7 @@ class newVendorWiseDetails extends StatelessWidget {
                   Icons.attach_money, "PO Value (Gross)", item.poValueGross),
             ]),
             const SizedBox(height: 16),
-            _buildSectionHeader("Tax Summary"),
+            _buildSectionHeader(HandText.prVendorTaxAmt),
             _buildCard([
               _buildDoubleColumn([
                 _buildDetailColumn(Icons.percent, "Base Value", item.baseValue),

@@ -318,7 +318,7 @@ class LineChartSample2 extends ConsumerWidget {
     return salesGraphData.when(
       data: (data) {
         // Debugging: Print the API response
-        print('API Response: $data');
+        // print('API Response: $data');
 
         // Ensure the data structure matches expectations
         if (data['data'] == null || data['data'].isEmpty) {

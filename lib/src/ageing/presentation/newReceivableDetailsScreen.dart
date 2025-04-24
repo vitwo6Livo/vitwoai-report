@@ -1,5 +1,3 @@
-// ignore_for_file: must_be_immutable
-
 import 'package:flutter/material.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
@@ -11,29 +9,22 @@ class newReceivableDetailsScreen extends StatelessWidget {
     super.key,
     required this.data,
     required this.index,
-  });
+  }); 
 
   @override
   Widget build(BuildContext context) {
     // Fetching the item details based on the index
-    List<String> dueAmounts = [
-      "0 - 30 Days Total Due: ",
-      "31 - 60 Days Total Due: ",
-      "61 - 90 Days Total Due: ",
-      "91 - 120 Days Total Due: ",
-      "121 - 150 Days Total Due: ",
-      "151 - 180 Days Total Due: ",
-      ">180 Days Total Due: ",
+    List<String> headings = [
+      "0 - 30 Days",
+      "31 - 60 Days",
+      "61 - 90 Days",
+      "91 - 120 Days",
+      "121 - 150 Days",
+      "151 - 180 Days",
+      ">180 Days",
     ];
-    List<String> onAccountAmounts = [
-      "0 - 30 Days Total Due: ",
-      "31 - 60 Days Total Due: ",
-      "61 - 90 Days Total Due: ",
-      "91 - 120 Days Total Due: ",
-      "121 - 150 Days Total Due: ",
-      "151 - 180 Days Total Due: ",
-      ">180 Days Total Due: ",
-    ];
+    const String dueAmt = "Due Amounts :";
+    const String onAccountAmt = "On Account Amounts :";
     return Scaffold(
       backgroundColor: AppColor.screenBgColor,
       appBar: AppBar(
@@ -85,9 +76,7 @@ class newReceivableDetailsScreen extends StatelessWidget {
                         fontSize: 20,
                       ),
                     ),
-                    const SizedBox(
-                      height: 12,
-                    ),
+                    const SizedBox(height: 12),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -125,9 +114,7 @@ class newReceivableDetailsScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 5,
-                    ),
+                    const SizedBox(height: 5),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -171,9 +158,7 @@ class newReceivableDetailsScreen extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 16,
-            ),
+            const SizedBox(height: 16),
             Expanded(
               child: ListView.builder(
                   itemCount: 7,
@@ -183,50 +168,47 @@ class newReceivableDetailsScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                dueAmounts[ind],
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.green
-                                    // color: Colors.grey,
-                                    ),
-                              ),
-                              Text(
-                                data[index]
-                                    .dueAmounts
-                                    .values['$ind']
-                                    .toString(),
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.green),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                onAccountAmounts[ind],
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  color: Color.fromARGB(255, 102, 20, 14),
-                                ),
-                              ),
-                              Text(
-                                data[index]
-                                    .onAccountAmounts
-                                    .amount['$ind']
-                                    .toString(),
-                                // text: details['onAccountAmounts']['1'].toString(),
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    color: Color.fromARGB(255, 102, 20, 14)),
-                              ),
-                            ],
-                          )
+                          // Row(
+                          //   children: [
+                          //     Text(
+                          //       headings[ind],
+                          //       style: const TextStyle(
+                          //           fontWeight: FontWeight.w400,
+                          //           color: Colors.blueGrey
+                          //           // color: Colors.grey,
+                          //           ),
+                          //     ),
+                          //   ],
+                          // ),
+                          _buildCardTitle(headings[ind]),
+                          // Column(
+                          //   mainAxisAlignment: MainAxisAlignment.end,
+                          //   children: [
+                          //     Text(
+                          //       "$dueAmount ${data[index].dueAmounts.values['$ind']}",
+                          //       style: const TextStyle(
+                          //           fontWeight: FontWeight.w400,
+                          //           color: Colors.green),
+                          //     ),
+                          //     Text(
+                          //       "$onAccountAmount ${data[index].onAccountAmounts.amount['$ind']}",
+                          //       // text: details['onAccountAmounts']['1'].toString(),
+                          //       style: const TextStyle(
+                          //           fontWeight: FontWeight.w400,
+                          //           color: Color.fromARGB(255, 102, 20, 14)),
+                          //     ),
+                          //   ],
+                          // )
+                          _buildCard([
+                            _buildCardDataHeading(
+                                dueAmt,
+                                data[index].dueAmounts.values['$ind'],
+                                Colors.green),
+                            _buildCardDataHeading(
+                                onAccountAmt,
+                                data[index].onAccountAmounts.amount['$ind'],
+                                Colors.red),
+                          ]),
                         ],
                       ),
                     ));
@@ -237,4 +219,47 @@ class newReceivableDetailsScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget _buildCardTitle(String heading) {
+  return Row(
+    children: [
+      Text(
+        heading,
+        style: const TextStyle(
+            color: Colors.blueGrey, fontWeight: FontWeight.bold),
+      )
+    ],
+  );
+}
+
+Widget _buildCardDataHeading(String label, double value, Color clr) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.end,
+    children: [
+      Text(
+        label,
+        style:
+            const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+      ),
+      Text(
+        value.toString(),
+        style: TextStyle(color: clr, fontWeight: FontWeight.bold),
+      )
+    ],
+  );
+}
+
+Widget _buildCard(List<Widget> children) {
+  return Card(
+    color: AppColor.cardBackgroundColor,
+    elevation: 4,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    child: Padding(
+      padding: const EdgeInsets.all(14),
+      child: Column(
+        children: children,
+      ),
+    ),
+  );
 }

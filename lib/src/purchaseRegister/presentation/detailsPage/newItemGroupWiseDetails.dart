@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
+import 'package:vitwoai_report/src/settings/texts.dart';
 
 class newItemGroupWiseDetailsScreen extends StatelessWidget {
   final List<dynamic> data;
@@ -13,9 +14,9 @@ class newItemGroupWiseDetailsScreen extends StatelessWidget {
     final item = data[index];
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Item Group Details",
-          style: TextStyle(color: Colors.white),
+        title: Text(
+          HandText.prItemGWiseDetailsTitle,
+          style: const TextStyle(color: Colors.white),
         ),
         iconTheme: const IconThemeData(color: Colors.white),
         flexibleSpace: Container(
@@ -33,13 +34,13 @@ class newItemGroupWiseDetailsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildSectionHeader("Item Group Info"),
+            _buildSectionHeader(HandText.prItemGW_ItemInfo),
             _buildCard([
               _buildDetailRow(
                   Icons.category, "Item Group Name", item.ItemGroupName),
             ]),
             const SizedBox(height: 16),
-            _buildSectionHeader("Quantity & Value"),
+            _buildSectionHeader(HandText.prItemGWQtyVal),
             _buildCard([
               _buildDetailRow(
                   Icons.playlist_add_check, "PO Quantity", item.poQuantity),
@@ -55,7 +56,7 @@ class newItemGroupWiseDetailsScreen extends StatelessWidget {
                   Icons.price_check, "Invoice Value", item.invoiceValue),
             ]),
             const SizedBox(height: 16),
-            _buildSectionHeader("Tax Summary"),
+            _buildSectionHeader(HandText.prItemGWTaxAmt),
             _buildCard([
               Row(
                 children: [
