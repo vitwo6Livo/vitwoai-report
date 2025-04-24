@@ -17,7 +17,7 @@ class AppColor {
   static Color searchOutlineColor =
       const Color.fromARGB(255, 104, 181, 244); // Used in search Outline Color
   static Color cursonColor =
-      Colors.blue; // Used in Cursor Color/ Search Button / Border Color 
+      Colors.blue; // Used in Cursor Color/ Search Button / Border Color
   static Color searchBttnColor = Colors.blue; // Used in Search Button
   static Color appbarFont =
       Colors.white; // Title in Menu, General Settings , Purchase Register
@@ -39,6 +39,8 @@ class AppColor {
       Colors.white; // Used in PurChase Register Options Color Gradiant
   static Color indexColorDark =
       Colors.black; // Used in PurChase Register Options Color Gradiant
+
+  static Color appBarGradiant = const Color.fromARGB(255, 94, 79, 182);
 
   //////////////////// Sales Register /////////////////////////
   static Color srOptionPercentage =
@@ -80,8 +82,8 @@ class AppColor {
   static Color? menuGenSettOptionDivider = Colors.grey[200]; // Menu Divider
   static Color bottomSheetOptionIconColor =
       Colors.blueAccent; // General Settings-> Options Icon Color
-  static Color selectedOptionColor = Colors
-      .blueAccent; // General Settings-> Selected Options Color / selectedDateFormat Color text
+  static Color selectedOptionColor = Colors.blueAccent;
+  static Color srIconColor = Colors.blueAccent; //Sales Register Icon Color
 
 //////////////////////////// Shimmer /////////////
   static Color shimmerBaseColor = Colors.grey.shade300;
