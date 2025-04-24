@@ -154,7 +154,7 @@ class _CustomerWiseScreenState extends ConsumerState<CustomerWiseScreen> {
         ref.watch(salesRegisterCustomerListStateProvider);
 
     return Scaffold(
-      backgroundColor: const Color(0xfff9f9f9),
+      backgroundColor: AppColor.screenBgColor,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
@@ -167,7 +167,7 @@ class _CustomerWiseScreenState extends ConsumerState<CustomerWiseScreen> {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(Icons.settings, color: Colors.white),
+            icon: Icon(Icons.settings, color: AppColor.appBarIcon),
           ),
         ],
         flexibleSpace: Container(
@@ -213,9 +213,9 @@ class _CustomerWiseScreenState extends ConsumerState<CustomerWiseScreen> {
                             hintText: HandText.searchBox,
                             prefixIcon: const Icon(Icons.search),
                             border: const OutlineInputBorder(),
-                            focusedBorder: const OutlineInputBorder(
+                            focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: Color.fromARGB(255, 104, 181, 244),
+                                color: AppColor.appBarGradiant,
                                 width: 2.0,
                               ),
                             ),
@@ -223,7 +223,7 @@ class _CustomerWiseScreenState extends ConsumerState<CustomerWiseScreen> {
                                 const EdgeInsets.symmetric(vertical: 8),
                           ),
                           cursorHeight: 20,
-                          cursorColor: Colors.blue,
+                          cursorColor: AppColor.appBarGradiant,
                           onSubmitted: (_) => _handleSearch(),
                         ),
                       ),
@@ -236,8 +236,8 @@ class _CustomerWiseScreenState extends ConsumerState<CustomerWiseScreen> {
                         child: Container(
                           height: 40,
                           decoration: BoxDecoration(
-                            color: AppColor.searchBttnColor,
-                            border: Border.all(color: AppColor.cursonColor),
+                            color: AppColor.appBarGradiant,
+                            border: Border.all(color: AppColor.appBarGradiant),
                             borderRadius: BorderRadius.circular(5),
                           ),
                           child:
@@ -277,35 +277,39 @@ class _CustomerWiseScreenState extends ConsumerState<CustomerWiseScreen> {
                                             )));
                               },
                               child: Card(
+                                elevation: 4,
                                 color: AppColor.cardBackgroundColor,
                                 child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding: const EdgeInsets.all(15.0),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        item.customerName,
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          _buildDataRow(
+                                              Icons.account_circle,
+                                              item.customerName.length > 12
+                                                  ? '${item.customerName.substring(0, 12)}...'
+                                                  : item.customerName),
+                                          _buildDataRow(
+                                              Icons.badge, item.customerGSTNO),
+                                        ],
                                       ),
-                                      const SizedBox(height: 8),
-                                      _buildTextRow(HandText.srCustomerCode,
-                                          item.customerCode),
-                                      _buildTextRow(HandText.srSOQuantity,
-                                          item.soQuantity),
-                                      _buildTextRow(HandText.srInvoiceQuantity,
-                                          item.invoiceQuantity),
-                                      _buildTextRow(HandText.srSOValueNet,
-                                          item.soValueNet),
-                                      _buildTextRow(HandText.srSOValueGross,
-                                          item.soValueGross),
-                                      _buildTextRow(
-                                          HandText.srBaseValue, item.baseValue),
-                                      _buildTextRow(HandText.srInvoiceValue,
-                                          item.invoiceValue),
+                                      const SizedBox(height: 20),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          _buildDataRow(
+                                              Icons.confirmation_number,
+                                              item.customerCode),
+                                          _buildDataRow(Icons.receipt_long,
+                                              item.invoiceValue),
+                                        ],
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -324,20 +328,31 @@ class _CustomerWiseScreenState extends ConsumerState<CustomerWiseScreen> {
       ),
     );
   }
+}
+// Helper method to build Text.rich rows
+//   Widget _buildTextRow(String label, dynamic value) {
+//     return Text(
+//       value,
+//       style: const TextStyle(
+//           fontSize: 14, fontWeight: FontWeight.w500, color: Colors.black),
+//     );
+//   }
+// }
 
-  // Helper method to build Text.rich rows
-  Widget _buildTextRow(String label, dynamic value) {
-    return Text.rich(
-      TextSpan(
-        text: label,
-        style: const TextStyle(fontSize: 14, color: Colors.grey),
-        children: [
-          TextSpan(
-            text: value?.toString() ?? 'N/A',
-            style: const TextStyle(fontSize: 16, color: Colors.black),
-          ),
-        ],
+Widget _buildDataRow(IconData iconName, String data) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+      Icon(
+        iconName,
+        color: AppColor.appBarGradiant,
+        size: 25,
       ),
-    );
-  }
+      Text(
+        " $data",
+        style:
+            TextStyle(fontWeight: FontWeight.w500, color: AppColor.lightFont),
+      ),
+    ],
+  );
 }

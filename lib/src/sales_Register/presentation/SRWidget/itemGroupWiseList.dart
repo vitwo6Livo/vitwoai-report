@@ -156,11 +156,11 @@ class _ItemGroupWiseScreenState extends ConsumerState<ItemGroupWiseScreen> {
         ref.watch(salesRegisterItemGroupListStateProvider);
 
     return Scaffold(
-      backgroundColor: const Color(0xfff9f9f9),
+      backgroundColor: AppColor.screenBgColor,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: Icon(Icons.arrow_back, color: AppColor.appBarIcon),
         ),
         title: Text(
           HandText.srItemGroupWiseTitle,
@@ -169,7 +169,7 @@ class _ItemGroupWiseScreenState extends ConsumerState<ItemGroupWiseScreen> {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(Icons.settings, color: Colors.white),
+            icon: Icon(Icons.settings, color: AppColor.appBarIcon),
           ),
         ],
         flexibleSpace: Container(
@@ -215,9 +215,9 @@ class _ItemGroupWiseScreenState extends ConsumerState<ItemGroupWiseScreen> {
                             hintText: HandText.searchBox,
                             prefixIcon: const Icon(Icons.search),
                             border: const OutlineInputBorder(),
-                            focusedBorder: const OutlineInputBorder(
+                            focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: Color.fromARGB(255, 104, 181, 244),
+                                color: AppColor.appBarGradiant,
                                 width: 2.0,
                               ),
                             ),
@@ -225,7 +225,7 @@ class _ItemGroupWiseScreenState extends ConsumerState<ItemGroupWiseScreen> {
                                 const EdgeInsets.symmetric(vertical: 8),
                           ),
                           cursorHeight: 20,
-                          cursorColor: Colors.blue,
+                          cursorColor: AppColor.appBarGradiant,
                           onSubmitted: (_) => _handleSearch(),
                         ),
                       ),
@@ -238,8 +238,8 @@ class _ItemGroupWiseScreenState extends ConsumerState<ItemGroupWiseScreen> {
                         child: Container(
                           height: 40,
                           decoration: BoxDecoration(
-                            color: AppColor.searchBttnColor,
-                            border: Border.all(color: AppColor.cursonColor),
+                            color: AppColor.appBarGradiant,
+                            border: Border.all(color: AppColor.appBarGradiant),
                             borderRadius: BorderRadius.circular(5),
                           ),
                           child: Icon(
@@ -280,36 +280,35 @@ class _ItemGroupWiseScreenState extends ConsumerState<ItemGroupWiseScreen> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 8, vertical: 4),
                               child: Card(
-                                color: Colors.white,
+                                elevation: 4,
+                                color: AppColor.cardBackgroundColor,
                                 child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding: const EdgeInsets.all(15.0),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        item.itemGroupName,
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          _buildDataRow(Icons.category,
+                                              item.itemGroupName),
+                                          _buildDataRow(Icons.inventory_2,
+                                              item.invoiceQuantity),
+                                        ],
                                       ),
-                                      const SizedBox(height: 8),
-                                      _buildTextRow(HandText.srSOQuantity,
-                                          item.soQuantity),
-                                      _buildTextRow(HandText.srInvoiceQuantity,
-                                          item.invoiceQuantity),
-                                      _buildTextRow(HandText.srSOValueNet,
-                                          item.soValueNet),
-                                      _buildTextRow(HandText.srSOValueGross,
-                                          item.soValueGross),
-                                      _buildTextRow(
-                                          HandText.srBaseValue, item.baseValue),
-                                      _buildTextRow(HandText.srCGST, item.cgst),
-                                      _buildTextRow(HandText.srSGST, item.sgst),
-                                      _buildTextRow(HandText.srIGST, item.igst),
-                                      _buildTextRow(HandText.srInvoiceValue,
-                                          item.invoiceValue),
+                                      const SizedBox(height: 20),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          _buildDataRow(
+                                              Icons.assessment, item.baseValue),
+                                          _buildDataRow(Icons.receipt_long,
+                                              item.invoiceValue),
+                                        ],
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -329,19 +328,39 @@ class _ItemGroupWiseScreenState extends ConsumerState<ItemGroupWiseScreen> {
     );
   }
 
-  // Helper method to build Text.rich rows
-  Widget _buildTextRow(String label, dynamic value) {
-    return Text.rich(
-      TextSpan(
-        text: label,
-        style: const TextStyle(fontSize: 14, color: Colors.grey),
-        children: [
-          TextSpan(
-            text: value?.toString() ?? 'N/A',
-            style: const TextStyle(fontSize: 16, color: Colors.black),
-          ),
-        ],
-      ),
+//   // Helper method to build Text.rich rows
+//   Widget _buildTextRow(String label, dynamic value) {
+//     return Text.rich(
+//       TextSpan(
+//         text: label,
+//         style: const TextStyle(fontSize: 14, color: Colors.grey),
+//         children: [
+//           TextSpan(
+//             text: value?.toString() ?? 'N/A',
+//             style: const TextStyle(fontSize: 16, color: Colors.black),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+  Widget _buildDataRow(IconData iconName, String data) {
+    return Row(
+      children: [
+        Icon(
+          iconName,
+          color: AppColor.appBarGradiant,
+          size: 20,
+        ),
+        Text(
+          " $data",
+          style: TextStyle(
+              fontWeight: FontWeight.w500,
+              color: AppColor.lightFont,
+              fontSize: 17),
+        ),
+      ],
     );
   }
 }
