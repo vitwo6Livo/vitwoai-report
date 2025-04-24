@@ -143,11 +143,11 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
     final salesRegisterList = ref.watch(salesRegisterListStateProvider);
 
     return Scaffold(
-      backgroundColor: const Color(0xfff9f9f9),
+      backgroundColor: AppColor.screenBgColor,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: Icon(Icons.arrow_back, color: AppColor.appBarIcon),
         ),
         title: Text(
           HandText.srAllSalesRegisterTitle,
@@ -218,8 +218,8 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
                         child: Container(
                           height: 40,
                           decoration: BoxDecoration(
-                            color: AppColor.searchBttnColor,
-                            border: Border.all(color: AppColor.cursonColor),
+                            color: AppColor.appBarGradiant,
+                            border: Border.all(color: AppColor.appBarGradiant),
                             borderRadius: BorderRadius.circular(5),
                           ),
                           child:
@@ -255,9 +255,10 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
                                             index: index)));
                               },
                               child: Card(
-                                color: Colors.white,
+                                elevation: 4,
+                                color: AppColor.cardBackgroundColor,
                                 child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding: const EdgeInsets.all(15.0),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -266,38 +267,25 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(
-                                            item.items_ItemCode,
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                          Text(
-                                            item.invoiceDate,
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.w400),
-                                          )
+                                          _buildDataRow(Icons.qr_code,
+                                              item.items_ItemCode),
+                                          _buildDataRow(
+                                              Icons.event, item.invoiceDate),
                                         ],
                                       ),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
+                                      const SizedBox(height: 20),
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(
-                                            item.customer_Trade_name.length > 17
-                                                ? '${item.customer_Trade_name.substring(0, 17)}...'
-                                                : item.customer_Trade_name,
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                          ),
-                                          Text(
-                                            item.allTotalAmount,
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.w400),
-                                          )
+                                          _buildDataRow(
+                                              Icons.business,
+                                              item.customer_Trade_name.length >
+                                                      17
+                                                  ? '${item.customer_Trade_name.substring(0, 17)}...'
+                                                  : item.customer_Trade_name),
+                                          _buildDataRow(Icons.attach_money,
+                                              item.allTotalAmount)
                                         ],
                                       )
                                     ],
@@ -318,4 +306,21 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
       ),
     );
   }
+}
+
+Widget _buildDataRow(IconData iconName, String data) {
+  return Row(
+    children: [
+      Icon(
+        iconName,
+        color: AppColor.appBarGradiant,
+        size: 20,
+      ),
+      Text(
+        " $data",
+        style:
+            TextStyle(fontWeight: FontWeight.w500, color: AppColor.lightFont),
+      ),
+    ],
+  );
 }

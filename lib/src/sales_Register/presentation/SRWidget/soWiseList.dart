@@ -150,20 +150,20 @@ class _SalesRegisterSOScreenState extends ConsumerState<SalesRegisterSOScreen> {
     final salesRegisterSOList = ref.watch(salesRegisterSOListStateProvider);
 
     return Scaffold(
-      backgroundColor: const Color(0xfff9f9f9),
+      backgroundColor: AppColor.screenBgColor,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: Icon(Icons.arrow_back, color: AppColor.appBarIcon),
         ),
         title: Text(
           HandText.srSOWiseTitle,
-          style: const TextStyle(color: Colors.white),
+          style: TextStyle(color: AppColor.appbarFont),
         ),
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(Icons.settings, color: Colors.white),
+            icon:  Icon(Icons.settings, color: AppColor.appBarIcon),
           ),
         ],
         flexibleSpace: Container(
@@ -183,7 +183,7 @@ class _SalesRegisterSOScreenState extends ConsumerState<SalesRegisterSOScreen> {
             margin: const EdgeInsets.all(8),
             padding: const EdgeInsets.symmetric(horizontal: 8),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColor.lightFontCpy,
               border: Border.all(),
               borderRadius: BorderRadius.circular(5),
             ),
@@ -209,9 +209,9 @@ class _SalesRegisterSOScreenState extends ConsumerState<SalesRegisterSOScreen> {
                             hintText: HandText.searchBox,
                             prefixIcon: const Icon(Icons.search),
                             border: const OutlineInputBorder(),
-                            focusedBorder: const OutlineInputBorder(
+                            focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: Color.fromARGB(255, 104, 181, 244),
+                                color: AppColor.appBarGradiant,
                                 width: 2.0,
                               ),
                             ),
@@ -219,7 +219,7 @@ class _SalesRegisterSOScreenState extends ConsumerState<SalesRegisterSOScreen> {
                                 const EdgeInsets.symmetric(vertical: 8),
                           ),
                           cursorHeight: 20,
-                          cursorColor: Colors.blue,
+                          cursorColor: AppColor.appBarGradiant,
                           onSubmitted: (_) => _handleSearch(),
                         ),
                       ),
@@ -232,11 +232,12 @@ class _SalesRegisterSOScreenState extends ConsumerState<SalesRegisterSOScreen> {
                         child: Container(
                           height: 40,
                           decoration: BoxDecoration(
-                            color: Colors.blue,
-                            border: Border.all(color: Colors.blue),
+                            color: AppColor.appBarGradiant,
+                            border: Border.all(color: AppColor.appBarGradiant),
                             borderRadius: BorderRadius.circular(5),
                           ),
-                          child: const Icon(Icons.search, color: Colors.white),
+                          child:
+                              Icon(Icons.search, color: AppColor.lightFontCpy),
                         ),
                       ),
                     ),
@@ -271,38 +272,36 @@ class _SalesRegisterSOScreenState extends ConsumerState<SalesRegisterSOScreen> {
                                 );
                               },
                               child: Card(
-                                color: Colors.white,
+                                elevation: 4,
+                                color: AppColor.cardBackgroundColor,
                                 child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding: const EdgeInsets.all(15.0),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        item.soNumber,
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          _buildDataRow(
+                                              Icons.description, item.soNumber),
+                                          _buildDataRow(
+                                              Icons.event_note, item.soDate),
+                                        ],
                                       ),
-                                      const SizedBox(height: 8),
-                                      _buildTextRow(
-                                          HandText.srSODate, item.soDate),
-                                      _buildTextRow(HandText.srSOQuantity,
-                                          item.soQuantity),
-                                      _buildTextRow(HandText.srInvoiceQuantity,
-                                          item.invoiceQuantity),
-                                      _buildTextRow(HandText.srSOValueNet,
-                                          item.soValueNet),
-                                      _buildTextRow(HandText.srSOValueGross,
-                                          item.soValueGross),
-                                      _buildTextRow(
-                                          HandText.srBaseValue, item.baseValue),
-                                      _buildTextRow(HandText.srCGST, item.cgst),
-                                      _buildTextRow(HandText.srSGST, item.sgst),
-                                      _buildTextRow(HandText.srIGST, item.igst),
-                                      _buildTextRow(HandText.srInvoiceValue,
-                                          item.invoiceValue),
+                                      const SizedBox(height: 20),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          _buildDataRow(
+                                              Icons.production_quantity_limits,
+                                              item.soQuantity),
+                                          _buildDataRow(Icons.receipt_long,
+                                              item.invoiceValue),
+                                        ],
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -323,18 +322,37 @@ class _SalesRegisterSOScreenState extends ConsumerState<SalesRegisterSOScreen> {
   }
 
   // Helper method to build Text.rich rows
-  Widget _buildTextRow(String label, dynamic value) {
-    return Text.rich(
-      TextSpan(
-        text: label,
-        style: const TextStyle(fontSize: 14, color: Colors.grey),
-        children: [
-          TextSpan(
-            text: value?.toString() ?? 'N/A',
-            style: const TextStyle(fontSize: 16, color: Colors.black),
-          ),
-        ],
-      ),
+  // Widget _buildTextRow(String label, dynamic value) {
+  //   return Text.rich(
+  //     TextSpan(
+  //       text: label,
+  //       style: const TextStyle(fontSize: 14, color: Colors.grey),
+  //       children: [
+  //         TextSpan(
+  //           text: value?.toString() ?? 'N/A',
+  //           style: const TextStyle(fontSize: 16, color: Colors.black),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+
+  Widget _buildDataRow(IconData iconName, String data) {
+    return Row(
+      children: [
+        Icon(
+          iconName,
+          color: AppColor.appBarGradiant,
+          size: 20,
+        ),
+        Text(
+          " $data",
+          style: TextStyle(
+              fontWeight: FontWeight.w500,
+              color: AppColor.lightFont,
+              fontSize: 16),
+        ),
+      ],
     );
   }
 }
