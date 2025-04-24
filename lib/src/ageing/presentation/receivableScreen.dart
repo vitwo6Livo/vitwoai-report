@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:vitwoai_report/golobal-Widget/rangeCalendar.dart';
+import 'package:vitwoai_report/golobal-Widget/dayCalendar.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/ageing/data/receivableAnalytics_repositry.dart';
 import 'package:vitwoai_report/src/ageing/presentation/newReceivableDetailsScreen.dart';
@@ -23,16 +23,20 @@ class _ReceivableAnalyticsScreenState
   final ScrollController _scrollController = ScrollController();
   bool _isLoadingMore = false;
 
+  // State providers
   final customerListStateProvider =
       StateProvider<Map<String, dynamic>>((ref) => {
             'content': [],
             'last': false,
           });
   final currentPageProvider = StateProvider<int>((ref) => 0);
+  final selectedDateProvider = StateProvider<DateTime?>((ref) => null);
 
   @override
   void initState() {
     super.initState();
+    _initializeData();
+
     // Add listener to detect when user reaches the end of the list
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -46,6 +50,18 @@ class _ReceivableAnalyticsScreenState
     });
   }
 
+  void _initializeData() async {
+    final selectedDate = ref.read(selectedDateProvider) ?? DateTime.now();
+    final initialData = await ref.read(
+        receivablesCustomerProvider({'page': 0, 'dateInfo': selectedDate})
+            .future);
+
+    ref.read(customerListStateProvider.notifier).state = {
+      'content': initialData.content,
+      'last': initialData.lastPage,
+    };
+  }
+
   void _loadMoreData() async {
     setState(() {
       _isLoadingMore = true;
@@ -53,28 +69,31 @@ class _ReceivableAnalyticsScreenState
 
     final currentPage = ref.read(currentPageProvider);
     final nextPage = currentPage + 1;
+    final selectedDate = ref.read(selectedDateProvider) ?? DateTime.now();
 
-    final newData =
-        await ref.read(receivablesCustomerProvider(nextPage).future);
+    try {
+      final newData = await ref.read(receivablesCustomerProvider(
+          {'page': nextPage, 'dateInfo': selectedDate}).future);
 
-    // Update the state with new data
-    ref.read(customerListStateProvider.notifier).update((state) {
-      final updatedContent = [
-        ...state['content'],
-        ...newData.content,
-      ];
-      return {
-        'content': updatedContent,
-        'last': newData.lastPage,
-      };
-    });
+      ref.read(customerListStateProvider.notifier).update((state) {
+        final updatedContent = [
+          ...state['content'],
+          ...newData.content,
+        ];
+        return {
+          'content': updatedContent,
+          'last': newData.lastPage,
+        };
+      });
 
-    // Update the current page
-    ref.read(currentPageProvider.notifier).state = nextPage;
-
-    setState(() {
-      _isLoadingMore = false;
-    });
+      ref.read(currentPageProvider.notifier).state = nextPage;
+    } catch (e) {
+      print('Error loading more data: $e');
+    } finally {
+      setState(() {
+        _isLoadingMore = false;
+      });
+    }
   }
 
   @override
@@ -86,12 +105,14 @@ class _ReceivableAnalyticsScreenState
   void showDateDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => CustomDatePickerDialog(
+      builder: (context) => DayCalendarPickerDialog(
         initialFromDate: DateTime.now(),
-        initialToDate: DateTime.now(),
-        onSave: (fromDate, toDate) {
-          // Handle date range selection
-          Navigator.pop(context);
+        onSave: (fromDate) {
+          // Update the selected date in the provider
+          ref.read(selectedDateProvider.notifier).state = fromDate;
+
+          // Trigger a refresh of the data with the new date
+          _initializeData();
         },
       ),
     );
@@ -101,6 +122,7 @@ class _ReceivableAnalyticsScreenState
   Widget build(BuildContext context) {
     final receivablesAsync = ref.watch(receivablesTotalDueProvider);
     final coustomerListProvider = ref.watch(customerListStateProvider);
+    final selectedDate = ref.watch(selectedDateProvider) ?? DateTime.now();
 
     return Scaffold(
       backgroundColor: AppColor.screenBgColor,
@@ -108,13 +130,15 @@ class _ReceivableAnalyticsScreenState
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            // Header Section
             Container(
               padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                    colors: [AppColor.appBarColor1, AppColor.appBarColor2],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight),
+                  colors: [AppColor.appBarColor1, AppColor.appBarColor2],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
                 borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(20),
                   bottomRight: Radius.circular(20),
@@ -134,18 +158,15 @@ class _ReceivableAnalyticsScreenState
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Row(
-                        children: [
-                          IconButton(
-                              onPressed: () {
-                                showDateDialog(context);
-                              },
-                              icon: Icon(
-                                Icons.settings,
-                                color: AppColor.lightFontCpy,
-                              ))
-                        ],
-                      )
+                      IconButton(
+                        onPressed: () {
+                          showDateDialog(context);
+                        },
+                        icon: Icon(
+                          Icons.settings,
+                          color: AppColor.lightFontCpy,
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 16),
@@ -155,7 +176,6 @@ class _ReceivableAnalyticsScreenState
                       final totalOnAccountDue =
                           data.TotalOnAccountDue.toString();
                       final netDue = data.NetDue.toString();
-
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -265,6 +285,8 @@ class _ReceivableAnalyticsScreenState
                 ],
               ),
             ),
+
+            // Search Bar
             Container(
               height: 80,
               margin: const EdgeInsets.all(8),
@@ -276,7 +298,10 @@ class _ReceivableAnalyticsScreenState
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ref.watch(receivablesCustomerProvider(0)).when(
+                  ref
+                      .watch(receivablesCustomerProvider(
+                          {'page': 0, 'dateInfo': selectedDate}))
+                      .when(
                         data: (value) {
                           return Text(
                             "${HandText.totalRecords} ${value.totalElements.toString()}",
@@ -334,30 +359,40 @@ class _ReceivableAnalyticsScreenState
                 ],
               ),
             ),
+
+            // List View
             Expanded(
               child: coustomerListProvider['content'].isEmpty
-                  ? ref.watch(receivablesCustomerProvider(0)).when(
-                      data: (data) {
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          ref.read(customerListStateProvider.notifier).state = {
-                            'content': data.content,
-                            'last': data.lastPage,
-                          };
-                        });
-                        return _buildListView(coustomerListProvider['content']);
-                      },
-                      error: (error, stack) =>
-                          Center(child: Text('Error: $error')),
-                      loading: () => screen_shimmer(120, 800))
+                  ? ref
+                      .watch(receivablesCustomerProvider(
+                          {'page': 0, 'dateInfo': selectedDate}))
+                      .when(
+                          data: (data) {
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              ref
+                                  .read(customerListStateProvider.notifier)
+                                  .state = {
+                                'content': data.content,
+                                'last': data.lastPage,
+                              };
+                            });
+                            return _buildListView(
+                                coustomerListProvider['content']);
+                          },
+                          error: (error, stack) =>
+                              Center(child: Text('Error: $error')),
+                          loading: () => screen_shimmer(120, 800))
                   : _buildListView(coustomerListProvider['content']),
             ),
+
+            // Loading Indicator
             if (_isLoadingMore)
               const Center(
                 child: Padding(
                   padding: EdgeInsets.only(bottom: 16.0),
                   child: CircularProgressIndicator(),
                 ),
-              )
+              ),
           ],
         ),
       ),
@@ -374,10 +409,14 @@ class _ReceivableAnalyticsScreenState
           child: InkWell(
             onTap: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => newReceivableDetailsScreen(
-                          data: content, index: index)));
+                context,
+                MaterialPageRoute(
+                  builder: (context) => newReceivableDetailsScreen(
+                    data: content,
+                    index: index,
+                  ),
+                ),
+              );
             },
             child: Card(
               color: Colors.white,
@@ -393,82 +432,90 @@ class _ReceivableAnalyticsScreenState
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(
-                      height: 12,
-                    ),
+                    const SizedBox(height: 12),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text.rich(
                           TextSpan(
-                              text: "${HandText.receivableCustomerCode} \n",
-                              style: const TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey,
+                            text: "${HandText.receivableCustomerCode}\n",
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: content[index].customerCode.toString(),
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                ),
                               ),
-                              children: [
-                                TextSpan(
-                                  text: content[index].customerCode.toString(),
-                                  style: const TextStyle(
-                                      fontSize: 16, color: Colors.black),
-                                )
-                              ]),
+                            ],
+                          ),
                         ),
                         Text.rich(
                           TextSpan(
-                              text: "${HandText.receivableTotalDue} \n",
-                              style: const TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey,
+                            text: "${HandText.receivableTotalDue}\n",
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: content[index].totalDue.toString(),
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                ),
                               ),
-                              children: [
-                                TextSpan(
-                                  text: content[index].totalDue.toString(),
-                                  style: const TextStyle(
-                                      fontSize: 16, color: Colors.black),
-                                )
-                              ]),
+                            ],
+                          ),
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 5,
-                    ),
+                    const SizedBox(height: 5),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text.rich(
                           TextSpan(
-                              text: "${HandText.receivableOnAccountDue} \n",
-                              style: const TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey,
+                            text: "${HandText.receivableOnAccountDue}\n",
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: content[index].onAccountDue.toString(),
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                ),
                               ),
-                              children: [
-                                TextSpan(
-                                  text: content[index].onAccountDue.toString(),
-                                  style: const TextStyle(
-                                      fontSize: 16, color: Colors.black),
-                                )
-                              ]),
+                            ],
+                          ),
                         ),
                         Text.rich(
                           TextSpan(
-                              text: "${HandText.receivableNetDue} \n",
-                              style: const TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey,
+                            text: "${HandText.receivableNetDue}\n",
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: content[index].netDue.toString(),
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                ),
                               ),
-                              children: [
-                                TextSpan(
-                                  text: content[index].netDue.toString(),
-                                  style: const TextStyle(
-                                      fontSize: 16, color: Colors.black),
-                                )
-                              ]),
+                            ],
+                          ),
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),

@@ -42,22 +42,27 @@ Future<Total> fetchReceivablesData() async {
 //List of Receivable Customer Api Fatch
 
 final receivablesCustomerProvider =
-    FutureProvider.family<ReceivableAPIModel, int>((ref, page) async {
-  return await fetchReceivablesCustomerData(page);
-});
+    FutureProvider.family<ReceivableAPIModel, Map<String, dynamic>>(
+  (ref, params) async {
+    final page = params['page'] as int;
+    final dateInfo = params['dateInfo'] as DateTime;
+    return await fetchReceivablesCustomerData(page, dateInfo);
+  },
+);
 
-Future<ReceivableAPIModel> fetchReceivablesCustomerData(int page) async {
+Future<ReceivableAPIModel> fetchReceivablesCustomerData(
+    int page, DateTime dateData) async {
   final accessToken = await getTokenData();
   final url = Uri.parse('$baseURL$receivablCustomerurl');
 
   final Map<String, dynamic> bodyData = {
     "interval": 30,
     "bucketNo": 7,
-    "asOnDate": "2024-11-13",
+    "asOnDate": dateData.toString(),
     "page": page,
     "size": 10,
-    "sortBy": "on_account_due",
-    "sortDir": "desc"
+    "sortBy": "",
+    "sortDir": ""
   };
 
   try {
