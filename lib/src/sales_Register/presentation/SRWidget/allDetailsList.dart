@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/golobal-Widget/dayCalendar.dart';
 import 'package:vitwoai_report/golobal-Widget/loadingShimmer.dart';
-import 'package:vitwoai_report/golobal-Widget/rangeCalendar.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/sales_Register/data/salesRegisterFatchData.dart';
 import 'package:vitwoai_report/src/sales_Register/model/salesAllDetailsModel.dart';
