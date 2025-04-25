@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vitwoai_report/golobal-Widget/loadingShimmer.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/purchaseRegister/data/purchesRegister_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -105,12 +106,11 @@ class _ProductListState extends ConsumerState<ProductList> {
                 : _buildListView(purchesRegisterList['content']),
           ),
           if (_isLoadingMore)
-            const Center(
-              child: Padding(
+            Padding(
                 padding: EdgeInsets.only(bottom: 16.0),
-                child: CircularProgressIndicator(),
+                child: loadingShimmer(120, 800),
+                // CircularProgressIndicator(),
               ),
-            )
         ],
       ),
     );
