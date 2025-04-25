@@ -168,12 +168,6 @@ class _HsnCodeWiseScreenState extends ConsumerState<HsnCodeWiseScreen> {
           HandText.srHSNCodeWiseTitle,
           style: TextStyle(color: AppColor.appbarFont),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.settings, color: AppColor.appBarIcon),
-          ),
-        ],
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(

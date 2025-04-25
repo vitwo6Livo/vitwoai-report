@@ -166,12 +166,6 @@ class _CustomerWiseScreenState extends ConsumerState<CustomerWiseScreen> {
           HandText.srCustomerWiseTitle,
           style: TextStyle(color: AppColor.appbarFont),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.settings, color: AppColor.appBarIcon),
-          ),
-        ],
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
