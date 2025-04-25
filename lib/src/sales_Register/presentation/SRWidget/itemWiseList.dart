@@ -316,11 +316,10 @@ class _ItemWiseScreenState extends ConsumerState<ItemWiseScreen> {
                       ),
           ),
           if (_isLoadingMore)
-           Padding(
-                padding: EdgeInsets.only(bottom: 16.0),
-                child: loadingShimmer(120, 800),
-                // CircularProgressIndicator(),
-              ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 9),
+              child: loadingShimmer(100, 800),
+            ),
         ],
       ),
     );

@@ -4,6 +4,7 @@ import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/purchaseRegister/data/purchesRegister_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/detailsPage/newPrAllDetails.dart';
+import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
 
 class ProductList extends ConsumerStatefulWidget {
@@ -107,10 +108,9 @@ class _ProductListState extends ConsumerState<ProductList> {
           ),
           if (_isLoadingMore)
             Padding(
-                padding: EdgeInsets.only(bottom: 16.0),
-                child: loadingShimmer(120, 800),
-                // CircularProgressIndicator(),
-              ),
+              padding: const EdgeInsets.symmetric(vertical: 9),
+              child: loadingShimmer(100, 800),
+            ),
         ],
       ),
     );
@@ -138,7 +138,7 @@ class _ProductListState extends ConsumerState<ProductList> {
                   );
                 },
                 child: Card(
-                  color: Colors.white,
+                  color: AppColor.cardBackgroundColor,
                   margin:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                   shape: RoundedRectangleBorder(
