@@ -319,9 +319,8 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
           ),
           if (_isLoadingMore)
             Padding(
-              padding: const EdgeInsets.only(bottom: 16.0),
-              child: loadingShimmer(50, 800),
-              // CircularProgressIndicator(),
+              padding: const EdgeInsets.symmetric(vertical: 9),
+              child: loadingShimmer(100, 800),
             ),
         ],
       ),

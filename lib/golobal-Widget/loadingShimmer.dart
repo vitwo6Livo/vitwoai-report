@@ -4,21 +4,24 @@ import 'package:vitwoai_report/src/settings/colors.dart';
 
 Widget loadingShimmer(double h, double w) {
   return SizedBox(
-    height: 180,
+    height: 101,
     child: ListView.builder(
-        itemCount: 2,
+        itemCount: 1,
         itemBuilder: (context, index) {
-          return Shimmer.fromColors(
-            direction: ShimmerDirection.ltr,
-            baseColor: AppColor.shimmerBaseColor,
-            highlightColor: AppColor.shimmerHighlightColor,
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-              height: h,
-              width: w,
-              decoration: BoxDecoration(
-                color: AppColor.shimmerBoxDecorationColor,
-                borderRadius: BorderRadius.circular(20),
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 15),
+            child: Shimmer.fromColors(
+              direction: ShimmerDirection.ltr,
+              baseColor: AppColor.shimmerBaseColor,
+              highlightColor: AppColor.shimmerHighlightColor,
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                height: h,
+                width: w,
+                decoration: BoxDecoration(
+                  color: AppColor.shimmerBoxDecorationColor,
+                  borderRadius: BorderRadius.circular(20),
+                ),
               ),
             ),
           );
