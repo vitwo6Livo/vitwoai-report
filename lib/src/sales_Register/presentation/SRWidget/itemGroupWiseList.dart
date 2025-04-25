@@ -170,12 +170,6 @@ class _ItemGroupWiseScreenState extends ConsumerState<ItemGroupWiseScreen> {
           HandText.srItemGroupWiseTitle,
           style: TextStyle(color: AppColor.appbarFont),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.settings, color: AppColor.appBarIcon),
-          ),
-        ],
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(

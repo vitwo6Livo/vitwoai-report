@@ -5,17 +5,18 @@ import 'package:vitwoai_report/src/ageing/model/receivableModel.dart';
 import 'package:vitwoai_report/src/ageing/model/receivableTotalModel.dart';
 import 'package:vitwoai_report/src/utils/api_urls.dart';
 
-final receivablesTotalDueProvider = FutureProvider((ref) async {
-  return await fetchReceivablesData();
+final receivablesTotalDueProvider =
+    FutureProvider.family<Total, String>((ref, dateData) async {
+  return await fetchReceivablesData(dateData);
 });
 
 // Total Value of Total Due, On account due, Net Due
-Future<Total> fetchReceivablesData() async {
+Future<Total> fetchReceivablesData(String dateInfo) async {
   final token = await getTokenData();
   final url = Uri.parse('$baseURL$receivablTotalDueurl');
 
   final Map<String, dynamic> bodyData = {
-    'asOnDate': '2025-02-24',
+    'asOnDate': dateInfo,
   };
 
   try {

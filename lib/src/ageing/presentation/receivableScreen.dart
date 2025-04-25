@@ -8,6 +8,7 @@ import 'package:vitwoai_report/src/ageing/data/receivableAnalytics_repositry.dar
 import 'package:vitwoai_report/src/ageing/presentation/newReceivableDetailsScreen.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
+import 'package:intl/intl.dart';
 
 final isClickedProviderReceivable = StateProvider<bool>((ref) => false);
 
@@ -124,7 +125,9 @@ class _ReceivableAnalyticsScreenState
 
   @override
   Widget build(BuildContext context) {
-    final receivablesAsync = ref.watch(receivablesTotalDueProvider);
+    final formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    final receivablesAsync = ref.watch(receivablesTotalDueProvider(
+        (ref.watch(selectedDateProvider)?.toString() ?? formattedDate)));
     final coustomerListProvider = ref.watch(customerListStateProvider);
     final selectedDate = ref.watch(selectedDateProvider) ?? DateTime.now();
     final count = ref.watch(totalElementsProvider);
