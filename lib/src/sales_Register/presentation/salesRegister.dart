@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vitwoai_report/golobal-Widget/rangeCalendar.dart';
 import 'package:vitwoai_report/src/sales_Register/presentation/SRWidget/HsnCodeWiseList.dart';
 import 'package:vitwoai_report/src/sales_Register/presentation/SRWidget/allDetailsList.dart';
 import 'package:vitwoai_report/src/sales_Register/presentation/SRWidget/customerWiseList.dart';
@@ -18,19 +17,6 @@ class SalesRegister extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    void showDateDialog(BuildContext context) {
-      showDialog(
-        context: context,
-        builder: (context) => CustomDatePickerDialog(
-          initialFromDate: DateTime.now(),
-          initialToDate: DateTime.now(),
-          onSave: (fromDate, toDate) {
-            // Navigator.pop(context);
-          },
-        ),
-      );
-    }
-
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -38,16 +24,16 @@ class SalesRegister extends ConsumerWidget {
           HandText.srTitle,
           style: const TextStyle(color: Colors.white),
         ),
-        actions: [
-          IconButton(
-              onPressed: () {
-                showDateDialog(context);
-              },
-              icon: Icon(
-                Icons.settings,
-                color: AppColor.appBarIcon,
-              ))
-        ],
+        // actions: [
+        //   IconButton(
+        //       onPressed: () {
+        //         showDateDialog(context);
+        //       },
+        //       icon: Icon(
+        //         Icons.settings,
+        //         color: AppColor.appBarIcon,
+        //       ))
+        // ],
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
