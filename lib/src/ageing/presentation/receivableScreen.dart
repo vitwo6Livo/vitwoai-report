@@ -75,6 +75,7 @@ class _ReceivableAnalyticsScreenState
       final newData = await ref.read(receivablesCustomerProvider(
           {'page': nextPage, 'dateInfo': selectedDate}).future);
 
+      // Update the state with new data
       ref.read(customerListStateProvider.notifier).update((state) {
         final updatedContent = [
           ...state['content'],
@@ -86,8 +87,10 @@ class _ReceivableAnalyticsScreenState
         };
       });
 
+      // Update the current page
       ref.read(currentPageProvider.notifier).state = nextPage;
     } catch (e) {
+      // Handle errors gracefully
       print('Error loading more data: $e');
     } finally {
       setState(() {
