@@ -79,9 +79,9 @@ Future<ReceivableAPIModel> fetchReceivablesCustomerData(
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      print('📦 Full API response: ${data['totalElements']}');
+      print('📦 Full API response: ${data['content']}');
       ref.read(totalElementsProvider.notifier).state = data['totalElements'];
-      return ReceivableAPIModel.fromJson(data['data']);
+      return ReceivableAPIModel.fromJson(data);
     } else {
       throw Exception('Failed to load data: ${response.statusCode}');
     }

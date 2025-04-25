@@ -123,13 +123,7 @@ class _ReceivableAnalyticsScreenState
     final receivablesAsync = ref.watch(receivablesTotalDueProvider);
     final coustomerListProvider = ref.watch(customerListStateProvider);
     final selectedDate = ref.watch(selectedDateProvider) ?? DateTime.now();
-    // final count = ref.watch(
-    //   receivablesCustomerProvider({'page': 0, 'dateInfo': selectedDate}),
-    // );
-
     final count = ref.watch(totalElementsProvider);
-
-    print('aaaaaaaaaaaaaaaaaaaaaaaaaaa: ${count}');
     return Scaffold(
       backgroundColor: AppColor.screenBgColor,
       body: SafeArea(
