@@ -151,7 +151,7 @@ class HandText {
   static String srHSNItemDetails = "Item Details";
   static String srHSNTaxAmt = "Tax & Amounts";
   //Details- Item Wise
-  static String srItemWiseDetailsTitle = "Sales Item Code Details";
+  static String srItemWiseDetailsTitle = "Sales Item Details";
   static String srItemWQtyVal = "Quantity & Value";
   static String srItemW_ItemInfo = "Item Info";
   static String srItemWTaxAmt = "Tax & Amounts";

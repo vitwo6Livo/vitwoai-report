@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/sales_Register/data/salesRegisterFatchData.dart';
+import 'package:vitwoai_report/src/sales_Register/model/salesAllDetailsModel.dart';
 import 'package:vitwoai_report/src/sales_Register/presentation/SRDetails/allDetailsPage.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
@@ -20,12 +21,15 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
   bool _isLoadingMore = false;
   bool _isInitialLoading = true;
 
-  final salesRegisterListStateProvider = StateProvider<Map<String, dynamic>>(
-    (ref) => {
-      'content': [],
-      'last': false,
-      'totalElements': 0,
-    },
+  final salesRegisterListStateProvider = StateProvider<SalesAllDetailsmodel>(
+    (ref) => SalesAllDetailsmodel(
+      content: [],
+      pageNumber: 0,
+      pageSize: 0,
+      totalElements: 0,
+      totalPages: 0,
+      lastPage: false,
+    ),
   );
 
   final currentPageProvider = StateProvider<int>((ref) => 0);
@@ -52,11 +56,7 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
       final data = await ref
           .read(salesRegisterProvider((key: searchKey, page: 0)).future);
       if (mounted) {
-        ref.read(salesRegisterListStateProvider.notifier).state = {
-          'content': data.content,
-          'last': data.lastPage,
-          'totalElements': data.totalElements,
-        };
+        ref.read(salesRegisterListStateProvider.notifier).state = data;
         ref.read(currentPageProvider.notifier).state = 0;
       }
     } catch (e) {
@@ -75,10 +75,11 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
   }
 
   void _handleScroll() {
+    final model = ref.read(salesRegisterListStateProvider);
     if (_scrollController.position.pixels >=
             _scrollController.position.maxScrollExtent * 0.9 &&
         !_isLoadingMore &&
-        !ref.read(salesRegisterListStateProvider)['last']) {
+        !model.lastPage) {
       _loadMoreData();
     }
   }
@@ -99,12 +100,14 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
 
       if (mounted) {
         ref.read(salesRegisterListStateProvider.notifier).update((state) {
-          final updatedContent = [...state['content'], ...newData.content];
-          return {
-            'content': updatedContent,
-            'last': newData.lastPage,
-            'totalElements': newData.totalElements,
-          };
+          return SalesAllDetailsmodel(
+            content: [...state.content, ...newData.content],
+            pageNumber: newData.pageNumber,
+            pageSize: newData.pageSize,
+            totalElements: newData.totalElements,
+            totalPages: newData.totalPages,
+            lastPage: newData.lastPage,
+          );
         });
 
         ref.read(currentPageProvider.notifier).state = nextPage;
@@ -185,7 +188,7 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "${HandText.totalRecords} ${salesRegisterList['totalElements']}",
+                  "${HandText.totalRecords} ${salesRegisterList.totalElements}",
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
@@ -235,13 +238,13 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
           Expanded(
             child: _isInitialLoading
                 ? screen_shimmer(120, 800)
-                : salesRegisterList['content'].isEmpty
+                : salesRegisterList.content.isEmpty
                     ? Center(child: Text(HandText.noData))
                     : ListView.builder(
                         controller: _scrollController,
-                        itemCount: salesRegisterList['content'].length,
+                        itemCount: salesRegisterList.content.length,
                         itemBuilder: (context, index) {
-                          final item = salesRegisterList['content'][index];
+                          final item = salesRegisterList.content[index];
                           return Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 8, vertical: 4),
@@ -251,7 +254,7 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => AllDetailsPage(
-                                            data: salesRegisterList['content'],
+                                            data: salesRegisterList.content,
                                             index: index)));
                               },
                               child: Card(

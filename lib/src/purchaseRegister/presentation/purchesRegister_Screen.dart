@@ -77,7 +77,6 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
       backgroundColor: AppColor.screenBgColor,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 0,
         children: [
           _purchaseSummary(context),
           _cardViewPurchase(),

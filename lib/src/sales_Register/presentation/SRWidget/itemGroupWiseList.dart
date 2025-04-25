@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/sales_Register/data/salesRegisterFatchData.dart';
+import 'package:vitwoai_report/src/sales_Register/model/salesItemGroupWiseModel.dart';
 import 'package:vitwoai_report/src/sales_Register/presentation/SRDetails/newSRItemGroupDetails.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
@@ -23,12 +24,15 @@ class _ItemGroupWiseScreenState extends ConsumerState<ItemGroupWiseScreen> {
 
   // State provider for item group wise sales register list
   final salesRegisterItemGroupListStateProvider =
-      StateProvider<Map<String, dynamic>>(
-    (ref) => {
-      'content': [],
-      'last': false,
-      'totalElements': 0,
-    },
+      StateProvider<SalesItemGroupwisemodel>(
+    (ref) => SalesItemGroupwisemodel(
+      content: [],
+      pageNumber: 0,
+      pageSize: 0,
+      totalElements: 0,
+      totalPages: 0,
+      lastPage: false,
+    ),
   );
 
   // State provider for current page
@@ -58,11 +62,7 @@ class _ItemGroupWiseScreenState extends ConsumerState<ItemGroupWiseScreen> {
       final data = await ref.read(
           salesRegisterItemGroupProvider((key: searchKey, page: 0)).future);
       if (mounted) {
-        ref.read(salesRegisterItemGroupListStateProvider.notifier).state = {
-          'content': data.content,
-          'last': data.lastPage,
-          'totalElements': data.totalElements,
-        };
+        ref.read(salesRegisterItemGroupListStateProvider.notifier).state = data;
         ref.read(currentPageProvider.notifier).state = 0;
       }
     } catch (e) {
@@ -82,10 +82,11 @@ class _ItemGroupWiseScreenState extends ConsumerState<ItemGroupWiseScreen> {
 
   // Handle scroll to load more data
   void _handleScroll() {
+    final model = ref.read(salesRegisterItemGroupListStateProvider);
     if (_scrollController.position.pixels >=
             _scrollController.position.maxScrollExtent * 0.9 &&
         !_isLoadingMore &&
-        !ref.read(salesRegisterItemGroupListStateProvider)['last']) {
+        !model.lastPage) {
       _loadMoreData();
     }
   }
@@ -110,12 +111,14 @@ class _ItemGroupWiseScreenState extends ConsumerState<ItemGroupWiseScreen> {
         ref
             .read(salesRegisterItemGroupListStateProvider.notifier)
             .update((state) {
-          final updatedContent = [...state['content'], ...newData.content];
-          return {
-            'content': updatedContent,
-            'last': newData.lastPage,
-            'totalElements': newData.totalElements,
-          };
+          return SalesItemGroupwisemodel(
+            content: [...state.content, ...newData.content],
+            pageNumber: newData.pageNumber,
+            pageSize: newData.pageSize,
+            totalElements: newData.totalElements,
+            totalPages: newData.totalPages,
+            lastPage: newData.lastPage,
+          );
         });
 
         ref.read(currentPageProvider.notifier).state = nextPage;
@@ -197,7 +200,7 @@ class _ItemGroupWiseScreenState extends ConsumerState<ItemGroupWiseScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "${HandText.totalRecords} ${salesRegisterItemGroupList['totalElements']}",
+                  "${HandText.totalRecords} ${salesRegisterItemGroupList.totalElements}",
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
@@ -257,14 +260,14 @@ class _ItemGroupWiseScreenState extends ConsumerState<ItemGroupWiseScreen> {
           Expanded(
             child: _isInitialLoading
                 ? screen_shimmer(120, 800)
-                : salesRegisterItemGroupList['content'].isEmpty
+                : salesRegisterItemGroupList.content.isEmpty
                     ? Center(child: Text(HandText.noData))
                     : ListView.builder(
                         controller: _scrollController,
-                        itemCount: salesRegisterItemGroupList['content'].length,
+                        itemCount: salesRegisterItemGroupList.content.length,
                         itemBuilder: (context, index) {
                           final item =
-                              salesRegisterItemGroupList['content'][index];
+                              salesRegisterItemGroupList.content[index];
                           return InkWell(
                             onTap: () {
                               Navigator.push(
@@ -272,8 +275,8 @@ class _ItemGroupWiseScreenState extends ConsumerState<ItemGroupWiseScreen> {
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           newSRItemGWiseDetailsScreen(
-                                              data: salesRegisterItemGroupList[
-                                                  'content'],
+                                              data: salesRegisterItemGroupList
+                                                  .content,
                                               index: index)));
                             },
                             child: Padding(

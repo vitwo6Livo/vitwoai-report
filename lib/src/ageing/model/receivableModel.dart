@@ -22,7 +22,7 @@ class ReceivableAPIModel {
           .toList(),
       pageNumber: json['pageNumber'],
       pageSize: json['pageSize'],
-      totalElements: json['totalElements'],
+      totalElements: json['totalElements'] ?? 0,
       totalPages: json['totalPages'],
       lastPage: json['lastPage'],
     );
