@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vitwoai_report/golobal-Widget/dayCalendar.dart';
 import 'package:vitwoai_report/golobal-Widget/loadingShimmer.dart';
+import 'package:vitwoai_report/golobal-Widget/rangeCalendar.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/sales_Register/data/salesRegisterFatchData.dart';
 import 'package:vitwoai_report/src/sales_Register/model/salesAllDetailsModel.dart';
@@ -142,6 +144,18 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
     super.dispose();
   }
 
+  void showDateDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => DayCalendarPickerDialog(
+        initialFromDate: DateTime.now(),
+        onSave: (date) {
+          print("Selected date: $date");
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final salesRegisterList = ref.watch(salesRegisterListStateProvider);
@@ -159,7 +173,9 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              showDateDialog(context);
+            },
             icon: const Icon(Icons.settings, color: Colors.white),
           ),
         ],
@@ -303,10 +319,10 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
           ),
           if (_isLoadingMore)
             Padding(
-                padding: EdgeInsets.only(bottom: 16.0),
-                child: loadingShimmer(120, 800),
-                // CircularProgressIndicator(),
-              ),
+              padding: const EdgeInsets.only(bottom: 16.0),
+              child: loadingShimmer(50, 800),
+              // CircularProgressIndicator(),
+            ),
         ],
       ),
     );

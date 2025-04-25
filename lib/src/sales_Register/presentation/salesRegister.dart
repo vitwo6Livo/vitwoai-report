@@ -24,16 +24,6 @@ class SalesRegister extends ConsumerWidget {
           HandText.srTitle,
           style: const TextStyle(color: Colors.white),
         ),
-        // actions: [
-        //   IconButton(
-        //       onPressed: () {
-        //         showDateDialog(context);
-        //       },
-        //       icon: Icon(
-        //         Icons.settings,
-        //         color: AppColor.appBarIcon,
-        //       ))
-        // ],
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
