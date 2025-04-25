@@ -1,46 +1,40 @@
+name: Flutter CI - Android Build on Windows
+
 on:
-  pull_request:
-    branches:
-      - main
   push:
-    branches:
-      - main
-name: "Build & Release"
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
 jobs:
-  build:
-    name: Build & Release
+  build-android:
+
     runs-on: windows-latest
+
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-java@v3
-        with:
-          distribution: 'oracle'
-          java-version: '17'
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
-          architecture: x64
+    - name: 📥 Checkout repository
+      uses: actions/checkout@v3
 
-      - run: flutter build apk --release --split-per-abi
-      - run: |
-          flutter build ios --no-codesign
-          cd build/ios/iphoneos
-          mkdir Payload
-          cd Payload
-          ln -s ../Runner.app
-          cd ..
-          zip -r app.ipa Payload
-      - name: Push to Releases
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "build/app/outputs/apk/release/*,build/ios/iphoneos/app.ipa"
-          tag: v1.0.${{ github.run_number }}
-          token: ${{ secrets.TOKEN }}
+    - name: 🧰 Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.24.3'
+        channel: stable
 
+    - name: 📦 Install dependencies
+      run: flutter pub get
 
+    - name: 🧪 Run tests
+      run: flutter test
 
+    - name: 🔧 Enable Android build
+      run: flutter config --enable-windows-desktop
 
+    - name: 📦 Build APK (Debug)
+      run: flutter build apk --debug
 
-
-# push to master, main, develop
-# pull request on main master
+    - name: 📤 Upload APK
+      uses: actions/upload-artifact@v3
+      with:
+        name: debug-apk
+        path: build/app/outputs/flutter-apk/app-debug.apk
