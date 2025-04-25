@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:vitwoai_report/golobal-Widget/dayCalendar.dart';
+import 'package:vitwoai_report/golobal-Widget/loadingShimmer.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/ageing/data/receivableAnalytics_repositry.dart';
 import 'package:vitwoai_report/src/ageing/presentation/newReceivableDetailsScreen.dart';
@@ -321,7 +322,7 @@ class _ReceivableAnalyticsScreenState
                               border: const OutlineInputBorder(),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: AppColor.searchOutlineColor,
+                                  color: AppColor.appBarGradiant,
                                   width: 2.0,
                                 ),
                               ),
@@ -329,7 +330,7 @@ class _ReceivableAnalyticsScreenState
                                   const EdgeInsets.symmetric(vertical: 8),
                             ),
                             cursorHeight: 20,
-                            cursorColor: AppColor.cursonColor,
+                            cursorColor: AppColor.appBarGradiant,
                           ),
                         ),
                       ),
@@ -339,8 +340,8 @@ class _ReceivableAnalyticsScreenState
                         child: Container(
                           height: 40,
                           decoration: BoxDecoration(
-                            color: AppColor.searchBttnColor,
-                            border: Border.all(color: AppColor.cursonColor),
+                            color: AppColor.appBarGradiant,
+                            border: Border.all(color: AppColor.appBarGradiant),
                             borderRadius: BorderRadius.circular(5),
                           ),
                           child:
@@ -380,11 +381,10 @@ class _ReceivableAnalyticsScreenState
 
             // Loading Indicator
             if (_isLoadingMore)
-              const Center(
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: 16.0),
-                  child: CircularProgressIndicator(),
-                ),
+              Padding(
+                padding: EdgeInsets.only(bottom: 16.0),
+                child: loadingShimmer(120, 800),
+                // CircularProgressIndicator(),
               ),
           ],
         ),

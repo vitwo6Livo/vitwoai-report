@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vitwoai_report/golobal-Widget/loadingShimmer.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/sales_Register/data/salesRegisterFatchData.dart';
 import 'package:vitwoai_report/src/sales_Register/model/salesSOWiseModel.dart';
@@ -231,10 +232,11 @@ class _SalesRegisterSOScreenState extends ConsumerState<SalesRegisterSOScreen> {
                       ),
           ),
           if (_isLoadingMore)
-            const Padding(
-              padding: EdgeInsets.only(bottom: 16),
-              child: CircularProgressIndicator(),
-            ),
+            Padding(
+                padding: EdgeInsets.only(bottom: 16.0),
+                child: loadingShimmer(120, 800),
+                // CircularProgressIndicator(),
+              ),
         ],
       ),
     );
