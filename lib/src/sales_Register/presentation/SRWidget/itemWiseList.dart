@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/sales_Register/data/salesRegisterFatchData.dart';
+import 'package:vitwoai_report/src/sales_Register/model/salesItemWiseModel.dart';
 import 'package:vitwoai_report/src/sales_Register/presentation/SRDetails/newSRItemWiseDetails.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
@@ -22,13 +23,14 @@ class _ItemWiseScreenState extends ConsumerState<ItemWiseScreen> {
 
   // State provider for item-wise sales register list
   final salesRegisterItemListStateProvider =
-      StateProvider<Map<String, dynamic>>(
-    (ref) => {
-      'content': [],
-      'last': false,
-      'totalElements': 0,
-    },
-  );
+      StateProvider<Salesitemwisemodel>((ref) => Salesitemwisemodel(
+            content: [],
+            pageNumber: 0,
+            pageSize: 0,
+            totalElements: 0,
+            totalPages: 0,
+            lastPage: false,
+          ));
 
   // State provider for current page
   final currentPageProvider = StateProvider<int>((ref) => 0);
@@ -57,11 +59,7 @@ class _ItemWiseScreenState extends ConsumerState<ItemWiseScreen> {
       final data = await ref
           .read(salesRegisterItemProvider((key: searchKey, page: 0)).future);
       if (mounted) {
-        ref.read(salesRegisterItemListStateProvider.notifier).state = {
-          'content': data.content,
-          'last': data.lastPage,
-          'totalElements': data.totalElements,
-        };
+        ref.read(salesRegisterItemListStateProvider.notifier).state = data;
         ref.read(currentPageProvider.notifier).state = 0;
       }
     } catch (e) {
@@ -81,10 +79,11 @@ class _ItemWiseScreenState extends ConsumerState<ItemWiseScreen> {
 
   // Handle scroll to load more data
   void _handleScroll() {
+    final model = ref.read(salesRegisterItemListStateProvider);
     if (_scrollController.position.pixels >=
             _scrollController.position.maxScrollExtent * 0.9 &&
         !_isLoadingMore &&
-        !ref.read(salesRegisterItemListStateProvider)['last']) {
+        !model.lastPage) {
       _loadMoreData();
     }
   }
@@ -106,12 +105,14 @@ class _ItemWiseScreenState extends ConsumerState<ItemWiseScreen> {
 
       if (mounted) {
         ref.read(salesRegisterItemListStateProvider.notifier).update((state) {
-          final updatedContent = [...state['content'], ...newData.content];
-          return {
-            'content': updatedContent,
-            'last': newData.lastPage,
-            'totalElements': newData.totalElements,
-          };
+          return Salesitemwisemodel(
+            content: [...state.content, ...newData.content],
+            pageNumber: newData.pageNumber,
+            pageSize: newData.pageSize,
+            totalElements: newData.totalElements,
+            totalPages: newData.totalPages,
+            lastPage: newData.lastPage,
+          );
         });
 
         ref.read(currentPageProvider.notifier).state = nextPage;
@@ -150,11 +151,11 @@ class _ItemWiseScreenState extends ConsumerState<ItemWiseScreen> {
     final salesRegisterItemList = ref.watch(salesRegisterItemListStateProvider);
 
     return Scaffold(
-      backgroundColor: const Color(0xfff9f9f9),
+      backgroundColor: AppColor.screenBgColor,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: Icon(Icons.arrow_back, color: AppColor.appBarIcon),
         ),
         title: Text(
           HandText.srItemWiseTitle,
@@ -163,7 +164,7 @@ class _ItemWiseScreenState extends ConsumerState<ItemWiseScreen> {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(Icons.settings, color: Colors.white),
+            icon: Icon(Icons.settings, color: AppColor.appBarIcon),
           ),
         ],
         flexibleSpace: Container(
@@ -191,7 +192,7 @@ class _ItemWiseScreenState extends ConsumerState<ItemWiseScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "${HandText.totalRecords} ${salesRegisterItemList['totalElements']}",
+                  "${HandText.totalRecords} ${salesRegisterItemList.totalElements}",
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
@@ -251,13 +252,13 @@ class _ItemWiseScreenState extends ConsumerState<ItemWiseScreen> {
           Expanded(
             child: _isInitialLoading
                 ? screen_shimmer(120, 800)
-                : salesRegisterItemList['content'].isEmpty
+                : salesRegisterItemList.content.isEmpty
                     ? Center(child: Text(HandText.noData))
                     : ListView.builder(
                         controller: _scrollController,
-                        itemCount: salesRegisterItemList['content'].length,
+                        itemCount: salesRegisterItemList.content.length,
                         itemBuilder: (context, index) {
-                          final item = salesRegisterItemList['content'][index];
+                          final item = salesRegisterItemList.content[index];
                           return InkWell(
                             onTap: () {
                               Navigator.push(
@@ -265,8 +266,8 @@ class _ItemWiseScreenState extends ConsumerState<ItemWiseScreen> {
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           newSRItemWiseDetailsScreen(
-                                              data: salesRegisterItemList[
-                                                  'content'],
+                                              data:
+                                                  salesRegisterItemList.content,
                                               index: index)));
                             },
                             child: Padding(
