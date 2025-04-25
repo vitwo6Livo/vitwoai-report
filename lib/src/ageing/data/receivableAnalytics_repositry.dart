@@ -46,19 +46,21 @@ final receivablesCustomerProvider =
   (ref, params) async {
     final page = params['page'] as int;
     final dateInfo = params['dateInfo'] as DateTime;
-    return await fetchReceivablesCustomerData(page, dateInfo);
+    return await fetchReceivablesCustomerData(page, dateInfo, ref);
   },
 );
 
+final totalElementsProvider = StateProvider<int?>((ref) => null);
+
 Future<ReceivableAPIModel> fetchReceivablesCustomerData(
-    int page, DateTime dateData) async {
+    int page, DateTime dateData, ref) async {
   final accessToken = await getTokenData();
   final url = Uri.parse('$baseURL$receivablCustomerurl');
 
   final Map<String, dynamic> bodyData = {
     "interval": 30,
     "bucketNo": 7,
-    "asOnDate": dateData.toString(),
+    "asOnDate": dateData.toString(), // Or formatted if needed
     "page": page,
     "size": 10,
     "sortBy": "",
@@ -77,7 +79,9 @@ Future<ReceivableAPIModel> fetchReceivablesCustomerData(
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      return ReceivableAPIModel.fromJson(data);
+      print('📦 Full API response: ${data['totalElements']}');
+      ref.read(totalElementsProvider.notifier).state = data['totalElements'];
+      return ReceivableAPIModel.fromJson(data['data']);
     } else {
       throw Exception('Failed to load data: ${response.statusCode}');
     }

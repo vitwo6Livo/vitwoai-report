@@ -123,7 +123,13 @@ class _ReceivableAnalyticsScreenState
     final receivablesAsync = ref.watch(receivablesTotalDueProvider);
     final coustomerListProvider = ref.watch(customerListStateProvider);
     final selectedDate = ref.watch(selectedDateProvider) ?? DateTime.now();
+    // final count = ref.watch(
+    //   receivablesCustomerProvider({'page': 0, 'dateInfo': selectedDate}),
+    // );
 
+    final count = ref.watch(totalElementsProvider);
+
+    print('aaaaaaaaaaaaaaaaaaaaaaaaaaa: ${count}');
     return Scaffold(
       backgroundColor: AppColor.screenBgColor,
       body: SafeArea(
@@ -298,20 +304,10 @@ class _ReceivableAnalyticsScreenState
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ref
-                      .watch(receivablesCustomerProvider(
-                          {'page': 0, 'dateInfo': selectedDate}))
-                      .when(
-                        data: (value) {
-                          return Text(
-                            "${HandText.totalRecords} ${value.totalElements.toString()}",
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          );
-                        },
-                        error: (error, stack) => Center(
-                            child: Text('${HandText.errorMessage} $error')),
-                        loading: () => Text(HandText.loadingMessage),
-                      ),
+                  Text(
+                    "${HandText.totalRecords} ${count.toString()}",
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
                   const SizedBox(height: 8),
                   Row(
                     children: [
