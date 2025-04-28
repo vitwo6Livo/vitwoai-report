@@ -24,6 +24,7 @@ dependencies:
   sizer:
   flutter_svg: #svg image
   shimmer:
+  syncfusion_flutter_gauges:
 
 dev_dependencies:
   flutter_test:
