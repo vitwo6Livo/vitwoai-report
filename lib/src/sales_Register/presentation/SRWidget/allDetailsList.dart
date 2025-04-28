@@ -170,14 +170,6 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
           HandText.srAllSalesRegisterTitle,
           style: TextStyle(color: AppColor.appbarFont),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              showDateDialog(context);
-            },
-            icon: const Icon(Icons.settings, color: Colors.white),
-          ),
-        ],
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(

@@ -15,8 +15,6 @@ class ApiService {
   ) async {
     final prefs = await SharedPreferences.getInstance();
 
-    // print("login api token......${prefs.getString('accesstoken')}");
-
     try {
       final headers = {
         "Content-Type": "application/json",
@@ -35,16 +33,22 @@ class ApiService {
 
       if (response.statusCode == 200) {
         prefs.setString('response_data', response.body);
-
         print("Stored Response Data: ${prefs.getString('response_data')}");
 
         Navigator.pushNamed(context, RouteNames.bottomnav);
-
         return ApiResponse.fromJson(jsonDecode(response.body));
       } else {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Invalid username or password')),
+        );
         throw Exception('Failed to load data: ${response.statusCode}');
       }
     } catch (e) {
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Something went wrong. Try again.')),
+      );
       throw Exception('Failed to load data: $e');
     }
   }
