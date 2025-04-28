@@ -3,8 +3,9 @@ import 'package:shimmer/shimmer.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 
 Widget loadingShimmer(double h, double w) {
-  return SizedBox(
-    height: 101,
+  return Container(
+    height: h,
+    width: w,
     child: ListView.builder(
         itemCount: 1,
         itemBuilder: (context, index) {

@@ -24,9 +24,9 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
       List<String> options,
       Function(String) onSelected,
       IconData iconName) async {
-    const savedOption = "Saved Option";
+    const savedOptionKey = "SavedOption";
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String? selectedOption = sharedPreferences.getString(savedOption);
+    String? selectedOption = sharedPreferences.getString(savedOptionKey);
 
     showModalBottomSheet(
       context: context,
@@ -42,31 +42,7 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
-                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //   children: [
-                    //     TextButton(
-                    //       onPressed: () {
-                    //         Navigator.of(context).pop();
-                    //       },
-                    //       child: const Text(
-                    //         "Cancel",
-                    //         style: TextStyle(color: Colors.redAccent),
-                    //       ),
-                    //     ),
-                    //     ElevatedButton(
-                    //       onPressed: selectedOption != null
-                    //           ? () {
-                    //               onSelected(selectedOption!);
-                    //               Navigator.of(context).pop();
-                    //             }
-                    //           : null,
-                    //       child: const Text("OK"),
-                    //     ),
-                    //   ],
-                    // ),
                     Text(
                       title,
                       style: const TextStyle(
@@ -80,7 +56,7 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
                       child: ListView.builder(
                         itemCount: options.length,
                         itemBuilder: (context, index) {
-                          String option = options[index];
+                          final option = options[index];
                           return ListTile(
                             leading: Icon(iconName,
                                 color: AppColor.bottomSheetOptionIconColor),
@@ -89,23 +65,25 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
                               value: option,
                               groupValue: selectedOption,
                               onChanged: (value) {
-                                setState(() {
-                                  selectedOption = value;
+                                if (value != null) {
+                                  setState(() {
+                                    selectedOption = value;
+                                  });
+                                  sharedPreferences.setString(
+                                      savedOptionKey, value);
+                                  onSelected(value);
                                   Navigator.of(context).pop();
-                                });
-                                sharedPreferences.setString(
-                                    savedOption, value.toString());
-                                onSelected(option);
+                                }
                               },
                             ),
                             onTap: () {
                               setState(() {
                                 selectedOption = option;
-                                Navigator.of(context).pop();
                               });
                               sharedPreferences.setString(
-                                  savedOption, selectedOption.toString());
-                              // onSelected(option);
+                                  savedOptionKey, option);
+                              onSelected(option);
+                              Navigator.of(context).pop();
                             },
                           );
                         },
