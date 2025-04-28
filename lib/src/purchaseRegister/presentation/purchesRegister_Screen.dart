@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/POGraph.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/prGraphView/prAllGraph.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/prGraphView/prHSNGraph.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/prGraphView/prItemGraph.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/prGraphView/prPOGraph.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/prGraphView/prVendorGraph.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/POlist.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/hsnCodeWiseGraph.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/costCenterList.dart';
-import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/itemWiseGraph.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/functionalAreaList.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/itemGroupWiseGraph.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/storageLocationList.dart';
