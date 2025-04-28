@@ -6,6 +6,7 @@ Widget screen_shimmer(double h, double w) {
   return SizedBox(
     height: 340,
     child: ListView.builder(
+        physics: const NeverScrollableScrollPhysics(),
         itemCount: 5,
         itemBuilder: (context, index) {
           return Shimmer.fromColors(
