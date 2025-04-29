@@ -7,16 +7,13 @@ import 'package:vitwoai_report/src/purchaseRegister/presentation/prGraphView/prI
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prGraphView/prPOGraph.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prGraphView/prVendorGraph.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/POlist.dart';
-import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/hsnCodeWiseGraph.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/costCenterList.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/functionalAreaList.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/itemGroupWiseGraph.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/storageLocationList.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
-import 'prWidget/AllGraph.dart';
 import 'prWidget/productList.dart';
-import 'prWidget/vendorGraph.dart';
 import 'prWidget/vendorList.dart';
 
 final isClickedProviderPurschese = StateProvider<bool>((ref) => false);

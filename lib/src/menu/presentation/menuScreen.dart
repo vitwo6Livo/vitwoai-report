@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vitwoai_report/src/menu/presentation/generalSettings.dart';
 import 'package:vitwoai_report/src/menu/presentation/rateScreen.dart';
+import 'package:vitwoai_report/src/menu/presentation/widget/helpScreen.dart';
 import 'package:vitwoai_report/src/routes/routeNames.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
@@ -337,7 +338,10 @@ class _MenuScreenState extends State<MenuScreen> {
                 color: Colors.amber),
           ),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const HelpScreen()));
+            },
             child: _buildSettingsItem(
                 icon: Icons.help_outline,
                 title: HandText.menuHelpInfo,

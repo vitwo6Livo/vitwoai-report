@@ -3,7 +3,6 @@ import 'package:vitwoai_report/golobal-Widget/rangeCalendar.dart';
 import 'package:vitwoai_report/src/home/presentation/main-widget/productWidget.dart';
 import 'package:vitwoai_report/src/home/presentation/main-widget/progresWidget.dart';
 import 'package:vitwoai_report/src/home/presentation/main-widget/regionWidget.dart';
-import 'package:vitwoai_report/src/menu/presentation/generalSettings.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
 
@@ -143,7 +142,7 @@ class Deafaultwidget extends StatelessWidget {
                       HandText.raised,
                       style: Theme.of(context)
                           .textTheme
-                          .bodyMedium!
+                          .bodySmall!
                           .copyWith(color: AppColor.lightFontCpy),
                     ),
                     trailing:

@@ -25,6 +25,7 @@ dependencies:
   flutter_svg: #svg image
   shimmer:
   syncfusion_flutter_gauges:
+  webview_flutter: ^4.11.0
 
 dev_dependencies:
   flutter_test:

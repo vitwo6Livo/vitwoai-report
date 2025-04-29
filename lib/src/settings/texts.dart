@@ -22,9 +22,9 @@ class HandText {
   static String welcome = 'Welcome';
   static String summary = 'Summary Card';
   static String raisedCount = '09';
-  static String raised = 'Query Raised';
+  static String raised = 'Total Purches';
   static String itemCount = '02';
-  static String item = 'Query Item';
+  static String item = 'Total Sales';
   static String product = 'Trending Product';
 
   ////////////////////// Ageing-screen //////////////////////////
