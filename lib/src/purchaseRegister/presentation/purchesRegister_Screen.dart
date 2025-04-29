@@ -243,9 +243,9 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
                                       useSafeArea: true,
                                       context: context,
                                       builder: (context) {
-                                        return const FractionallySizedBox(
+                                        return FractionallySizedBox(
                                           heightFactor: 0.9,
-                                          child: VendorGraphModel(),
+                                          child: POGraphModel(),
                                         );
                                       },
                                     );
@@ -264,7 +264,7 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
                                           builder: (context) {
                                             return const FractionallySizedBox(
                                               heightFactor: 0.9,
-                                              child: POGraphModel(),
+                                              child: VendorGraphModel(),
                                             );
                                           },
                                         );
