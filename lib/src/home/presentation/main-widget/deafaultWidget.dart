@@ -65,19 +65,19 @@ class Deafaultwidget extends StatelessWidget {
                               .copyWith(
                                   color: AppColor.appbarFont, fontSize: 20),
                         ),
-                        IconButton(
-                          onPressed: () {
-                            // showDateDialog(context);
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return const GeneralSettingScreen();
-                            }));
-                          },
-                          icon: Icon(
-                            Icons.settings,
-                            color: AppColor.appBarIcon,
-                          ),
-                        ),
+                        // IconButton(
+                        //   onPressed: () {
+                        //     // showDateDialog(context);
+                        //     Navigator.push(context,
+                        //         MaterialPageRoute(builder: (context) {
+                        //       return const GeneralSettingScreen();
+                        //     }));
+                        //   },
+                        //   icon: Icon(
+                        //     Icons.settings,
+                        //     color: AppColor.appBarIcon,
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),

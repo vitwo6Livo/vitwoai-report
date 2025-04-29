@@ -249,45 +249,45 @@ class _GeneralSettingScreenState extends State<GeneralSettingScreen> {
             Divider(
               color: AppColor.menuGenSettOptionDivider,
             ),
-            InkWell(
-              onTap: () {
-                print("presssed Default use screen");
-              },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      HandText.menuGenSettDefaultScrTitle,
-                      style: const TextStyle(fontWeight: FontWeight.w400),
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          selectDefaultScreen,
-                          style: TextStyle(
-                              color: AppColor.selectedOptionColor,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          size: 16,
-                          color: AppColor.menuGenSettOptionArrowColor2,
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Divider(
-              color: Colors.grey[200],
-            ),
+            // InkWell(
+            //   onTap: () {
+            //     print("presssed Default use screen");
+            //   },
+            //   child: Padding(
+            //     padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+            //     child: Row(
+            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //       children: [
+            //         Text(
+            //           HandText.menuGenSettDefaultScrTitle,
+            //           style: const TextStyle(fontWeight: FontWeight.w400),
+            //         ),
+            //         Row(
+            //           crossAxisAlignment: CrossAxisAlignment.center,
+            //           children: [
+            //             Text(
+            //               selectDefaultScreen,
+            //               style: TextStyle(
+            //                   color: AppColor.selectedOptionColor,
+            //                   fontWeight: FontWeight.bold),
+            //             ),
+            //             const SizedBox(
+            //               width: 5,
+            //             ),
+            //             Icon(
+            //               Icons.arrow_forward_ios,
+            //               size: 16,
+            //               color: AppColor.menuGenSettOptionArrowColor2,
+            //             )
+            //           ],
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
+            // Divider(
+            //   color: Colors.grey[200],
+            // ),
             InkWell(
               onTap: () {
                 showSelectionBottomSheet(
