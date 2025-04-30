@@ -79,7 +79,7 @@ class _SalesRegisterSOScreenState extends ConsumerState<SalesRegisterSOScreen> {
   void _handleScroll() {
     final model = ref.read(salesRegisterSOListStateProvider);
     if (_scrollController.position.pixels >=
-            _scrollController.position.maxScrollExtent * 0.9 &&
+            _scrollController.position.maxScrollExtent - 100 &&
         !_isLoadingMore &&
         !model.lastPage) {
       _loadMoreData();
@@ -173,70 +173,79 @@ class _SalesRegisterSOScreenState extends ConsumerState<SalesRegisterSOScreen> {
                     ? Center(child: Text(HandText.noData))
                     : ListView.builder(
                         controller: _scrollController,
-                        itemCount: salesRegisterSOList.content.length,
+                        itemCount: _isLoadingMore
+                            ? salesRegisterSOList.content.length + 1
+                            : salesRegisterSOList.content.length,
                         itemBuilder: (context, index) {
-                          final item = salesRegisterSOList.content[index];
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4),
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => SoWiseDetails(
-                                      data: salesRegisterSOList.content,
-                                      index: index,
+                          if (index < salesRegisterSOList.content.length) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 4),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SoWiseDetails(
+                                        data: salesRegisterSOList.content,
+                                        index: index,
+                                      ),
                                     ),
-                                  ),
-                                );
-                              },
-                              child: Card(
-                                elevation: 4,
-                                color: AppColor.cardBackgroundColor,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(15.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          _buildDataRow(
-                                              Icons.description, item.soNumber),
-                                          _buildDataRow(
-                                              Icons.event_note, item.soDate),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 20),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          _buildDataRow(
-                                              Icons.production_quantity_limits,
-                                              item.soQuantity),
-                                          _buildDataRow(Icons.receipt_long,
-                                              item.invoiceValue),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                                  );
+                                },
+                                child: _buildCard(
+                                    index, salesRegisterSOList.content),
                               ),
-                            ),
-                          );
+                            );
+                          } else {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 8),
+                              child: loadingShimmer(100, 900),
+                            );
+                          }
                         },
                       ),
           ),
-          if (_isLoadingMore)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 9),
-              child: loadingShimmer(100, 800),
-            ),
+          // if (_isLoadingMore)
+          //   Padding(
+          //     padding: const EdgeInsets.symmetric(vertical: 9),
+          //     child: loadingShimmer(100, 800),
+          //   ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildCard(int index, List<dynamic> content) {
+    final item = content[index];
+
+    return Card(
+      elevation: 4,
+      color: AppColor.cardBackgroundColor,
+      child: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buildDataRow(Icons.description, item.soNumber),
+                _buildDataRow(Icons.event_note, item.soDate),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buildDataRow(
+                    Icons.production_quantity_limits, item.soQuantity),
+                _buildDataRow(Icons.receipt_long, item.invoiceValue),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

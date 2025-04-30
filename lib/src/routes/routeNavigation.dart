@@ -48,7 +48,8 @@ class Routes {
       // Ageing
       case RouteNames.Receivable:
         return MaterialPageRoute(
-            builder: (BuildContext context) => ReceivableAnalyticsScreen());
+            builder: (BuildContext context) =>
+                const ReceivableAnalyticsScreen());
 
       // Purchase Register
       case RouteNames.Purchase:

@@ -79,7 +79,7 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
   void _handleScroll() {
     final model = ref.read(salesRegisterListStateProvider);
     if (_scrollController.position.pixels >=
-            _scrollController.position.maxScrollExtent * 0.9 &&
+            _scrollController.position.maxScrollExtent - 100 &&
         !_isLoadingMore &&
         !model.lastPage) {
       _loadMoreData();
@@ -250,73 +250,81 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
                     ? Center(child: Text(HandText.noData))
                     : ListView.builder(
                         controller: _scrollController,
-                        itemCount: salesRegisterList.content.length,
+                        itemCount: _isLoadingMore
+                            ? salesRegisterList.content.length + 1
+                            : salesRegisterList.content.length,
                         itemBuilder: (context, index) {
-                          final item = salesRegisterList.content[index];
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4),
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => AllDetailsPage(
-                                            data: salesRegisterList.content,
-                                            index: index)));
-                              },
-                              child: Card(
-                                elevation: 4,
-                                color: AppColor.cardBackgroundColor,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(15.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          _buildDataRow(Icons.qr_code,
-                                              item.items_ItemCode),
-                                          _buildDataRow(
-                                              Icons.event, item.invoiceDate),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 20),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          _buildDataRow(
-                                              Icons.business,
-                                              item.customer_Trade_name.length >
-                                                      17
-                                                  ? '${item.customer_Trade_name.substring(0, 17)}...'
-                                                  : item.customer_Trade_name),
-                                          _buildDataRow(Icons.attach_money,
-                                              item.allTotalAmount)
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                ),
+                          if (index < salesRegisterList.content.length) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 4),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => AllDetailsPage(
+                                              data: salesRegisterList.content,
+                                              index: index)));
+                                },
+                                child: _buildCard(
+                                    index, salesRegisterList.content),
                               ),
-                            ),
-                          );
+                            );
+                          } else {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 8),
+                              child: loadingShimmer(100, 900),
+                            );
+                          }
                         },
                       ),
           ),
-          if (_isLoadingMore)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 9),
-              child: loadingShimmer(100, 800),
-            ),
+          // if (_isLoadingMore)
+          //   Padding(
+          //     padding: const EdgeInsets.symmetric(vertical: 9),
+          //     child: loadingShimmer(100, 800),
+          //   ),
         ],
       ),
     );
   }
+}
+
+Widget _buildCard(int index, List<dynamic> content) {
+  final item = content[index];
+  return Card(
+    elevation: 4,
+    color: AppColor.cardBackgroundColor,
+    child: Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildDataRow(Icons.qr_code, item.items_ItemCode),
+              _buildDataRow(Icons.event, item.invoiceDate),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildDataRow(
+                  Icons.business,
+                  item.customer_Trade_name.length > 17
+                      ? '${item.customer_Trade_name.substring(0, 17)}...'
+                      : item.customer_Trade_name),
+              _buildDataRow(Icons.attach_money, item.allTotalAmount)
+            ],
+          )
+        ],
+      ),
+    ),
+  );
 }
 
 Widget _buildDataRow(IconData iconName, String data) {

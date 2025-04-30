@@ -41,8 +41,8 @@ class _ReceivableAnalyticsScreenState
 
     // Add listener to detect when user reaches the end of the list
     _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-              _scrollController.position.maxScrollExtent &&
+      if (_scrollController.position.pixels >=
+              _scrollController.position.maxScrollExtent - 100 &&
           !_isLoadingMore) {
         final isLastPage = ref.read(customerListStateProvider)['last'] ?? false;
         if (!isLastPage) {
@@ -68,7 +68,6 @@ class _ReceivableAnalyticsScreenState
     setState(() {
       _isLoadingMore = true;
     });
-
     final currentPage = ref.read(currentPageProvider);
     final nextPage = currentPage + 1;
     final selectedDate = ref.read(selectedDateProvider) ?? DateTime.now();
@@ -383,11 +382,11 @@ class _ReceivableAnalyticsScreenState
             ),
 
             // Loading Indicator
-            if (_isLoadingMore)
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
-                child: loadingShimmer(100, 800),
-              ),
+            // if (_isLoadingMore)
+            //   Padding(
+            //     padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
+            //     child: loadingShimmer(100, 800),
+            //   ),
           ],
         ),
       ),
@@ -397,127 +396,138 @@ class _ReceivableAnalyticsScreenState
   Widget _buildListView(List<dynamic> content) {
     return ListView.builder(
       controller: _scrollController,
-      itemCount: content.length,
+      itemCount: _isLoadingMore ? content.length + 1 : content.length,
       itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => newReceivableDetailsScreen(
-                    data: content,
-                    index: index,
+        if (index < content.length) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => newReceivableDetailsScreen(
+                      data: content,
+                      index: index,
+                    ),
                   ),
-                ),
-              );
-            },
-            child: Card(
-              color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                );
+              },
+              child: _buildCard(index, content),
+            ),
+          );
+        } else {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            child: loadingShimmer(100, 900),
+          );
+        }
+      },
+    );
+  }
+}
+
+Widget _buildCard(int index, List<dynamic> content) {
+  return Card(
+    color: Colors.white,
+    child: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            content[index].customerName,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text.rich(
+                TextSpan(
+                  text: "${HandText.receivableCustomerCode}\n",
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey,
+                  ),
                   children: [
-                    Text(
-                      content[index].customerName,
+                    TextSpan(
+                      text: content[index].customerCode.toString(),
                       style: const TextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
                       ),
-                    ),
-                    const SizedBox(height: 12),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text.rich(
-                          TextSpan(
-                            text: "${HandText.receivableCustomerCode}\n",
-                            style: const TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey,
-                            ),
-                            children: [
-                              TextSpan(
-                                text: content[index].customerCode.toString(),
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Text.rich(
-                          TextSpan(
-                            text: "${HandText.receivableTotalDue}\n",
-                            style: const TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey,
-                            ),
-                            children: [
-                              TextSpan(
-                                text: content[index].totalDue.toString(),
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 5),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text.rich(
-                          TextSpan(
-                            text: "${HandText.receivableOnAccountDue}\n",
-                            style: const TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey,
-                            ),
-                            children: [
-                              TextSpan(
-                                text: content[index].onAccountDue.toString(),
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Text.rich(
-                          TextSpan(
-                            text: "${HandText.receivableNetDue}\n",
-                            style: const TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey,
-                            ),
-                            children: [
-                              TextSpan(
-                                text: content[index].netDue.toString(),
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
                     ),
                   ],
                 ),
               ),
-            ),
+              Text.rich(
+                TextSpan(
+                  text: "${HandText.receivableTotalDue}\n",
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: content[index].totalDue.toString(),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        );
-      },
-    );
-  }
+          const SizedBox(height: 5),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text.rich(
+                TextSpan(
+                  text: "${HandText.receivableOnAccountDue}\n",
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: content[index].onAccountDue.toString(),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Text.rich(
+                TextSpan(
+                  text: "${HandText.receivableNetDue}\n",
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: content[index].netDue.toString(),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
 }

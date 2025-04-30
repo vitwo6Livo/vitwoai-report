@@ -3,8 +3,8 @@ import 'package:shimmer/shimmer.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 
 Widget screen_shimmer(double h, double w) {
-  return SizedBox(
-    height: 340,
+  return Container(
+    height: 250,
     child: ListView.builder(
         physics: const NeverScrollableScrollPhysics(),
         itemCount: 5,

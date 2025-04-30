@@ -84,7 +84,7 @@ class _HsnCodeWiseScreenState extends ConsumerState<HsnCodeWiseScreen> {
   void _handleScroll() {
     final model = ref.read(salesRegisterHsnCodeListStateProvider);
     if (_scrollController.position.pixels >=
-            _scrollController.position.maxScrollExtent * 0.9 &&
+            _scrollController.position.maxScrollExtent - 100 &&
         !_isLoadingMore &&
         !model.lastPage) {
       _loadMoreData();
@@ -257,68 +257,41 @@ class _HsnCodeWiseScreenState extends ConsumerState<HsnCodeWiseScreen> {
                     ? Center(child: Text(HandText.noData))
                     : ListView.builder(
                         controller: _scrollController,
-                        itemCount: salesRegisterHsnCodeList.content.length,
+                        itemCount: _isLoadingMore
+                            ? salesRegisterHsnCodeList.content.length + 1
+                            : salesRegisterHsnCodeList.content.length,
                         itemBuilder: (context, index) {
-                          final item = salesRegisterHsnCodeList.content[index];
-                          return InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          newSRHsnCodeWiseDetailsScreen(
-                                            data: salesRegisterHsnCodeList
-                                                .content,
-                                            index: index,
-                                          )));
-                            },
-                            child: Padding(
+                          if (index < salesRegisterHsnCodeList.content.length) {
+                            return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            newSRHsnCodeWiseDetailsScreen(
+                                              data: salesRegisterHsnCodeList
+                                                  .content,
+                                              index: index,
+                                            )));
+                              },
+                              child: _buildCard(
+                                  index, salesRegisterHsnCodeList.content),
+                            );
+                          } else {
+                            return Padding(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 4),
-                              child: Card(
-                                elevation: 4,
-                                color: AppColor.cardBackgroundColor,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(15.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          _buildDataRow(
-                                              Icons.view_module, item.hsnCode),
-                                          _buildDataRow(Icons.inventory_2,
-                                              item.invoiceQuantity),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 20),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          _buildDataRow(
-                                              Icons.bar_chart, item.baseValue),
-                                          _buildDataRow(Icons.receipt_long,
-                                              item.invoiceValue),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
+                                  horizontal: 10, vertical: 8),
+                              child: loadingShimmer(100, 900),
+                            );
+                          }
                         },
                       ),
           ),
-          if (_isLoadingMore)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 9),
-              child: loadingShimmer(100, 800),
-            ),
+          // if (_isLoadingMore)
+          //   Padding(
+          //     padding: const EdgeInsets.symmetric(vertical: 9),
+          //     child: loadingShimmer(100, 800),
+          //   ),
         ],
       ),
     );
@@ -340,6 +313,41 @@ class _HsnCodeWiseScreenState extends ConsumerState<HsnCodeWiseScreen> {
 //     );
 //   }
 // }
+
+  Widget _buildCard(int index, List<dynamic> content) {
+    final item = content[index];
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      child: Card(
+        elevation: 4,
+        color: AppColor.cardBackgroundColor,
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildDataRow(Icons.view_module, item.hsnCode),
+                  _buildDataRow(Icons.inventory_2, item.invoiceQuantity),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildDataRow(Icons.bar_chart, item.baseValue),
+                  _buildDataRow(Icons.receipt_long, item.invoiceValue),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
   Widget _buildDataRow(IconData iconName, String data) {
     return Row(

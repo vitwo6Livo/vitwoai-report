@@ -85,7 +85,7 @@ class _ItemGroupWiseScreenState extends ConsumerState<ItemGroupWiseScreen> {
   void _handleScroll() {
     final model = ref.read(salesRegisterItemGroupListStateProvider);
     if (_scrollController.position.pixels >=
-            _scrollController.position.maxScrollExtent * 0.9 &&
+            _scrollController.position.maxScrollExtent - 100 &&
         !_isLoadingMore &&
         !model.lastPage) {
       _loadMoreData();
@@ -259,68 +259,41 @@ class _ItemGroupWiseScreenState extends ConsumerState<ItemGroupWiseScreen> {
                     ? Center(child: Text(HandText.noData))
                     : ListView.builder(
                         controller: _scrollController,
-                        itemCount: salesRegisterItemGroupList.content.length,
+                        itemCount: _isLoadingMore
+                            ? salesRegisterItemGroupList.content.length + 1
+                            : salesRegisterItemGroupList.content.length,
                         itemBuilder: (context, index) {
-                          final item =
-                              salesRegisterItemGroupList.content[index];
-                          return InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          newSRItemGWiseDetailsScreen(
-                                              data: salesRegisterItemGroupList
-                                                  .content,
-                                              index: index)));
-                            },
-                            child: Padding(
+                          if (index <
+                              salesRegisterItemGroupList.content.length) {
+                            return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            newSRItemGWiseDetailsScreen(
+                                                data: salesRegisterItemGroupList
+                                                    .content,
+                                                index: index)));
+                              },
+                              child: _buildCard(
+                                  index, salesRegisterItemGroupList.content),
+                            );
+                          } else {
+                            return Padding(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 4),
-                              child: Card(
-                                elevation: 4,
-                                color: AppColor.cardBackgroundColor,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(15.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          _buildDataRow(Icons.category,
-                                              item.itemGroupName),
-                                          _buildDataRow(Icons.inventory_2,
-                                              item.invoiceQuantity),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 20),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          _buildDataRow(
-                                              Icons.assessment, item.baseValue),
-                                          _buildDataRow(Icons.receipt_long,
-                                              item.invoiceValue),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
+                                  horizontal: 10, vertical: 8),
+                              child: loadingShimmer(100, 900),
+                            );
+                          }
                         },
                       ),
           ),
-          if (_isLoadingMore)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 9),
-              child: loadingShimmer(100, 800),
-            ),
+          // if (_isLoadingMore)
+          //   Padding(
+          //     padding: const EdgeInsets.symmetric(vertical: 9),
+          //     child: loadingShimmer(100, 800),
+          //   ),
         ],
       ),
     );
@@ -342,6 +315,40 @@ class _ItemGroupWiseScreenState extends ConsumerState<ItemGroupWiseScreen> {
 //     );
 //   }
 // }
+
+  Widget _buildCard(int index, List<dynamic> content) {
+    final item = content[index];
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      child: Card(
+        elevation: 4,
+        color: AppColor.cardBackgroundColor,
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildDataRow(Icons.category, item.itemGroupName),
+                  _buildDataRow(Icons.inventory_2, item.invoiceQuantity),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildDataRow(Icons.assessment, item.baseValue),
+                  _buildDataRow(Icons.receipt_long, item.invoiceValue),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
   Widget _buildDataRow(IconData iconName, String data) {
     return Row(

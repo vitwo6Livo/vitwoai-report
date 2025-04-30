@@ -82,7 +82,7 @@ class _CustomerWiseScreenState extends ConsumerState<CustomerWiseScreen> {
   void _handleScroll() {
     final model = ref.read(salesRegisterCustomerListStateProvider);
     if (_scrollController.position.pixels >=
-            _scrollController.position.maxScrollExtent * 0.9 &&
+            _scrollController.position.maxScrollExtent - 100 &&
         !_isLoadingMore &&
         !model.lastPage) {
       _loadMoreData();
@@ -253,72 +253,46 @@ class _CustomerWiseScreenState extends ConsumerState<CustomerWiseScreen> {
                     ? Center(child: Text(HandText.noData))
                     : ListView.builder(
                         controller: _scrollController,
-                        itemCount: salesRegisterCustomerList.content.length,
+                        itemCount: _isLoadingMore
+                            ? salesRegisterCustomerList.content.length + 1
+                            : salesRegisterCustomerList.content.length,
                         itemBuilder: (context, index) {
-                          final item = salesRegisterCustomerList.content[index];
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4),
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            CustomerWiseDetailsPage(
-                                              data: salesRegisterCustomerList
-                                                  .content,
-                                              index: index,
-                                            )));
-                              },
-                              child: Card(
-                                elevation: 4,
-                                color: AppColor.cardBackgroundColor,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(15.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          _buildDataRow(
-                                              Icons.account_circle,
-                                              item.customerName.length > 12
-                                                  ? '${item.customerName.substring(0, 12)}...'
-                                                  : item.customerName),
-                                          _buildDataRow(
-                                              Icons.badge, item.customerGSTNO),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 20),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          _buildDataRow(
-                                              Icons.confirmation_number,
-                                              item.customerCode),
-                                          _buildDataRow(Icons.receipt_long,
-                                              item.invoiceValue),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                          if (index <
+                              salesRegisterCustomerList.content.length) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 4),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              CustomerWiseDetailsPage(
+                                                data: salesRegisterCustomerList
+                                                    .content,
+                                                index: index,
+                                              )));
+                                },
+                                child: _buildCard(
+                                    index, salesRegisterCustomerList.content),
                               ),
-                            ),
-                          );
+                            );
+                          } else {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 8),
+                              child: loadingShimmer(100, 900),
+                            );
+                          }
                         },
                       ),
           ),
-          if (_isLoadingMore)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 9),
-              child: loadingShimmer(100, 800),
-            ),
+          // if (_isLoadingMore)
+          //   Padding(
+          //     padding: const EdgeInsets.symmetric(vertical: 9),
+          //     child: loadingShimmer(100, 800),
+          //   ),
         ],
       ),
     );
@@ -333,6 +307,41 @@ class _CustomerWiseScreenState extends ConsumerState<CustomerWiseScreen> {
 //     );
 //   }
 // }
+
+Widget _buildCard(int index, List<dynamic> content) {
+  final item = content[index];
+  return Card(
+    elevation: 4,
+    color: AppColor.cardBackgroundColor,
+    child: Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildDataRow(
+                  Icons.account_circle,
+                  item.customerName.length > 12
+                      ? '${item.customerName.substring(0, 12)}...'
+                      : item.customerName),
+              _buildDataRow(Icons.badge, item.customerGSTNO),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildDataRow(Icons.confirmation_number, item.customerCode),
+              _buildDataRow(Icons.receipt_long, item.invoiceValue),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
+}
 
 Widget _buildDataRow(IconData iconName, String data) {
   return Row(
