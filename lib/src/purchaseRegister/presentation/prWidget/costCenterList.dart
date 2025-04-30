@@ -1,3 +1,4 @@
+//PR HSN Wise
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/golobal-Widget/loadingShimmer.dart';
@@ -29,8 +30,8 @@ class _CostCenterListState extends ConsumerState<CostCenterList> {
   void initState() {
     super.initState();
     _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-              _scrollController.position.maxScrollExtent &&
+      if (_scrollController.position.pixels >=
+              _scrollController.position.maxScrollExtent - 100 &&
           !_isLoadingMore) {
         final isLastPage =
             ref.read(purchesRegisterHSNCodeWiseListStateProvider)['last'] ??
@@ -109,11 +110,11 @@ class _CostCenterListState extends ConsumerState<CostCenterList> {
                     )
                 : _buildListView(purchesRegisterHSNCodeWiseList['content']),
           ),
-          if (_isLoadingMore)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 9),
-              child: loadingShimmer(100, 800),
-            ),
+          // if (_isLoadingMore)
+          //   Padding(
+          //     padding: const EdgeInsets.symmetric(vertical: 9),
+          //     child: loadingShimmer(100, 800),
+          //   ),
         ],
       ),
     );
@@ -124,180 +125,159 @@ class _CostCenterListState extends ConsumerState<CostCenterList> {
         ? Center(child: Text(HandText.noData))
         : ListView.builder(
             controller: _scrollController,
-            itemCount: content.length,
+            itemCount: _isLoadingMore ? content.length + 1 : content.length,
             itemBuilder: (context, index) {
-              return InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => newHsnCodeWiseDetailsScreen(
-                        data: content,
-                        index: index,
-                      ),
-                    ),
-                  );
-                },
-                child: Card(
-                  color: AppColor.cardBackgroundColor,
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  elevation: 4,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              width: 150,
-                              child: Text(
-                                content[index].HSNCode.toString(),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall!
-                                    .copyWith(
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            Text.rich(
-                              TextSpan(
-                                text: HandText.prInvoiceQuantity,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall!
-                                    .copyWith(
-                                      color: AppColor.cardDataKeyColor,
-                                    ),
-                                children: [
-                                  TextSpan(
-                                    text: content[index]
-                                        .invoiceQuantity
-                                        .toString(),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall!
-                                        .copyWith(
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
+              if (index < content.length) {
+                return InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => newHsnCodeWiseDetailsScreen(
+                            data: content,
+                            index: index,
+                          ),
                         ),
-                        const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              width: 180,
-                              child: Text.rich(
-                                TextSpan(
-                                  text: HandText.prReceivedQuantity,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall!
-                                      .copyWith(
-                                        color: AppColor.cardDataKeyColor,
-                                      ),
-                                  children: [
-                                    TextSpan(
-                                      text: content[index]
-                                          .receivedQuantity
-                                          .toString(),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall!
-                                          .copyWith(
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                              ),
-                            ),
-                            Text.rich(
-                              TextSpan(
-                                text: HandText.prBaseValue,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall!
-                                    .copyWith(
-                                      color: AppColor.cardDataKeyColor,
-                                    ),
-                                children: [
-                                  TextSpan(
-                                    text: content[index].baseValue.toString(),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall!
-                                        .copyWith(
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.factory,
-                                  color: AppColor.cardDataIconColor,
-                                ),
-                                Text(
-                                  content[index].HSNCode.toString(),
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall!
-                                      .copyWith(
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.currency_rupee_outlined,
-                                  color: AppColor.cardDataIconColor,
-                                ),
-                                Text(
-                                  content[index].invoiceValue.toString(),
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall!
-                                      .copyWith(
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
+                      );
+                    },
+                    child: _buildCard(index, content, context));
+              } else {
+                return Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  child: loadingShimmer(110, 800),
+                );
+              }
             },
           );
   }
+}
+
+Widget _buildCard(int index, List<dynamic> content, BuildContext context) {
+  return Card(
+    color: AppColor.cardBackgroundColor,
+    margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12),
+    ),
+    elevation: 4,
+    child: Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                width: 150,
+                child: Text(
+                  content[index].HSNCode.toString(),
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        fontWeight: FontWeight.w500,
+                      ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              Text.rich(
+                TextSpan(
+                  text: HandText.prInvoiceQuantity,
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        color: AppColor.cardDataKeyColor,
+                      ),
+                  children: [
+                    TextSpan(
+                      text: content[index].invoiceQuantity.toString(),
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            fontWeight: FontWeight.w500,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                width: 180,
+                child: Text.rich(
+                  TextSpan(
+                    text: HandText.prReceivedQuantity,
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          color: AppColor.cardDataKeyColor,
+                        ),
+                    children: [
+                      TextSpan(
+                        text: content[index].receivedQuantity.toString(),
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                              fontWeight: FontWeight.w500,
+                            ),
+                      ),
+                    ],
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+              ),
+              Text.rich(
+                TextSpan(
+                  text: HandText.prBaseValue,
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        color: AppColor.cardDataKeyColor,
+                      ),
+                  children: [
+                    TextSpan(
+                      text: content[index].baseValue.toString(),
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            fontWeight: FontWeight.w500,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    Icons.factory,
+                    color: AppColor.cardDataIconColor,
+                  ),
+                  Text(
+                    content[index].HSNCode.toString(),
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Icon(
+                    Icons.currency_rupee_outlined,
+                    color: AppColor.cardDataIconColor,
+                  ),
+                  Text(
+                    content[index].invoiceValue.toString(),
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
 }
