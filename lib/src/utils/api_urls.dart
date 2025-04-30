@@ -3,9 +3,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 // const baseURL = 'http://192.168.0.250:81/';
 
-const baseURL = 'https://www.analytic.vitwo.ai/'; // Live URL
+// const baseURL = 'https://www.analytic.vitwo.ai/'; // Live URL
 
-// const baseURL = 'http://192.168.0.196:81/';
+const baseURL = 'http://192.168.0.195:81/';
 
 Future<String?> getTokenData() async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -44,3 +44,4 @@ const salesRegisterHSNCodeWiseUrl = 'sales/hsn-sub-total';
 const trandingProducturl = 'sales/product-desc';
 const trandingRegionurl = 'sales/region-desc';
 const salesGraphurl = 'sales/graph/mobile-sales-graph';
+const purchaseRegisterSummaryUrl = 'purchase/all-purchase-summary';

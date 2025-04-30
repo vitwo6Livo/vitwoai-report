@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:vitwoai_report/src/purchaseRegister/data/purchesRegister_repository.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prGraphView/prAllGraph.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prGraphView/prHSNGraph.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prGraphView/prItemGraph.dart';
@@ -12,11 +13,10 @@ import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/costCe
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/functionalAreaList.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/productList.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/storageLocationList.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/summaryShimmer.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/vendorList.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
-
-
 
 final isClickedProviderPurschese = StateProvider<bool>((ref) => false);
 
@@ -182,6 +182,14 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
   SizedBox _purchaseSummary(BuildContext context) {
     // final isClicked = ref.watch(isClickedProviderPurschese);
     // final isClickedNotifier = ref.read(isClickedProviderPurschese.notifier);
+    final summaryDataAll = ref.watch(purchesRegisterSummaryProvider('all'));
+    final summaryDataPO = ref.watch(purchesRegisterSummaryProvider('po'));
+    final summaryDataVendor =
+        ref.watch(purchesRegisterSummaryProvider('vendor'));
+    final summaryDataItem = ref.watch(purchesRegisterSummaryProvider('item'));
+    final summaryDataItemGR =
+        ref.watch(purchesRegisterSummaryProvider('itemgr'));
+    final summaryDataHSN = ref.watch(purchesRegisterSummaryProvider('hsn'));
     return SizedBox(
       height: 280,
       width: double.infinity,
@@ -245,7 +253,7 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
                                       useSafeArea: true,
                                       context: context,
                                       builder: (context) {
-                                        return FractionallySizedBox(
+                                        return const FractionallySizedBox(
                                           heightFactor: 0.9,
                                           child: POGraphModel(),
                                         );
@@ -352,123 +360,767 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
               ),
             ),
           ),
-          Positioned(
-            top: 120,
-            left: 10,
-            right: 10,
-            child: Card(
-              color: AppColor.lightFontCpy,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 14, vertical: 20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          children: [
-                            Text(
-                              HandText.prTotalAmount,
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
+          selectedIndex == 0
+              ? summaryDataAll.when(
+                  data: (data) {
+                    return Positioned(
+                        top: 120,
+                        left: 10,
+                        right: 10,
+                        child: Card(
+                          color: AppColor.lightFontCpy,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 14, vertical: 20),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        Text(
+                                          HandText.prTotalAmount,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(data.totalAmount.toString()),
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        Text(
+                                          HandText.prTotalCGST,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(data.totalCgst.toString()),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                const Divider(),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        Text(
+                                          HandText.prTotalSGST,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(data.totalSgst.toString()),
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        Text(
+                                          HandText.prTotalIGST,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Text(data.totalIgst.toString()),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                            Text(selectedIndex == 0
-                                ? "1440265.55"
-                                : selectedIndex == 1
-                                    ? '2036458.20'
-                                    : selectedIndex == 2
-                                        ? '36458.20'
-                                        : selectedIndex == 3
-                                            ? '5036458.20'
-                                            : selectedIndex == 4
-                                                ? '1236458.20'
-                                                : selectedIndex == 5
-                                                    ? '333658.20'
-                                                    : '0.0'),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Text(
-                              HandText.prTotalCGST,
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ));
+                  },
+                  error: (error, stack) => Positioned(
+                        top: 120,
+                        left: 10,
+                        right: 10,
+                        child: Card(
+                          color: AppColor.lightFontCpy,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 14, vertical: 20),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(Icons.error, color: Colors.red),
+                                const SizedBox(height: 8),
+                                Text(
+                                  'Failed to load summary data.',
+                                  style: TextStyle(
+                                    color: Colors.red.shade800,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  error.toString(),
+                                  style: const TextStyle(fontSize: 12),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
                             ),
-                            Text(selectedIndex == 0
-                                ? "2304"
-                                : selectedIndex == 1
-                                    ? "3456"
-                                    : selectedIndex == 2
-                                        ? "4567"
-                                        : selectedIndex == 3
-                                            ? "5678"
-                                            : selectedIndex == 4
-                                                ? "6789"
-                                                : selectedIndex == 5
-                                                    ? "7890"
-                                                    : "0.0"),
-                          ],
+                          ),
                         ),
-                      ],
-                    ),
-                    const Divider(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          children: [
-                            Text(
-                              HandText.prTotalSGST,
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            Text(selectedIndex == 0
-                                ? "19781.57"
-                                : selectedIndex == 1
-                                    ? "3456.57"
-                                    : selectedIndex == 2
-                                        ? "4567.57"
-                                        : selectedIndex == 3
-                                            ? "5678.57"
-                                            : selectedIndex == 4
-                                                ? "6789.57"
-                                                : selectedIndex == 5
-                                                    ? "7890.57"
-                                                    : "0.0"),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Text(
-                              HandText.prTotalIGST,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
+                      ),
+                  loading: () => const SummaryShimmer())
+              : selectedIndex == 1
+                  ? summaryDataPO.when(
+                      data: (data) {
+                        return Positioned(
+                          top: 120,
+                          left: 10,
+                          right: 10,
+                          child: Card(
+                            color: AppColor.lightFontCpy,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 14, vertical: 20),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        children: [
+                                          Text(
+                                            HandText.prTotalAmount,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(data.totalAmount.toString()),
+                                        ],
+                                      ),
+                                      Column(
+                                        children: [
+                                          Text(
+                                            HandText.prTotalCGST,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(data.totalCgst.toString()),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  const Divider(),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        children: [
+                                          Text(
+                                            HandText.prTotalSGST,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(data.totalSgst.toString()),
+                                        ],
+                                      ),
+                                      Column(
+                                        children: [
+                                          Text(
+                                            HandText.prTotalIGST,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(data.totalIgst.toString()),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
                             ),
-                            Text(selectedIndex == 0
-                                ? "4458.57"
-                                : selectedIndex == 1
-                                    ? "3456.57"
-                                    : selectedIndex == 2
-                                        ? "4567.57"
-                                        : selectedIndex == 3
-                                            ? "5678.57"
-                                            : selectedIndex == 4
-                                                ? "6789.57"
-                                                : selectedIndex == 5
-                                                    ? "7890.57"
-                                                    : "0.0"),
-                          ],
+                          ),
+                        );
+                      },
+                      error: (error, stack) => Positioned(
+                        top: 120,
+                        left: 10,
+                        right: 10,
+                        child: Card(
+                          color: AppColor.lightFontCpy,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 14, vertical: 20),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(Icons.error, color: Colors.red),
+                                const SizedBox(height: 8),
+                                Text(
+                                  'Failed to load summary data.',
+                                  style: TextStyle(
+                                    color: Colors.red.shade800,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  error.toString(),
+                                  style: const TextStyle(fontSize: 12),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
+                      ),
+                      loading: () => const SummaryShimmer(),
+                    )
+                  : selectedIndex == 2
+                      ? summaryDataVendor.when(
+                          data: (data) {
+                            return Positioned(
+                                top: 120,
+                                left: 10,
+                                right: 10,
+                                child: Card(
+                                  color: AppColor.lightFontCpy,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 14, vertical: 20),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  HandText.prTotalAmount,
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Text(data.totalAmount
+                                                    .toString()),
+                                              ],
+                                            ),
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  HandText.prTotalCGST,
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Text(data.totalCgst.toString()),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        const Divider(),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  HandText.prTotalSGST,
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Text(data.totalSgst.toString()),
+                                              ],
+                                            ),
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  HandText.prTotalIGST,
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                Text(data.totalIgst.toString()),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ));
+                          },
+                          error: (error, stack) => Positioned(
+                                top: 120,
+                                left: 10,
+                                right: 10,
+                                child: Card(
+                                  color: AppColor.lightFontCpy,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 14, vertical: 20),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const Icon(Icons.error,
+                                            color: Colors.red),
+                                        const SizedBox(height: 8),
+                                        Text(
+                                          'Failed to load summary data.',
+                                          style: TextStyle(
+                                            color: Colors.red.shade800,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Text(
+                                          error.toString(),
+                                          style: const TextStyle(fontSize: 12),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          loading: () => const SummaryShimmer())
+                      : selectedIndex == 3
+                          ? summaryDataItem.when(
+                              data: (data) {
+                                return Positioned(
+                                    top: 120,
+                                    left: 10,
+                                    right: 10,
+                                    child: Card(
+                                      color: AppColor.lightFontCpy,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 14, vertical: 20),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Column(
+                                                  children: [
+                                                    Text(
+                                                      HandText.prTotalAmount,
+                                                      style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    Text(data.totalAmount
+                                                        .toString()),
+                                                  ],
+                                                ),
+                                                Column(
+                                                  children: [
+                                                    Text(
+                                                      HandText.prTotalCGST,
+                                                      style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    Text(data.totalCgst
+                                                        .toString()),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                            const Divider(),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Column(
+                                                  children: [
+                                                    Text(
+                                                      HandText.prTotalSGST,
+                                                      style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    Text(data.totalSgst
+                                                        .toString()),
+                                                  ],
+                                                ),
+                                                Column(
+                                                  children: [
+                                                    Text(
+                                                      HandText.prTotalIGST,
+                                                      style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    Text(data.totalIgst
+                                                        .toString()),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ));
+                              },
+                              error: (error, stack) =>
+                                  Center(child: Text('Error: $error')),
+                              loading: () => const SummaryShimmer())
+                          : selectedIndex == 4
+                              ? summaryDataItemGR.when(
+                                  data: (data) {
+                                    return Positioned(
+                                        top: 120,
+                                        left: 10,
+                                        right: 10,
+                                        child: Card(
+                                          color: AppColor.lightFontCpy,
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 14, vertical: 20),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Column(
+                                                      children: [
+                                                        Text(
+                                                          HandText
+                                                              .prTotalAmount,
+                                                          style: const TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                        Text(data.totalAmount
+                                                            .toString()),
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      children: [
+                                                        Text(
+                                                          HandText.prTotalCGST,
+                                                          style: const TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                        Text(data.totalCgst
+                                                            .toString()),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                                const Divider(),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Column(
+                                                      children: [
+                                                        Text(
+                                                          HandText.prTotalSGST,
+                                                          style: const TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                        Text(data.totalSgst
+                                                            .toString()),
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      children: [
+                                                        Text(
+                                                          HandText.prTotalIGST,
+                                                          style:
+                                                              const TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                        Text(data.totalIgst
+                                                            .toString()),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ));
+                                  },
+                                  error: (error, stack) => Positioned(
+                                        top: 120,
+                                        left: 10,
+                                        right: 10,
+                                        child: Card(
+                                          color: AppColor.lightFontCpy,
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 14, vertical: 20),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                const Icon(Icons.error,
+                                                    color: Colors.red),
+                                                const SizedBox(height: 8),
+                                                Text(
+                                                  'Failed to load summary data.',
+                                                  style: TextStyle(
+                                                    color: Colors.red.shade800,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 8),
+                                                Text(
+                                                  error.toString(),
+                                                  style: const TextStyle(
+                                                      fontSize: 12),
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                  loading: () => const SummaryShimmer())
+                              : selectedIndex == 5
+                                  ? summaryDataHSN.when(
+                                      data: (data) {
+                                        return Positioned(
+                                            top: 120,
+                                            left: 10,
+                                            right: 10,
+                                            child: Card(
+                                              color: AppColor.lightFontCpy,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 14,
+                                                        vertical: 20),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Column(
+                                                          children: [
+                                                            Text(
+                                                              HandText
+                                                                  .prTotalAmount,
+                                                              style: const TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                            Text(data
+                                                                .totalAmount
+                                                                .toString()),
+                                                          ],
+                                                        ),
+                                                        Column(
+                                                          children: [
+                                                            Text(
+                                                              HandText
+                                                                  .prTotalCGST,
+                                                              style: const TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                            Text(data.totalCgst
+                                                                .toString()),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    const Divider(),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Column(
+                                                          children: [
+                                                            Text(
+                                                              HandText
+                                                                  .prTotalSGST,
+                                                              style: const TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
+                                                            Text(data.totalSgst
+                                                                .toString()),
+                                                          ],
+                                                        ),
+                                                        Column(
+                                                          children: [
+                                                            Text(
+                                                              HandText
+                                                                  .prTotalIGST,
+                                                              style:
+                                                                  const TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ),
+                                                            Text(data.totalIgst
+                                                                .toString()),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ));
+                                      },
+                                      error: (error, stack) => Positioned(
+                                            top: 120,
+                                            left: 10,
+                                            right: 10,
+                                            child: Card(
+                                              color: AppColor.lightFontCpy,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 14,
+                                                        vertical: 20),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    const Icon(Icons.error,
+                                                        color: Colors.red),
+                                                    const SizedBox(height: 8),
+                                                    Text(
+                                                      'Failed to load summary data.',
+                                                      style: TextStyle(
+                                                        color:
+                                                            Colors.red.shade800,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(height: 8),
+                                                    Text(
+                                                      error.toString(),
+                                                      style: const TextStyle(
+                                                          fontSize: 12),
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                      loading: () => const SummaryShimmer())
+                                  : Positioned(
+                                      top: 120,
+                                      left: 10,
+                                      right: 10,
+                                      child: Card(
+                                        color: AppColor.lightFontCpy,
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 14, vertical: 20),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Column(
+                                                    children: [
+                                                      Text(
+                                                        HandText.prTotalAmount,
+                                                        style: const TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      const Text("0.0"),
+                                                    ],
+                                                  ),
+                                                  Column(
+                                                    children: [
+                                                      Text(
+                                                        HandText.prTotalCGST,
+                                                        style: const TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      Text("0.0"),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                              const Divider(),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Column(
+                                                    children: [
+                                                      Text(
+                                                        HandText.prTotalSGST,
+                                                        style: const TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      const Text("0.0"),
+                                                    ],
+                                                  ),
+                                                  Column(
+                                                    children: [
+                                                      Text(
+                                                        HandText.prTotalIGST,
+                                                        style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                      const Text("0.0"),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ))
         ],
       ),
     );
