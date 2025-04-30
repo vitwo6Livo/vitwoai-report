@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:vitwoai_report/src/purchaseRegister/model/HsnCodeModel.dart';
 import 'package:vitwoai_report/src/purchaseRegister/model/ItemGroupWiseModel.dart';
 import 'package:vitwoai_report/src/purchaseRegister/model/ItemWiseModel.dart';
+import 'package:vitwoai_report/src/purchaseRegister/model/PRSummaryModel.dart';
 import 'package:vitwoai_report/src/purchaseRegister/model/purchaseModel.dart';
 import 'package:vitwoai_report/src/purchaseRegister/model/vendorWiseModal.dart';
 import 'package:vitwoai_report/src/utils/api_urls.dart';
@@ -270,6 +271,42 @@ Future<Hsncodemodel> fetchPurchesRegisterHsnCodeWiseData(int pageData) async {
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       return Hsncodemodel.fromJson(data);
+    } else {
+      throw Exception('Failed to load data: ${response.statusCode}');
+    }
+  } catch (e) {
+    throw Exception('Error fetching data: $e');
+  }
+}
+
+// Summary Api Call Data
+
+final purchesRegisterSummaryProvider =
+    FutureProvider.family<PrSummaryModel, String>((ref, typeData) async {
+  return await fetchPurchesRegisterSummaryData(typeData);
+});
+
+Future<PrSummaryModel> fetchPurchesRegisterSummaryData(
+    String typeDefine) async {
+  final accessToken = await getTokenData();
+
+  final url = Uri.parse('$baseURL$purchaseRegisterSummaryUrl');
+
+  final Map<String, dynamic> bodyData = {"type": typeDefine};
+
+  try {
+    final response = await http.post(
+      url,
+      headers: {
+        'Authorization': 'Bearer $accessToken',
+        'Content-Type': 'application/json',
+      },
+      body: json.encode(bodyData),
+    );
+
+    if (response.statusCode == 200) {
+      final SummaryData = json.decode(response.body);
+      return PrSummaryModel.fromMap(SummaryData);
     } else {
       throw Exception('Failed to load data: ${response.statusCode}');
     }
