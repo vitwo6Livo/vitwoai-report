@@ -4,17 +4,19 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prGraphView/prAllGraph.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prGraphView/prHSNGraph.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prGraphView/prItemGraph.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/prGraphView/prItemGroupGraph.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prGraphView/prPOGraph.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prGraphView/prVendorGraph.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/POlist.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/costCenterList.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/functionalAreaList.dart';
-import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/itemGroupWiseGraph.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/productList.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/storageLocationList.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/prWidget/vendorList.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
-import 'prWidget/productList.dart';
-import 'prWidget/vendorList.dart';
+
+
 
 final isClickedProviderPurschese = StateProvider<bool>((ref) => false);
 

@@ -1,3 +1,5 @@
+// Vendor Graph
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -202,14 +204,14 @@ class _VendorGraphModelState extends State<VendorGraphModel> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Pie Chart',
+                'Vendor Graph',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 28,
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               SizedBox(
                 height: 350,
                 width: 350,
@@ -225,7 +227,7 @@ class _VendorGraphModelState extends State<VendorGraphModel> {
                         value: group.totalInvoiceValue,
                         title: group.totalVendors,
                         radius: touchedIndex == index ? 70 : 60,
-                        titleStyle: TextStyle(
+                        titleStyle: const TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                           fontSize: 14,
