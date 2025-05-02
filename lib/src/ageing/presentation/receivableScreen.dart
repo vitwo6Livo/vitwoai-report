@@ -24,6 +24,7 @@ class _ReceivableAnalyticsScreenState
     extends ConsumerState<ReceivableAnalyticsScreen> {
   final ScrollController _scrollController = ScrollController();
   bool _isLoadingMore = false;
+  TextEditingController searchController = TextEditingController();
 
   // State providers
   final customerListStateProvider =
@@ -320,6 +321,7 @@ class _ReceivableAnalyticsScreenState
                         margin: const EdgeInsets.only(right: 8),
                         height: 40,
                         child: TextField(
+                          controller: searchController,
                           decoration: InputDecoration(
                             hintText: HandText.searchBox,
                             prefixIcon: const Icon(Icons.search),
@@ -341,14 +343,18 @@ class _ReceivableAnalyticsScreenState
                     Flexible(
                       fit: FlexFit.tight,
                       flex: 1,
-                      child: Container(
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: AppColor.appBarGradiant,
-                          border: Border.all(color: AppColor.appBarGradiant),
-                          borderRadius: BorderRadius.circular(5),
+                      child: InkWell(
+                        onTap: () {},
+                        child: Container(
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: AppColor.appBarGradiant,
+                            border: Border.all(color: AppColor.appBarGradiant),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child:
+                              Icon(Icons.search, color: AppColor.lightFontCpy),
                         ),
-                        child: Icon(Icons.search, color: AppColor.lightFontCpy),
                       ),
                     ),
                   ],

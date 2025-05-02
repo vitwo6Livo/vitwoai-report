@@ -47,25 +47,27 @@ final receivablesCustomerProvider =
   (ref, params) async {
     final page = params['page'] as int;
     final dateInfo = params['dateInfo'] as DateTime;
-    return await fetchReceivablesCustomerData(page, dateInfo, ref);
+    final searchData = params['searchData'] as String;
+    return await fetchReceivablesCustomerData(page, dateInfo, searchData, ref);
   },
 );
 
 final totalElementsProvider = StateProvider<int?>((ref) => null);
 
 Future<ReceivableAPIModel> fetchReceivablesCustomerData(
-    int page, DateTime dateData, ref) async {
+    int page, DateTime dateData, String searchInfo, ref) async {
   final accessToken = await getTokenData();
   final url = Uri.parse('$baseURL$receivablCustomerurl');
 
   final Map<String, dynamic> bodyData = {
     "interval": 30,
     "bucketNo": 7,
-    "asOnDate": dateData.toString(), // Or formatted if needed
+    "asOnDate": dateData.toString(),
     "page": page,
     "size": 10,
     "sortBy": "",
-    "sortDir": ""
+    "sortDir": "",
+    "searchKey": searchInfo
   };
 
   try {
