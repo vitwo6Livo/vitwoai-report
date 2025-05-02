@@ -130,10 +130,15 @@ class _ReceivableAnalyticsScreenState
     final coustomerListProvider = ref.watch(customerListStateProvider);
     final selectedDate = ref.watch(selectedDateProvider) ?? DateTime.now();
     final count = ref.watch(totalElementsProvider);
+    // Media Query
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+    double verticalPadding = screenHeight * 0.04;
+
     return Scaffold(
       backgroundColor: AppColor.screenBgColor,
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        // crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           // Header Section
           Container(
@@ -150,7 +155,7 @@ class _ReceivableAnalyticsScreenState
               ),
             ),
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 25),
+              padding: EdgeInsets.symmetric(vertical: verticalPadding),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -176,7 +181,7 @@ class _ReceivableAnalyticsScreenState
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: screenHeight * 0.021),
                   receivablesAsync.when(
                     data: (data) {
                       final totalOfTotalDue = data.TotalOfTotalDue.toString();
@@ -194,7 +199,7 @@ class _ReceivableAnalyticsScreenState
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(height: 8),
+                          SizedBox(height: screenHeight * 0.013),
                           Row(
                             children: [
                               Text(
@@ -208,7 +213,7 @@ class _ReceivableAnalyticsScreenState
                               ),
                             ],
                           ),
-                          const SizedBox(height: 8),
+                          SizedBox(height: screenHeight * 0.013),
                           Row(
                             children: [
                               Text(
@@ -356,7 +361,6 @@ class _ReceivableAnalyticsScreenState
               ],
             ),
           ),
-
           // List View
           Expanded(
             child: coustomerListProvider['content'].isEmpty
