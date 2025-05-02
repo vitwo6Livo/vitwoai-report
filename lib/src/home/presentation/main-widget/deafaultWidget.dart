@@ -101,7 +101,7 @@ class Deafaultwidget extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: screenHeight * 0.02),
+          SizedBox(height: screenHeight * 0.028),
           Row(
             children: [
               Expanded(
