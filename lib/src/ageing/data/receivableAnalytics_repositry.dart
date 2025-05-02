@@ -80,7 +80,7 @@ Future<ReceivableAPIModel> fetchReceivablesCustomerData(
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-
+      print('📦 Full API response: ${data['content']}');
       ref.read(totalElementsProvider.notifier).state = data['totalElements'];
       return ReceivableAPIModel.fromJson(data);
     } else {

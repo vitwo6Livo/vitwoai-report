@@ -774,8 +774,41 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
                                       ),
                                     ));
                               },
-                              error: (error, stack) =>
-                                  Center(child: Text('Error: $error')),
+                              error: (error, stack) => Positioned(
+                                    top: 120,
+                                    left: 10,
+                                    right: 10,
+                                    child: Card(
+                                      color: AppColor.lightFontCpy,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 14, vertical: 20),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            const Icon(Icons.error,
+                                                color: Colors.red),
+                                            const SizedBox(height: 8),
+                                            Text(
+                                              'Failed to load summary data.',
+                                              style: TextStyle(
+                                                color: Colors.red.shade800,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 8),
+                                            Text(
+                                              error.toString(),
+                                              style:
+                                                  const TextStyle(fontSize: 12),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                               loading: () => const SummaryShimmer())
                           : selectedIndex == 4
                               ? summaryDataItemGR.when(
@@ -1028,9 +1061,9 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
                                                       ),
                                                     ),
                                                     const SizedBox(height: 8),
-                                                    Text(
-                                                      error.toString(),
-                                                      style: const TextStyle(
+                                                    const Text(
+                                                      "Somthing Went Wrong",
+                                                      style: TextStyle(
                                                           fontSize: 12),
                                                       textAlign:
                                                           TextAlign.center,
