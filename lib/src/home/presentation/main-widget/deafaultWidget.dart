@@ -24,12 +24,16 @@ class Deafaultwidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+    double verticalPadding = screenHeight * 0.05;
+    double horizontalPadding = screenWidth * 0.03;
     return Scaffold(
       // drawer: const AppDrawer(selectedSettings: []),
       body: SingleChildScrollView(
         child: Column(children: [
           SizedBox(
-            height: 260,
+            height: screenHeight * 0.37,
             child: Stack(
               children: [
                 Container(
@@ -43,8 +47,9 @@ class Deafaultwidget extends StatelessWidget {
                     ),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 35),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: horizontalPadding,
+                        vertical: verticalPadding),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -61,14 +66,14 @@ class Deafaultwidget extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  top: 75,
+                  top: screenHeight * 0.10,
                   left: 10,
                   right: 10,
                   child: Card(
                     color: Colors.white,
                     elevation: 4,
                     child: Padding(
-                      padding: const EdgeInsets.all(16.0),
+                      padding: EdgeInsets.all(screenHeight * 0.03),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -96,7 +101,7 @@ class Deafaultwidget extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: screenHeight * 0.02),
           Row(
             children: [
               Expanded(
