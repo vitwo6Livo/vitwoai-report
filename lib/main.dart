@@ -3,5 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/src/app.dart';
 
 void main() {
-  runApp(ProviderScope(child: const ReportApp()));
+  runApp(
+    const ProviderScope(
+      child: ReportApp(),
+    ),
+  );
 }

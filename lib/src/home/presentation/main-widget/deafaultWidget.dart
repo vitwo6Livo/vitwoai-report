@@ -26,15 +26,15 @@ class Deafaultwidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       // drawer: const AppDrawer(selectedSettings: []),
-      body: ListView(
-        children: [
+      body: SingleChildScrollView(
+        child: Column(children: [
           SizedBox(
             height: 260,
             child: Stack(
               children: [
                 Container(
                   alignment: Alignment.topCenter,
-                  height: 120,
+                  height: 180,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [AppColor.appBarColor1, AppColor.appBarColor2],
@@ -43,46 +43,25 @@ class Deafaultwidget extends StatelessWidget {
                     ),
                   ),
                   child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 35),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        // Builder(
-                        //   builder: (context) => InkWell(
-                        //     onTap: () {
-                        //       Scaffold.of(context).openDrawer();
-                        //     },
-                        //     child: Icon(Icons.menu, color: AppColor.appBarIcon),
-                        //   ),
-                        // ),
                         Text(
                           HandText.welcome,
                           style: Theme.of(context)
                               .textTheme
                               .bodyMedium!
                               .copyWith(
-                                  color: AppColor.appbarFont, fontSize: 20),
+                                  color: AppColor.appbarFont, fontSize: 25),
                         ),
-                        // IconButton(
-                        //   onPressed: () {
-                        //     // showDateDialog(context);
-                        //     Navigator.push(context,
-                        //         MaterialPageRoute(builder: (context) {
-                        //       return const GeneralSettingScreen();
-                        //     }));
-                        //   },
-                        //   icon: Icon(
-                        //     Icons.settings,
-                        //     color: AppColor.appBarIcon,
-                        //   ),
-                        // ),
                       ],
                     ),
                   ),
                 ),
                 Positioned(
-                  top: 60,
+                  top: 75,
                   left: 10,
                   right: 10,
                   child: Card(
@@ -117,6 +96,7 @@ class Deafaultwidget extends StatelessWidget {
               ],
             ),
           ),
+          const SizedBox(height: 20),
           Row(
             children: [
               Expanded(
@@ -187,7 +167,7 @@ class Deafaultwidget extends StatelessWidget {
           const ProductWidget(),
           const SizedBox(height: 10),
           const RegionWidget(),
-        ],
+        ]),
       ),
     );
   }
