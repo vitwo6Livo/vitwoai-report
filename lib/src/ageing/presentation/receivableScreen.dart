@@ -132,24 +132,25 @@ class _ReceivableAnalyticsScreenState
     final count = ref.watch(totalElementsProvider);
     return Scaffold(
       backgroundColor: AppColor.screenBgColor,
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Header Section
-            Container(
-              padding: const EdgeInsets.all(16.0),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [AppColor.appBarColor1, AppColor.appBarColor2],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20),
-                ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Header Section
+          Container(
+            padding: const EdgeInsets.all(16.0),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [AppColor.appBarColor1, AppColor.appBarColor2],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
               ),
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20),
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 25),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -291,104 +292,102 @@ class _ReceivableAnalyticsScreenState
                 ],
               ),
             ),
+          ),
 
-            // Search Bar
-            Container(
-              height: 80,
-              margin: const EdgeInsets.all(8),
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              decoration: BoxDecoration(
-                color: AppColor.lightFontCpy,
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "${HandText.totalRecords} ${count.toString()}",
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      Flexible(
-                        fit: FlexFit.tight,
-                        flex: 9,
-                        child: Container(
-                          margin: const EdgeInsets.only(right: 8),
-                          height: 40,
-                          child: TextField(
-                            decoration: InputDecoration(
-                              hintText: HandText.searchBox,
-                              prefixIcon: const Icon(Icons.search),
-                              border: const OutlineInputBorder(),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: AppColor.appBarGradiant,
-                                  width: 2.0,
-                                ),
+          // Search Bar
+          Container(
+            height: 80,
+            margin: const EdgeInsets.all(8),
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            decoration: BoxDecoration(
+              color: AppColor.lightFontCpy,
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "${HandText.totalRecords} ${count.toString()}",
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Flexible(
+                      fit: FlexFit.tight,
+                      flex: 9,
+                      child: Container(
+                        margin: const EdgeInsets.only(right: 8),
+                        height: 40,
+                        child: TextField(
+                          decoration: InputDecoration(
+                            hintText: HandText.searchBox,
+                            prefixIcon: const Icon(Icons.search),
+                            border: const OutlineInputBorder(),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: AppColor.appBarGradiant,
+                                width: 2.0,
                               ),
-                              contentPadding:
-                                  const EdgeInsets.symmetric(vertical: 8),
                             ),
-                            cursorHeight: 20,
-                            cursorColor: AppColor.appBarGradiant,
+                            contentPadding:
+                                const EdgeInsets.symmetric(vertical: 8),
                           ),
+                          cursorHeight: 20,
+                          cursorColor: AppColor.appBarGradiant,
                         ),
                       ),
-                      Flexible(
-                        fit: FlexFit.tight,
-                        flex: 1,
-                        child: Container(
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: AppColor.appBarGradiant,
-                            border: Border.all(color: AppColor.appBarGradiant),
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child:
-                              Icon(Icons.search, color: AppColor.lightFontCpy),
+                    ),
+                    Flexible(
+                      fit: FlexFit.tight,
+                      flex: 1,
+                      child: Container(
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: AppColor.appBarGradiant,
+                          border: Border.all(color: AppColor.appBarGradiant),
+                          borderRadius: BorderRadius.circular(5),
                         ),
+                        child: Icon(Icons.search, color: AppColor.lightFontCpy),
                       ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+              ],
             ),
+          ),
 
-            // List View
-            Expanded(
-              child: coustomerListProvider['content'].isEmpty
-                  ? ref
-                      .watch(receivablesCustomerProvider(
-                          {'page': 0, 'dateInfo': selectedDate}))
-                      .when(
-                          data: (data) {
-                            WidgetsBinding.instance.addPostFrameCallback((_) {
-                              ref
-                                  .read(customerListStateProvider.notifier)
-                                  .state = {
-                                'content': data.content,
-                                'last': data.lastPage,
-                              };
-                            });
-                            return _buildListView(
-                                coustomerListProvider['content']);
-                          },
-                          error: (error, stack) =>
-                              Center(child: Text('Error: $error')),
-                          loading: () => screen_shimmer(120, 800))
-                  : _buildListView(coustomerListProvider['content']),
-            ),
+          // List View
+          Expanded(
+            child: coustomerListProvider['content'].isEmpty
+                ? ref
+                    .watch(receivablesCustomerProvider(
+                        {'page': 0, 'dateInfo': selectedDate}))
+                    .when(
+                        data: (data) {
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            ref.read(customerListStateProvider.notifier).state =
+                                {
+                              'content': data.content,
+                              'last': data.lastPage,
+                            };
+                          });
+                          return _buildListView(
+                              coustomerListProvider['content']);
+                        },
+                        error: (error, stack) =>
+                            Center(child: Text('Error: $error')),
+                        loading: () => screen_shimmer(120, 800))
+                : _buildListView(coustomerListProvider['content']),
+          ),
 
-            // Loading Indicator
-            // if (_isLoadingMore)
-            //   Padding(
-            //     padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
-            //     child: loadingShimmer(100, 800),
-            //   ),
-          ],
-        ),
+          // Loading Indicator
+          // if (_isLoadingMore)
+          //   Padding(
+          //     padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
+          //     child: loadingShimmer(100, 800),
+          //   ),
+        ],
       ),
     );
   }
