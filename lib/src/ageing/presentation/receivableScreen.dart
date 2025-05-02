@@ -10,7 +10,15 @@ import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
 import 'package:intl/intl.dart';
 
+// State Providers
 final isClickedProviderReceivable = StateProvider<bool>((ref) => false);
+final customerListStateProvider = StateProvider<Map<String, dynamic>>((ref) => {
+      'content': [],
+      'last': false,
+    });
+final currentPageProvider = StateProvider<int>((ref) => 0);
+final selectedDateProvider = StateProvider<DateTime?>((ref) => null);
+final searchQueryProvider = StateProvider<String>((ref) => "");
 
 class ReceivableAnalyticsScreen extends ConsumerStatefulWidget {
   const ReceivableAnalyticsScreen({super.key});
@@ -25,15 +33,6 @@ class _ReceivableAnalyticsScreenState
   final ScrollController _scrollController = ScrollController();
   bool _isLoadingMore = false;
   TextEditingController searchController = TextEditingController();
-
-  // State providers
-  final customerListStateProvider =
-      StateProvider<Map<String, dynamic>>((ref) => {
-            'content': [],
-            'last': false,
-          });
-  final currentPageProvider = StateProvider<int>((ref) => 0);
-  final selectedDateProvider = StateProvider<DateTime?>((ref) => null);
 
   @override
   void initState() {
@@ -53,11 +52,18 @@ class _ReceivableAnalyticsScreenState
     });
   }
 
+  // Initialize Data
   void _initializeData() async {
     final selectedDate = ref.read(selectedDateProvider) ?? DateTime.now();
+    final searchQuery = ref.read(searchQueryProvider); // Get the search query
+
     final initialData = await ref.read(
-        receivablesCustomerProvider({'page': 0, 'dateInfo': selectedDate})
-            .future);
+      receivablesCustomerProvider({
+        'page': 0,
+        'dateInfo': selectedDate,
+        'searchData': searchQuery,
+      }).future,
+    );
 
     ref.read(customerListStateProvider.notifier).state = {
       'content': initialData.content,
@@ -65,17 +71,25 @@ class _ReceivableAnalyticsScreenState
     };
   }
 
+  // Load more data when scrolling to the bottom
   void _loadMoreData() async {
     setState(() {
       _isLoadingMore = true;
     });
+
     final currentPage = ref.read(currentPageProvider);
     final nextPage = currentPage + 1;
     final selectedDate = ref.read(selectedDateProvider) ?? DateTime.now();
+    final searchQuery = ref.read(searchQueryProvider); // Get the search query
 
     try {
-      final newData = await ref.read(receivablesCustomerProvider(
-          {'page': nextPage, 'dateInfo': selectedDate}).future);
+      final newData = await ref.read(
+        receivablesCustomerProvider({
+          'page': nextPage,
+          'dateInfo': selectedDate,
+          'searchData': searchQuery,
+        }).future,
+      );
 
       // Update the state with new data
       ref.read(customerListStateProvider.notifier).update((state) {
@@ -101,12 +115,14 @@ class _ReceivableAnalyticsScreenState
     }
   }
 
+  // Dispose of the controller
   @override
   void dispose() {
     _scrollController.dispose();
     super.dispose();
   }
 
+  // Show Date Picker Dialog
   void showDateDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -123,6 +139,15 @@ class _ReceivableAnalyticsScreenState
     );
   }
 
+  // Handle search input change
+  void _onSearchFunction(String searchQuery) {
+    ref.read(searchQueryProvider.notifier).state = searchQuery;
+
+    // Reset the page and reload data
+    ref.read(currentPageProvider.notifier).state = 0;
+    _initializeData();
+  }
+
   @override
   Widget build(BuildContext context) {
     final formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
@@ -131,15 +156,10 @@ class _ReceivableAnalyticsScreenState
     final coustomerListProvider = ref.watch(customerListStateProvider);
     final selectedDate = ref.watch(selectedDateProvider) ?? DateTime.now();
     final count = ref.watch(totalElementsProvider);
-    // Media Query
-    double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.width;
-    double verticalPadding = screenHeight * 0.04;
-
     return Scaffold(
       backgroundColor: AppColor.screenBgColor,
       body: Column(
-        // crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           // Header Section
           Container(
@@ -156,7 +176,7 @@ class _ReceivableAnalyticsScreenState
               ),
             ),
             child: Padding(
-              padding: EdgeInsets.symmetric(vertical: verticalPadding),
+              padding: const EdgeInsets.symmetric(vertical: 25),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -182,7 +202,7 @@ class _ReceivableAnalyticsScreenState
                       ),
                     ],
                   ),
-                  SizedBox(height: screenHeight * 0.021),
+                  const SizedBox(height: 16),
                   receivablesAsync.when(
                     data: (data) {
                       final totalOfTotalDue = data.TotalOfTotalDue.toString();
@@ -200,7 +220,7 @@ class _ReceivableAnalyticsScreenState
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: screenHeight * 0.013),
+                          const SizedBox(height: 8),
                           Row(
                             children: [
                               Text(
@@ -214,7 +234,7 @@ class _ReceivableAnalyticsScreenState
                               ),
                             ],
                           ),
-                          SizedBox(height: screenHeight * 0.013),
+                          const SizedBox(height: 8),
                           Row(
                             children: [
                               Text(
@@ -349,7 +369,9 @@ class _ReceivableAnalyticsScreenState
                       fit: FlexFit.tight,
                       flex: 1,
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          _onSearchFunction(searchController.text);
+                        },
                         child: Container(
                           height: 40,
                           decoration: BoxDecoration(
@@ -367,12 +389,15 @@ class _ReceivableAnalyticsScreenState
               ],
             ),
           ),
-          // List View
+
           Expanded(
             child: coustomerListProvider['content'].isEmpty
                 ? ref
-                    .watch(receivablesCustomerProvider(
-                        {'page': 0, 'dateInfo': selectedDate}))
+                    .watch(receivablesCustomerProvider({
+                      'page': 0,
+                      'dateInfo': selectedDate,
+                      'searchData': ref.watch(searchQueryProvider)
+                    }))
                     .when(
                         data: (data) {
                           WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -390,13 +415,6 @@ class _ReceivableAnalyticsScreenState
                         loading: () => screen_shimmer(120, 800))
                 : _buildListView(coustomerListProvider['content']),
           ),
-
-          // Loading Indicator
-          // if (_isLoadingMore)
-          //   Padding(
-          //     padding: const EdgeInsets.fromLTRB(0, 50, 0, 0),
-          //     child: loadingShimmer(100, 800),
-          //   ),
         ],
       ),
     );

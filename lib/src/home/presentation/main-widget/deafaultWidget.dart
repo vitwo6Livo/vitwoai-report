@@ -33,7 +33,7 @@ class Deafaultwidget extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(children: [
           SizedBox(
-            height: screenHeight * 0.37,
+            height: screenHeight * 0.33,
             child: Stack(
               children: [
                 Container(
