@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// const baseURL = 'http://192.168.0.250:81/';
+const baseURL = 'http://192.168.0.250:81/';
 
 // const baseURL = 'https://www.analytic.vitwo.ai/'; // Live URL
 
-const baseURL = 'http://192.168.0.102:81/';
+// const baseURL = 'http://192.168.0.102:81/';
 
 Future<String?> getTokenData() async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
