@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vitwoai_report/src/sales_Register/data/salesRegisterFatchData.dart';
 import 'package:vitwoai_report/src/sales_Register/presentation/SRWidget/HsnCodeWiseList.dart';
 import 'package:vitwoai_report/src/sales_Register/presentation/SRWidget/allDetailsList.dart';
 import 'package:vitwoai_report/src/sales_Register/presentation/SRWidget/customerWiseList.dart';
@@ -7,8 +8,11 @@ import 'package:vitwoai_report/src/sales_Register/presentation/SRWidget/itemGrou
 import 'package:vitwoai_report/src/sales_Register/presentation/SRWidget/itemWiseList.dart';
 import 'package:vitwoai_report/src/sales_Register/presentation/SRWidget/soWiseList.dart';
 import 'package:vitwoai_report/src/sales_Register/presentation/lineChart.dart';
+import 'package:vitwoai_report/src/sales_Register/presentation/shimmer_summary.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
+// ignore: depend_on_referenced_packages
+import 'package:intl/intl.dart';
 
 final isClickedProviderSales = StateProvider<bool>((ref) => false);
 
@@ -17,6 +21,15 @@ class SalesRegister extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final summaryProviderall = ref.watch(salesRegisterSummaryProvider("all"));
+    final summaryProviderSOW = ref.watch(salesRegisterSummaryProvider("so"));
+    final summaryProviderCustomer =
+        ref.watch(salesRegisterSummaryProvider("customer"));
+    final summaryProviderItem = ref.watch(salesRegisterSummaryProvider("item"));
+    final summaryProviderItemGW =
+        ref.watch(salesRegisterSummaryProvider("item_group"));
+    final summaryProviderHSN = ref.watch(salesRegisterSummaryProvider("hsn"));
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -82,22 +95,42 @@ class SalesRegister extends ConsumerWidget {
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("₹1445200.00",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge!
-                                  .copyWith(color: AppColor.lightFontCpy)),
-                          Text("December",
+                          summaryProviderall.when(
+                            data: (data) {
+                              return Text("₹${data['total']}",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .copyWith(color: AppColor.lightFontCpy));
+                            },
+                            error: (error, stackTrace) {
+                              return const Text("Error fetching data");
+                            },
+                            loading: () {
+                              return ShimmerSummary();
+                            },
+                          ),
+                          Text(DateFormat.MMMM().format(DateTime.now()),
                               style: Theme.of(context)
                                   .textTheme
                                   .bodySmall!
                                   .copyWith(color: AppColor.lightFontCpy)),
                         ],
                       ),
-                      trailing: Text("48%",
-                          style: TextStyle(
-                              color: AppColor.srOptionPercentage,
-                              fontSize: 40)),
+                      trailing: summaryProviderall.when(
+                        data: (data) {
+                          return Text("${data['percentage']}%",
+                              style: TextStyle(
+                                  color: AppColor.srOptionPercentage,
+                                  fontSize: 28));
+                        },
+                        error: (error, stackTrace) {
+                          return const Text("Error fetching data");
+                        },
+                        loading: () {
+                          return ShimmerSummary();
+                        },
+                      ),
                     ),
                   ),
                 ),
@@ -136,22 +169,42 @@ class SalesRegister extends ConsumerWidget {
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("₹1445200.00",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge!
-                                  .copyWith(color: AppColor.lightFontCpy)),
-                          Text("December",
+                          summaryProviderSOW.when(
+                            data: (data) {
+                              return Text("₹${data['total']}",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .copyWith(color: AppColor.lightFontCpy));
+                            },
+                            error: (error, stackTrace) {
+                              return const Text("Error fetching data");
+                            },
+                            loading: () {
+                              return ShimmerSummary();
+                            },
+                          ),
+                          Text(DateFormat.MMMM().format(DateTime.now()),
                               style: Theme.of(context)
                                   .textTheme
                                   .bodySmall!
                                   .copyWith(color: AppColor.lightFontCpy)),
                         ],
                       ),
-                      trailing: Text("48%",
-                          style: TextStyle(
-                              color: AppColor.srOptionPercentage,
-                              fontSize: 40)),
+                      trailing: summaryProviderSOW.when(
+                        data: (data) {
+                          return Text("${data['percentage']}%",
+                              style: TextStyle(
+                                  color: AppColor.srOptionPercentage,
+                                  fontSize: 28));
+                        },
+                        error: (error, stackTrace) {
+                          return const Text("Error fetching data");
+                        },
+                        loading: () {
+                          return ShimmerSummary();
+                        },
+                      ),
                     ),
                   ),
                 ),
@@ -189,22 +242,42 @@ class SalesRegister extends ConsumerWidget {
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("₹1445200.00",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge!
-                                  .copyWith(color: AppColor.lightFontCpy)),
-                          Text("December",
+                          summaryProviderCustomer.when(
+                            data: (data) {
+                              return Text("₹${data['total']}",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .copyWith(color: AppColor.lightFontCpy));
+                            },
+                            error: (error, stackTrace) {
+                              return const Text("Error fetching data");
+                            },
+                            loading: () {
+                              return ShimmerSummary();
+                            },
+                          ),
+                          Text(DateFormat.MMMM().format(DateTime.now()),
                               style: Theme.of(context)
                                   .textTheme
                                   .bodySmall!
                                   .copyWith(color: AppColor.lightFontCpy)),
                         ],
                       ),
-                      trailing: Text("48%",
-                          style: TextStyle(
-                              color: AppColor.srOptionPercentage,
-                              fontSize: 40)),
+                      trailing: summaryProviderCustomer.when(
+                        data: (data) {
+                          return Text("${data['percentage']}%",
+                              style: TextStyle(
+                                  color: AppColor.srOptionPercentage,
+                                  fontSize: 28));
+                        },
+                        error: (error, stackTrace) {
+                          return const Text("Error fetching data");
+                        },
+                        loading: () {
+                          return ShimmerSummary();
+                        },
+                      ),
                     ),
                   ),
                 ),
@@ -216,7 +289,7 @@ class SalesRegister extends ConsumerWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ItemWiseScreen()));
+                            builder: (context) => const ItemWiseScreen()));
                   },
                   child: Container(
                     margin: const EdgeInsets.symmetric(horizontal: 10),
@@ -242,22 +315,42 @@ class SalesRegister extends ConsumerWidget {
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("₹1445200.00",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge!
-                                  .copyWith(color: AppColor.lightFontCpy)),
-                          Text("December",
+                          summaryProviderItem.when(
+                            data: (data) {
+                              return Text("₹${data['total']}",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .copyWith(color: AppColor.lightFontCpy));
+                            },
+                            error: (error, stackTrace) {
+                              return const Text("Error fetching data");
+                            },
+                            loading: () {
+                              return ShimmerSummary();
+                            },
+                          ),
+                          Text(DateFormat.MMMM().format(DateTime.now()),
                               style: Theme.of(context)
                                   .textTheme
                                   .bodySmall!
                                   .copyWith(color: AppColor.lightFontCpy)),
                         ],
                       ),
-                      trailing: Text("48%",
-                          style: TextStyle(
-                              color: AppColor.srOptionPercentage,
-                              fontSize: 40)),
+                      trailing: summaryProviderItem.when(
+                        data: (data) {
+                          return Text("${data['percentage']}%",
+                              style: TextStyle(
+                                  color: AppColor.srOptionPercentage,
+                                  fontSize: 28));
+                        },
+                        error: (error, stackTrace) {
+                          return const Text("Error fetching data");
+                        },
+                        loading: () {
+                          return ShimmerSummary();
+                        },
+                      ),
                     ),
                   ),
                 ),
@@ -295,22 +388,42 @@ class SalesRegister extends ConsumerWidget {
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("₹1445200.00",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge!
-                                  .copyWith(color: AppColor.lightFontCpy)),
-                          Text("December",
+                          summaryProviderItemGW.when(
+                            data: (data) {
+                              return Text("₹${data['total']}",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .copyWith(color: AppColor.lightFontCpy));
+                            },
+                            error: (error, stackTrace) {
+                              return const Text("Error fetching data");
+                            },
+                            loading: () {
+                              return ShimmerSummary();
+                            },
+                          ),
+                          Text(DateFormat.MMMM().format(DateTime.now()),
                               style: Theme.of(context)
                                   .textTheme
                                   .bodySmall!
                                   .copyWith(color: AppColor.lightFontCpy)),
                         ],
                       ),
-                      trailing: Text("48%",
-                          style: TextStyle(
-                              color: AppColor.srOptionPercentage,
-                              fontSize: 40)),
+                      trailing: summaryProviderItemGW.when(
+                        data: (data) {
+                          return Text("${data['percentage']}%",
+                              style: TextStyle(
+                                  color: AppColor.srOptionPercentage,
+                                  fontSize: 28));
+                        },
+                        error: (error, stackTrace) {
+                          return const Text("Error fetching data");
+                        },
+                        loading: () {
+                          return ShimmerSummary();
+                        },
+                      ),
                     ),
                   ),
                 ),
@@ -322,7 +435,7 @@ class SalesRegister extends ConsumerWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => HsnCodeWiseScreen()));
+                            builder: (context) => const HsnCodeWiseScreen()));
                   },
                   child: Container(
                     margin: const EdgeInsets.symmetric(horizontal: 10),
@@ -348,22 +461,42 @@ class SalesRegister extends ConsumerWidget {
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("₹1445200.00",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge!
-                                  .copyWith(color: AppColor.lightFontCpy)),
-                          Text("December",
+                          summaryProviderHSN.when(
+                            data: (data) {
+                              return Text("₹${data['total']}",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .copyWith(color: AppColor.lightFontCpy));
+                            },
+                            error: (error, stackTrace) {
+                              return const Text("Error fetching data");
+                            },
+                            loading: () {
+                              return ShimmerSummary();
+                            },
+                          ),
+                          Text(DateFormat.MMMM().format(DateTime.now()),
                               style: Theme.of(context)
                                   .textTheme
                                   .bodySmall!
                                   .copyWith(color: AppColor.lightFontCpy)),
                         ],
                       ),
-                      trailing: Text("38%",
-                          style: TextStyle(
-                              color: AppColor.srOptionPercentage,
-                              fontSize: 40)),
+                      trailing: summaryProviderHSN.when(
+                        data: (data) {
+                          return Text("${data['percentage']}%",
+                              style: TextStyle(
+                                  color: AppColor.srOptionPercentage,
+                                  fontSize: 28));
+                        },
+                        error: (error, stackTrace) {
+                          return const Text("Error fetching data");
+                        },
+                        loading: () {
+                          return ShimmerSummary();
+                        },
+                      ),
                     ),
                   ),
                 ),
