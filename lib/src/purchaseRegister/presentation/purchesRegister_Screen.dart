@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lottie/lottie.dart';
 import 'package:vitwoai_report/src/purchaseRegister/data/purchesRegister_repository.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prGraphView/prAllGraph.dart';
 import 'package:vitwoai_report/src/purchaseRegister/presentation/prGraphView/prHSNGraph.dart';
@@ -75,12 +76,15 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: AppColor.screenBgColor,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _purchaseSummary(context),
+          _purchaseSummary(context, screenHeight, screenWidth),
           _cardViewPurchase(),
           selectedIndex == 0
               ? const ProductList()
@@ -179,7 +183,8 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
     );
   }
 
-  SizedBox _purchaseSummary(BuildContext context) {
+  SizedBox _purchaseSummary(
+      BuildContext context, double screenHeight, double screenWidth) {
     // final isClicked = ref.watch(isClickedProviderPurschese);
     // final isClickedNotifier = ref.read(isClickedProviderPurschese.notifier);
     final summaryDataAll = ref.watch(purchesRegisterSummaryProvider('all'));
@@ -434,38 +439,21 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
                           ),
                         ));
                   },
-                  error: (error, stack) => Positioned(
-                        top: 120,
-                        left: 10,
-                        right: 10,
-                        child: Card(
-                          color: AppColor.lightFontCpy,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 14, vertical: 20),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Icon(Icons.error, color: Colors.red),
-                                const SizedBox(height: 8),
-                                Text(
-                                  'Failed to load summary data.',
-                                  style: TextStyle(
-                                    color: Colors.red.shade800,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const SizedBox(height: 8),
-                                Text(
-                                  error.toString(),
-                                  style: const TextStyle(fontSize: 12),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
+                  error: (error, stack) => errorData(),
+                  // Positioned(
+                  //       top: 120,
+                  //       left: 10,
+                  //       right: 10,
+                  //       child: Card(
+                  //         color: AppColor.lightFontCpy,
+                  //         child: LottieBuilder.asset(
+                  //           'assets/json/ErrorLoading.json',
+                  //           fit: BoxFit.fill,
+                  //           height: screenHeight * 0.196,
+                  //           width: screenWidth * 0.25,
+                  //         ),
+                  //       ),
+                  //     ),
                   loading: () => const SummaryShimmer())
               : selectedIndex == 1
                   ? summaryDataPO.when(
@@ -541,38 +529,21 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
                           ),
                         );
                       },
-                      error: (error, stack) => Positioned(
-                        top: 120,
-                        left: 10,
-                        right: 10,
-                        child: Card(
-                          color: AppColor.lightFontCpy,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 14, vertical: 20),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Icon(Icons.error, color: Colors.red),
-                                const SizedBox(height: 8),
-                                Text(
-                                  'Failed to load summary data.',
-                                  style: TextStyle(
-                                    color: Colors.red.shade800,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const SizedBox(height: 8),
-                                Text(
-                                  error.toString(),
-                                  style: const TextStyle(fontSize: 12),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
+                      error: (error, stack) => errorData(),
+                      // Positioned(
+                      //   top: 120,
+                      //   left: 10,
+                      //   right: 10,
+                      //   child: Card(
+                      //     color: AppColor.lightFontCpy,
+                      //     child: LottieBuilder.asset(
+                      //       'assets/json/ErrorLoading.json',
+                      //       fit: BoxFit.fill,
+                      //       height: screenHeight * 0.196,
+                      //       width: screenWidth * 0.25,
+                      //     ),
+                      //   ),
+                      // ),
                       loading: () => const SummaryShimmer(),
                     )
                   : selectedIndex == 2
@@ -654,40 +625,21 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
                                   ),
                                 ));
                           },
-                          error: (error, stack) => Positioned(
-                                top: 120,
-                                left: 10,
-                                right: 10,
-                                child: Card(
-                                  color: AppColor.lightFontCpy,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 14, vertical: 20),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        const Icon(Icons.error,
-                                            color: Colors.red),
-                                        const SizedBox(height: 8),
-                                        Text(
-                                          'Failed to load summary data.',
-                                          style: TextStyle(
-                                            color: Colors.red.shade800,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 8),
-                                        Text(
-                                          error.toString(),
-                                          style: const TextStyle(fontSize: 12),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
+                          error: (error, stack) => errorData(),
+                          // Positioned(
+                          //       top: 120,
+                          //       left: 10,
+                          //       right: 10,
+                          //       child: Card(
+                          //         color: AppColor.lightFontCpy,
+                          //         child: LottieBuilder.asset(
+                          //           'assets/json/ErrorLoading.json',
+                          //           fit: BoxFit.fill,
+                          //           height: screenHeight * 0.196,
+                          //           width: screenWidth * 0.25,
+                          //         ),
+                          //       ),
+                          //     ),
                           loading: () => const SummaryShimmer())
                       : selectedIndex == 3
                           ? summaryDataItem.when(
@@ -774,41 +726,21 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
                                       ),
                                     ));
                               },
-                              error: (error, stack) => Positioned(
-                                    top: 120,
-                                    left: 10,
-                                    right: 10,
-                                    child: Card(
-                                      color: AppColor.lightFontCpy,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 14, vertical: 20),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            const Icon(Icons.error,
-                                                color: Colors.red),
-                                            const SizedBox(height: 8),
-                                            Text(
-                                              'Failed to load summary data.',
-                                              style: TextStyle(
-                                                color: Colors.red.shade800,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 8),
-                                            Text(
-                                              error.toString(),
-                                              style:
-                                                  const TextStyle(fontSize: 12),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                              error: (error, stack) => errorData(),
+                              // Positioned(
+                              //       top: 120,
+                              //       left: 10,
+                              //       right: 10,
+                              //       child: Card(
+                              //         color: AppColor.lightFontCpy,
+                              //         child: LottieBuilder.asset(
+                              //           'assets/json/ErrorLoading.json',
+                              //           fit: BoxFit.fill,
+                              //           height: screenHeight * 0.196,
+                              //           width: screenWidth * 0.25,
+                              //         ),
+                              //       ),
+                              //     ),
                               loading: () => const SummaryShimmer())
                           : selectedIndex == 4
                               ? summaryDataItemGR.when(
@@ -900,41 +832,21 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
                                           ),
                                         ));
                                   },
-                                  error: (error, stack) => Positioned(
-                                        top: 120,
-                                        left: 10,
-                                        right: 10,
-                                        child: Card(
-                                          color: AppColor.lightFontCpy,
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 14, vertical: 20),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                const Icon(Icons.error,
-                                                    color: Colors.red),
-                                                const SizedBox(height: 8),
-                                                Text(
-                                                  'Failed to load summary data.',
-                                                  style: TextStyle(
-                                                    color: Colors.red.shade800,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 8),
-                                                Text(
-                                                  error.toString(),
-                                                  style: const TextStyle(
-                                                      fontSize: 12),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
+                                  error: (error, stack) => errorData(),
+                                  // Positioned(
+                                  //       top: 120,
+                                  //       left: 10,
+                                  //       right: 10,
+                                  //       child: Card(
+                                  //         color: AppColor.lightFontCpy,
+                                  //         child: LottieBuilder.asset(
+                                  //           'assets/json/ErrorLoading.json',
+                                  //           fit: BoxFit.fill,
+                                  //           height: screenHeight * 0.196,
+                                  //           width: screenWidth * 0.25,
+                                  //         ),
+                                  //       ),
+                                  //     ),
                                   loading: () => const SummaryShimmer())
                               : selectedIndex == 5
                                   ? summaryDataHSN.when(
@@ -1033,46 +945,7 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
                                               ),
                                             ));
                                       },
-                                      error: (error, stack) => Positioned(
-                                            top: 120,
-                                            left: 10,
-                                            right: 10,
-                                            child: Card(
-                                              color: AppColor.lightFontCpy,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 14,
-                                                        vertical: 20),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    const Icon(Icons.error,
-                                                        color: Colors.red),
-                                                    const SizedBox(height: 8),
-                                                    Text(
-                                                      'Failed to load summary data.',
-                                                      style: TextStyle(
-                                                        color:
-                                                            Colors.red.shade800,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                    const SizedBox(height: 8),
-                                                    const Text(
-                                                      "Somthing Went Wrong",
-                                                      style: TextStyle(
-                                                          fontSize: 12),
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
+                                      error: (error, stack) => errorData(),
                                       loading: () => const SummaryShimmer())
                                   : Positioned(
                                       top: 120,
@@ -1113,7 +986,7 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
                                                                 FontWeight
                                                                     .bold),
                                                       ),
-                                                      Text("0.0"),
+                                                      const Text("0.0"),
                                                     ],
                                                   ),
                                                 ],
@@ -1158,4 +1031,71 @@ class _PurchesregisterScreenState extends ConsumerState<PurchesregisterScreen> {
       ),
     );
   }
+}
+
+Widget errorData() {
+  return Positioned(
+      top: 120,
+      left: 10,
+      right: 10,
+      child: Card(
+        color: AppColor.lightFontCpy,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      Text(
+                        HandText.prTotalAmount,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      const Text('0.0'),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Text(
+                        HandText.prTotalCGST,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      const Text('0.0'),
+                    ],
+                  ),
+                ],
+              ),
+              const Divider(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      Text(
+                        HandText.prTotalSGST,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      const Text('0.0'),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Text(
+                        HandText.prTotalIGST,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const Text('0.0'),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ));
 }

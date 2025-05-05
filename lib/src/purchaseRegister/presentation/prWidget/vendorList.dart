@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/purchaseRegister/data/purchesRegister_repository.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
@@ -11,12 +12,20 @@ class VendorList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    double screenWidth = MediaQuery.of(context).size.width;
     final purchaseRegisterPoWiseList = ref.watch(purchesRegisterPoWiseProvider);
     return purchaseRegisterPoWiseList.when(
       data: (data) {
         return data['content'].length == 0
-            ? const Center(
-                child: Text("No Data Found"),
+            ? Center(
+                child: LottieBuilder.asset(
+                  'assets/json/NoDataFound.json',
+                  fit: BoxFit.fill,
+                  height: screenHeight * 0.33,
+                  width: screenWidth * 0.64,
+                ),
               )
             : ListView.builder(
                 shrinkWrap: true,

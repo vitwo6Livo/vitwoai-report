@@ -1,6 +1,7 @@
 // PR Item Wise
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:vitwoai_report/golobal-Widget/loadingShimmer.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/purchaseRegister/data/purchesRegister_repository.dart';
@@ -81,6 +82,8 @@ class _FunctionalAreaListState extends ConsumerState<FunctionalAreaList> {
   Widget build(BuildContext context) {
     final purchesRegisterItemWiseList =
         ref.watch(purchesRegisterItemWiseListStateProvider);
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
 
     return Expanded(
       child: Column(
@@ -102,7 +105,13 @@ class _FunctionalAreaListState extends ConsumerState<FunctionalAreaList> {
                             purchesRegisterItemWiseList['content']);
                       },
                       error: (error, stack) => Center(
-                          child: Text('${HandText.errorMessage} $error')),
+                        child: LottieBuilder.asset(
+                          'assets/json/NoDataFound.json',
+                          fit: BoxFit.fill,
+                          height: screenHeight * 0.33,
+                          width: screenWidth * 0.64,
+                        ),
+                      ),
                       loading: () => screen_shimmer(120, 800),
                     )
                 : _buildListView(purchesRegisterItemWiseList['content']),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:vitwoai_report/golobal-Widget/dayCalendar.dart';
 import 'package:vitwoai_report/golobal-Widget/loadingShimmer.dart';
@@ -150,6 +151,8 @@ class _ReceivableAnalyticsScreenState
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     final formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
     final receivablesAsync = ref.watch(receivablesTotalDueProvider(
         (ref.watch(selectedDateProvider)?.toString() ?? formattedDate)));
@@ -312,8 +315,15 @@ class _ReceivableAnalyticsScreenState
                         ],
                       ),
                     ),
-                    error: (error, stack) =>
-                        Center(child: Text('${HandText.errorMessage} $error')),
+                    error: (error, stack) => errorData(),
+                    // Center(
+                    //   child: LottieBuilder.asset(
+                    //     'assets/json/ErrorLoading.json',
+                    //     fit: BoxFit.fill,
+                    //     height: screenHeight * 0.196,
+                    //     width: screenWidth * 0.25,
+                    //   ),
+                    // ),
                   ),
                 ],
               ),
@@ -410,8 +420,14 @@ class _ReceivableAnalyticsScreenState
                           return _buildListView(
                               coustomerListProvider['content']);
                         },
-                        error: (error, stack) =>
-                            Center(child: Text('Error: $error')),
+                        error: (error, stack) => Center(
+                              child: LottieBuilder.asset(
+                                'assets/json/NoDataFound.json',
+                                fit: BoxFit.fill,
+                                height: screenHeight * 0.33,
+                                width: screenWidth * 0.64,
+                              ),
+                            ),
                         loading: () => screen_shimmer(120, 800))
                 : _buildListView(coustomerListProvider['content']),
           ),
@@ -556,5 +572,49 @@ Widget _buildCard(int index, List<dynamic> content) {
         ],
       ),
     ),
+  );
+}
+
+Widget errorData() {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        "${HandText.inr}0.0",
+        style: TextStyle(
+          color: AppColor.lightFontCpy,
+          fontSize: 32,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      const SizedBox(height: 8),
+      Row(
+        children: [
+          Text(
+            HandText.receivableOnAccountDue,
+            style: TextStyle(color: AppColor.lightFontCpy2),
+          ),
+          const Spacer(),
+          Text(
+            "${HandText.inr}0.0",
+            style: TextStyle(color: AppColor.lightFontCpy),
+          ),
+        ],
+      ),
+      const SizedBox(height: 8),
+      Row(
+        children: [
+          Text(
+            HandText.receivableNetDue,
+            style: TextStyle(color: AppColor.lightFontCpy2),
+          ),
+          const Spacer(),
+          Text(
+            "${HandText.inr}0.0",
+            style: TextStyle(color: AppColor.lightFontCpy),
+          ),
+        ],
+      ),
+    ],
   );
 }

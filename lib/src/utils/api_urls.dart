@@ -45,3 +45,4 @@ const trandingProducturl = 'sales/product-desc';
 const trandingRegionurl = 'sales/region-desc';
 const salesGraphurl = 'sales/graph/mobile-sales-graph';
 const purchaseRegisterSummaryUrl = 'purchase/all-purchase-summary';
+const purchaseRegisterGraphAll = 'purchase/all-part-graph';

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/home/data/dashboardDataFatch.dart';
 
@@ -11,6 +12,8 @@ class RegionWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final trandingRegionList = ref.watch(trandingRegionProvider);
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     return Card(
       color: Colors.white,
       elevation: 4,
@@ -33,32 +36,51 @@ class RegionWidget extends ConsumerWidget {
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: data['topList'].length,
                     itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          ListTile(
-                            leading: CircleAvatar(
-                              backgroundColor: Colors.purple[200],
-                              radius: 8,
-                            ),
-                            title: Text(
-                              data['topList'][index]['Region'],
-                              style: Theme.of(context).textTheme.bodyMedium!,
-                            ),
-                            trailing: Text(
-                              data['topList'][index]['Total Price'].toString(),
-                              style: Theme.of(context).textTheme.bodySmall!,
-                            ),
-                          ),
-                          const Divider(
-                            height: 1,
-                            thickness: 0,
-                          ),
-                        ],
-                      );
+                      return data.isEmpty
+                          ? Center(
+                              child: LottieBuilder.asset(
+                                'assets/json/NoDataFound.json',
+                                fit: BoxFit.fill,
+                                height: screenHeight * 0.33,
+                                width: screenWidth * 0.64,
+                              ),
+                            )
+                          : Column(
+                              children: [
+                                ListTile(
+                                  leading: CircleAvatar(
+                                    backgroundColor: Colors.purple[200],
+                                    radius: 8,
+                                  ),
+                                  title: Text(
+                                    data['topList'][index]['Region'],
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium!,
+                                  ),
+                                  trailing: Text(
+                                    data['topList'][index]['Total Price']
+                                        .toString(),
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall!,
+                                  ),
+                                ),
+                                const Divider(
+                                  height: 1,
+                                  thickness: 0,
+                                ),
+                              ],
+                            );
                     },
                   );
                 },
-                error: (error, stack) => Center(child: Text('Error: $error')),
+                error: (error, stack) => Center(
+                      child: LottieBuilder.asset(
+                        'assets/json/ErrorLoading.json',
+                        fit: BoxFit.fill,
+                        height: screenHeight * 0.33,
+                        width: screenWidth * 0.64,
+                      ),
+                    ),
                 loading: () => screen_shimmer(50, 800)),
           ],
         ),

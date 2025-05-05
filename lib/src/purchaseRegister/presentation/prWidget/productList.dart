@@ -1,6 +1,7 @@
 // PR ALL
 
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:vitwoai_report/golobal-Widget/loadingShimmer.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/purchaseRegister/data/purchesRegister_repository.dart';
@@ -85,6 +86,8 @@ class _ProductListState extends ConsumerState<ProductList> {
   @override
   Widget build(BuildContext context) {
     final purchesRegisterList = ref.watch(purchesRegisterListStateProvider);
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
 
     return Expanded(
       child: Column(
@@ -103,8 +106,14 @@ class _ProductListState extends ConsumerState<ProductList> {
                       });
                       return _buildListView(purchesRegisterList['content']);
                     },
-                    error: (error, stack) =>
-                        Center(child: Text('Error: $error')),
+                    error: (error, stack) => Center(
+                          child: LottieBuilder.asset(
+                            'assets/json/NoDataFound.json',
+                            fit: BoxFit.fill,
+                            height: screenHeight * 0.33,
+                            width: screenWidth * 0.64,
+                          ),
+                        ),
                     loading: () => screen_shimmer(120, 500))
                 : _buildListView(purchesRegisterList['content']),
           ),
