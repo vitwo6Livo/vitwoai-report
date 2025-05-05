@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:vitwoai_report/src/sales_Register/model/salesAllDetailsModel.dart';
 import 'package:vitwoai_report/src/sales_Register/model/salesCustomerWiseModel.dart';
@@ -356,6 +357,41 @@ Future<Map<String, dynamic>> fetchSalesGraphData() async {
   final url = Uri.parse('$baseURL$salesGraphurl');
 
   final Map<String, dynamic> bodyData = {"durationInMonths": 6};
+
+  try {
+    final response = await http.post(
+      url,
+      headers: {
+        'Authorization': 'Bearer $accessToken',
+        'Content-Type': 'application/json',
+      },
+      body: json.encode(bodyData),
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = json.decode(response.body);
+      return data;
+    } else {
+      throw Exception('Failed to load data: ${response.statusCode}');
+    }
+  } catch (e) {
+    throw Exception('Error fetching data: $e');
+  }
+}
+
+// Sales Register Summary Data
+final salesRegisterSummaryProvider =
+    FutureProvider.family<Map<String, dynamic>, String>((ref, typedData) async {
+  return await fetchSalesRegisterSummaryData(typedData);
+});
+
+Future<Map<String, dynamic>> fetchSalesRegisterSummaryData(
+    String typeValue) async {
+  final accessToken = await getTokenData();
+
+  final url = Uri.parse('$baseURL$salesRegisterSummaryUrl');
+
+  final Map<String, dynamic> bodyData = {"type": typeValue};
 
   try {
     final response = await http.post(
