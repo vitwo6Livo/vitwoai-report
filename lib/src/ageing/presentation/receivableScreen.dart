@@ -81,7 +81,7 @@ class _ReceivableAnalyticsScreenState
     final currentPage = ref.read(currentPageProvider);
     final nextPage = currentPage + 1;
     final selectedDate = ref.read(selectedDateProvider) ?? DateTime.now();
-    final searchQuery = ref.read(searchQueryProvider); // Get the search query
+    final searchQuery = ref.read(searchQueryProvider);
 
     try {
       final newData = await ref.read(

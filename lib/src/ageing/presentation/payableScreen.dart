@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/src/ageing/data/receivableAnalytics_repositry.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
+import 'package:vitwoai_report/src/settings/texts.dart';
 
 class PayableScreen extends ConsumerWidget {
   const PayableScreen({super.key});
@@ -34,24 +35,72 @@ class PayableScreen extends ConsumerWidget {
       body: Column(
         children: [
           Container(
-            alignment: Alignment.centerLeft,
-            height: 40,
+            height: 80,
             margin: const EdgeInsets.all(8),
             padding: const EdgeInsets.symmetric(horizontal: 8),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColor.lightFontCpy,
               border: Border.all(),
               borderRadius: BorderRadius.circular(5),
             ),
-            child: payableProviderData.when(
-              data: (value) {
-                return Text(
-                  "Total Records: ${value['totalElements']?.toString() ?? '0'}",
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                );
-              },
-              error: (error, stack) => Center(child: Text('Error: $error')),
-              loading: () => Text("Loding.."),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                payableProviderData.when(
+                  data: (value) {
+                    return Text(
+                      "Total Records: ${value['totalElements']?.toString() ?? '0'}",
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    );
+                  },
+                  error: (error, stack) => Center(child: Text('Error: $error')),
+                  loading: () => Text("Loding.."),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 9,
+                      child: Container(
+                        margin: const EdgeInsets.only(right: 8),
+                        height: 40,
+                        child: TextField(
+                          decoration: InputDecoration(
+                            hintText: HandText.searchBox,
+                            prefixIcon: const Icon(Icons.search),
+                            border: const OutlineInputBorder(),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: AppColor.appBarGradiant, width: 2.0),
+                            ),
+                            contentPadding:
+                                const EdgeInsets.symmetric(vertical: 8),
+                          ),
+                          cursorHeight: 20,
+                          cursorColor: AppColor.appBarGradiant,
+                          onSubmitted: (_) {},
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: InkWell(
+                        onTap: () {},
+                        child: Container(
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: AppColor.appBarGradiant,
+                            border: Border.all(color: AppColor.appBarGradiant),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child:
+                              Icon(Icons.search, color: AppColor.lightFontCpy),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
           Expanded(
@@ -62,6 +111,7 @@ class PayableScreen extends ConsumerWidget {
                         child: Text("No Data Found"),
                       )
                     : ListView.builder(
+                        physics: const BouncingScrollPhysics(),
                         itemCount: data['content'].length,
                         itemBuilder: (context, index) {
                           return Padding(

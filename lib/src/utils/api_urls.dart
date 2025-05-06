@@ -47,3 +47,5 @@ const salesGraphurl = 'sales/graph/mobile-sales-graph';
 const purchaseRegisterSummaryUrl = 'purchase/all-purchase-summary';
 const purchaseRegisterGraphAll = 'purchase/all-part-graph';
 const salesRegisterSummaryUrl = 'sales/all-sales-summary';
+const totalSalesurl = 'sales/total-sales';
+const totalPurchesUrl = 'purchase/total-purchase';

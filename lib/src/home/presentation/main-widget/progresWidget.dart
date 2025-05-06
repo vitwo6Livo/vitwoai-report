@@ -6,7 +6,9 @@ class CircularChart extends StatelessWidget {
   final int availed;
   final int balance;
 
-  const CircularChart(this.label, this.percent, this.availed, this.balance);
+  const CircularChart(this.label, this.percent, this.availed, this.balance,
+      {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,13 +21,19 @@ class CircularChart extends StatelessWidget {
               height: 60,
               width: 60,
               child: CircularProgressIndicator(
-                value: percent / 100,
+                value: percent.abs() / 100,
                 strokeWidth: 6,
-                color: Colors.blue,
+                color: percent < 0 ? Colors.redAccent : Colors.blue,
                 backgroundColor: Colors.grey[300],
               ),
             ),
-            Text('$percent%'),
+            Text(
+              '$percent%',
+              style: TextStyle(
+                color: percent < 0 ? Colors.redAccent : Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ],
         ),
         const SizedBox(height: 8),

@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:vitwoai_report/golobal-Widget/rangeCalendar.dart';
+import 'package:vitwoai_report/src/home/data/dashboardDataFatch.dart';
 import 'package:vitwoai_report/src/home/presentation/main-widget/productWidget.dart';
 import 'package:vitwoai_report/src/home/presentation/main-widget/progresWidget.dart';
 import 'package:vitwoai_report/src/home/presentation/main-widget/regionWidget.dart';
+import 'package:vitwoai_report/src/sales_Register/presentation/shimmer_summary.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
 
-class Deafaultwidget extends StatelessWidget {
+class Deafaultwidget extends ConsumerWidget {
   const Deafaultwidget({super.key});
 
   void showDateDialog(BuildContext context) {
@@ -23,7 +27,9 @@ class Deafaultwidget extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final totalSalesData = ref.watch(totalSalesProvider);
+    final totalPurches = ref.watch(totalPurchesProvider);
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     double verticalPadding = screenHeight * 0.05;
@@ -85,12 +91,38 @@ class Deafaultwidget extends StatelessWidget {
                                 .copyWith(fontSize: 18),
                           ),
                           const SizedBox(height: 16),
-                          const Row(
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              CircularChart('Sales', 30, 100, 30),
-                              CircularChart('Revenue', 26, 82, 30),
-                              CircularChart('growth', 14, 60, 50),
+                              totalSalesData.when(data: (data) {
+                                final totalSales =
+                                    data['percentage'].toInt() ?? 0;
+
+                                return CircularChart(
+                                    'Sales', totalSales, 100, totalSales);
+                              }, error: (error, stackTrace) {
+                                return Text(
+                                  'Error: $error',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .copyWith(
+                                          fontSize: 20,
+                                          color: AppColor.appbarFont),
+                                );
+                              }, loading: () {
+                                return Shimmer.fromColors(
+                                  baseColor: Colors.grey[300]!,
+                                  highlightColor: Colors.grey[100]!,
+                                  child: Container(
+                                    width: 100,
+                                    height: 20,
+                                    color: Colors.white,
+                                  ),
+                                );
+                              }),
+                              CircularChart('Revenue', 26, 100, 26),
+                              CircularChart('growth', 14, 100, 14),
                             ],
                           ),
                         ],
@@ -116,13 +148,24 @@ class Deafaultwidget extends StatelessWidget {
                     ),
                   ),
                   child: ListTile(
-                    title: Text(
-                      HandText.raisedCount,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodySmall!
-                          .copyWith(fontSize: 20, color: AppColor.lightFontCpy),
-                    ),
+                    title: totalPurches.when(data: (data) {
+                      final totalSales = data['totalPurchase'] ?? 0;
+                      return Text(
+                        "₹${totalSales.toString()}",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodySmall!
+                            .copyWith(color: AppColor.lightFontCpy),
+                      );
+                    }, error: (error, stackTrace) {
+                      return Text(
+                        'Error: $error',
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            fontSize: 20, color: AppColor.lightFontCpy),
+                      );
+                    }, loading: () {
+                      return ShimmerSummary();
+                    }),
                     subtitle: Text(
                       HandText.raised,
                       style: Theme.of(context)
@@ -148,13 +191,24 @@ class Deafaultwidget extends StatelessWidget {
                     ),
                   ),
                   child: ListTile(
-                    title: Text(
-                      HandText.itemCount,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodySmall!
-                          .copyWith(fontSize: 20, color: AppColor.lightFontCpy),
-                    ),
+                    title: totalSalesData.when(data: (data) {
+                      final totalSales = data['totalSales'] ?? 0;
+                      return Text(
+                        "₹${totalSales.toString()}",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodySmall!
+                            .copyWith(color: AppColor.lightFontCpy),
+                      );
+                    }, error: (error, stackTrace) {
+                      return Text(
+                        'Error: $error',
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            fontSize: 20, color: AppColor.lightFontCpy),
+                      );
+                    }, loading: () {
+                      return ShimmerSummary();
+                    }),
                     subtitle: Text(
                       HandText.item,
                       style: Theme.of(context)

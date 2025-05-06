@@ -56,4 +56,55 @@ Future<Map<String, dynamic>> fetchtrandingRegionData() async {
   }
 }
 
-// t
+// total Sales Api fatch Data
+
+final totalSalesProvider = FutureProvider((ref) async {
+  return await fetchTotalSalesData();
+});
+
+Future<Map<String, dynamic>> fetchTotalSalesData() async {
+  final accessToken = await getTokenData();
+  final url = Uri.parse('$baseURL$totalSalesurl');
+
+  try {
+    final response = await http.get(url, headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken',
+      'User-Agent': 'Mobile'
+    });
+
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      throw Exception('Failed to load data: ${response.statusCode}');
+    }
+  } catch (e) {
+    throw Exception('Error fetching data: $e');
+  }
+}
+
+// total Purches Api fatch Data
+final totalPurchesProvider = FutureProvider((ref) async {
+  return await fetchTotalPurchesData();
+});
+
+Future<Map<String, dynamic>> fetchTotalPurchesData() async {
+  final accessToken = await getTokenData();
+  final url = Uri.parse('$baseURL$totalPurchesUrl');
+
+  try {
+    final response = await http.get(url, headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $accessToken',
+      'User-Agent': 'Mobile'
+    });
+
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      throw Exception('Failed to load data: ${response.statusCode}');
+    }
+  } catch (e) {
+    throw Exception('Error fetching data: $e');
+  }
+}

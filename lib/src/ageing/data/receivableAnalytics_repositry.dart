@@ -81,7 +81,6 @@ Future<ReceivableAPIModel> fetchReceivablesCustomerData(
     );
 
     if (response.statusCode == 200) {
-      
       final data = json.decode(response.body);
       // print('📦 Full API response: ${data['content']}');
       ref.read(totalElementsProvider.notifier).state = data['totalElements'];
@@ -106,12 +105,13 @@ Future<Map<String, dynamic>> fetchPayableCustomerData() async {
 
   final Map<String, dynamic> bodyData = {
     "interval": 30,
-    "bucketNo": 6,
-    "asOnDate": "2024-11-13",
+    "bucketNo": 7,
+    "asOnDate": "",
     "page": 0,
-    "size": 500,
+    "size": 5,
     "sortBy": "total_onaccount",
-    "sortDir": "desc"
+    "sortDir": "desc",
+    "searchKey": ""
   };
 
   try {
@@ -133,3 +133,51 @@ Future<Map<String, dynamic>> fetchPayableCustomerData() async {
     throw Exception('Error fetching data: $e');
   }
 }
+
+
+// test with 
+// final payableCustomerProvider =
+//     FutureProvider.family<PayableModel, Map<String, dynamic>>(
+//         (ref, params) async {
+//   final page = params['page'] as int;
+//   final dateInfo = params['dateInfo'] as DateTime;
+//   final searchData = params['searchData'] as String;
+//   return await fetchPayableCustomerData(page, dateInfo, searchData, ref);
+// });
+
+// Future<PayableModel> fetchPayableCustomerData(
+//     int page, DateTime dateData, String searchInfo, ref) async {
+//   final accessToken = await getTokenData();
+//   final url = Uri.parse('$baseURL$payableCustomerurl');
+
+//   final Map<String, dynamic> bodyData = {
+//     "interval": 30,
+//     "bucketNo": 7,
+//     "asOnDate": dateData.toString(),
+//     "page": page,
+//     "size": 5,
+//     "sortBy": "total_onaccount",
+//     "sortDir": "desc",
+//     "searchKey": searchInfo
+//   };
+
+//   try {
+//     final response = await http.post(
+//       url,
+//       headers: {
+//         'Authorization': 'Bearer $accessToken',
+//         'Content-Type': 'application/json',
+//       },
+//       body: json.encode(bodyData),
+//     );
+
+//     if (response.statusCode == 200) {
+//       final data = json.decode(response.body);
+//       return PayableModel.fromMap(data);
+//     } else {
+//       throw Exception('Failed to load data: ${response.statusCode}');
+//     }
+//   } catch (e) {
+//     throw Exception('Error fetching data: $e');
+//   }
+// }
