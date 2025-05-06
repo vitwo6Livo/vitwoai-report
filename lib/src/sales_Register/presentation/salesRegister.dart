@@ -27,7 +27,7 @@ class SalesRegister extends ConsumerWidget {
         ref.watch(salesRegisterSummaryProvider("customer"));
     final summaryProviderItem = ref.watch(salesRegisterSummaryProvider("item"));
     final summaryProviderItemGW =
-        ref.watch(salesRegisterSummaryProvider("item_group"));
+        ref.watch(salesRegisterSummaryProvider("itemGroup"));
     final summaryProviderHSN = ref.watch(salesRegisterSummaryProvider("hsn"));
 
     return Scaffold(
@@ -171,7 +171,7 @@ class SalesRegister extends ConsumerWidget {
                         children: [
                           summaryProviderSOW.when(
                             data: (data) {
-                              return Text("₹${data['total']}",
+                              return Text("${data['total']}",
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyLarge!
@@ -244,7 +244,7 @@ class SalesRegister extends ConsumerWidget {
                         children: [
                           summaryProviderCustomer.when(
                             data: (data) {
-                              return Text("₹${data['total']}",
+                              return Text("${data['total']}",
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyLarge!
@@ -317,7 +317,7 @@ class SalesRegister extends ConsumerWidget {
                         children: [
                           summaryProviderItem.when(
                             data: (data) {
-                              return Text("₹${data['total']}",
+                              return Text("${data['total']}",
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyLarge!
@@ -362,7 +362,7 @@ class SalesRegister extends ConsumerWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ItemGroupWiseScreen()));
+                            builder: (context) => const ItemGroupWiseScreen()));
                   },
                   child: Container(
                     margin: const EdgeInsets.symmetric(horizontal: 10),
