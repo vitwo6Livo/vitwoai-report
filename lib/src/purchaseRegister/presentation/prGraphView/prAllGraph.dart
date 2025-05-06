@@ -12,105 +12,204 @@ class ProductGraphModel extends ConsumerStatefulWidget {
 }
 
 class _ProductGraphModelState extends ConsumerState<ProductGraphModel> {
+  bool showQty = true;
+  String _selectedGraph = 'qty';
+
   @override
   Widget build(BuildContext context) {
     final PRGraphAll = ref.watch(prGraphAllProvider);
+    // List count = PRGraphAll.whenData("");
+
     return Card(
       color: Colors.white,
       surfaceTintColor: Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      child: Padding(
-        padding: const EdgeInsets.all(15),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      child: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'All Sales Register',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 28,
-                    fontWeight: FontWeight.w700,
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: Column(
+                children: [
+                  const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'All Sales Register',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 28,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                  const SizedBox(height: 40),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Radio<String>(
+                        value: 'qty',
+                        groupValue: _selectedGraph,
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedGraph = value!;
+                          });
+                        },
+                      ),
+                      const Text('Total Qty'),
+                      Radio<String>(
+                        value: 'amount',
+                        groupValue: _selectedGraph,
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedGraph = value!;
+                          });
+                        },
+                      ),
+                      const Text('Total Amount'),
+                    ],
+                  ),
+                  PRGraphAll.when(
+                    data: (data) {
+                      final filteredData = data.data
+                          .where((d) => d.TotalQty != 0 || d.TotalAmount != 0)
+                          .toList();
+                      return Column(
+                        children: [
+                          SfCartesianChart(
+                            enableSideBySideSeriesPlacement: true,
+                            plotAreaBackgroundColor: Colors.transparent,
+                            primaryXAxis: const CategoryAxis(
+                              axisLine: AxisLine(width: 0.5),
+                              majorGridLines: MajorGridLines(width: 0),
+                              majorTickLines: MajorTickLines(width: 0),
+                            ),
+                            primaryYAxis: const NumericAxis(isVisible: true),
+                            series: <CartesianSeries>[
+                              if (_selectedGraph == 'qty')
+                                ColumnSeries<PrGraphAllContent, String>(
+                                  name: 'Total Qty',
+                                  dataSource: filteredData,
+
+                                  color: Colors.blue,
+                                  width: 0.4,
+                                  spacing: 0.2,
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(8),
+                                    topRight: Radius.circular(8),
+                                  ),
+                                  xValueMapper: (PrGraphAllContent data, _) =>
+                                      data.Month,
+                                  yValueMapper: (PrGraphAllContent data, _) =>
+                                      data.TotalQty,
+                                  // emptyPointSettings: EmptyPointSettings(
+                                  //   mode: EmptyPointMode
+                                  //       .drop, // or .drop to remove it entirely
+                                  //   color: Colors.transparent, // optional
+                                  // ),
+                                )
+                              else
+                                ColumnSeries<PrGraphAllContent, String>(
+                                  name: 'Total Amount',
+                                  dataSource: filteredData,
+                                  color: Colors.green,
+                                  // emptyPointSettings: EmptyPointSettings(),
+                                  width: 0.4,
+                                  spacing: 0.2,
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(8),
+                                    topRight: Radius.circular(8),
+                                  ),
+                                  xValueMapper: (PrGraphAllContent data, _) =>
+                                      data.Month,
+                                  yValueMapper: (PrGraphAllContent data, _) =>
+                                      data.TotalAmount,
+                                ),
+                            ],
+                          ),
+                        ],
+                      );
+                    },
+                    error: (error, stack) =>
+                        Center(child: Text('Error: $error')),
+                    loading: () => const CircularProgressIndicator(),
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(height: 40),
             PRGraphAll.when(
-              data: (data) {
-                return SfCartesianChart(
-                  plotAreaBackgroundColor: Colors.transparent,
-                  margin: const EdgeInsets.all(0),
-                  borderColor: Colors.transparent,
-                  borderWidth: 0,
-                  plotAreaBorderWidth: 0,
-                  enableSideBySideSeriesPlacement: true,
-                  primaryXAxis: const CategoryAxis(
-                    axisLine: AxisLine(width: 0.5),
-                    majorGridLines: MajorGridLines(width: 0),
-                    majorTickLines: MajorTickLines(width: 0),
-                    crossesAt: 0,
-                  ),
-                  primaryYAxis: const NumericAxis(
-                    isVisible: true,
-                    // minimum: 0,
-                    // maximum: 2,
-                    // interval: 0.5,
-                  ),
-                  series: <CartesianSeries>[
-                    ColumnSeries<PrGraphAllContent, String>(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
-                      ),
-                      dataSource: data.data,
-                      width: 0.5,
-                      color: Colors.blue,
-                      xValueMapper: (PrGraphAllContent data, _) => data.Month,
-                      yValueMapper: (PrGraphAllContent data, _) =>
-                          data.TotalQty,
-                    ),
-                    ColumnSeries<PrGraphAllContent, String>(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
-                      ),
-                      dataSource: data.data,
-                      width: 0.5,
-                      color: Colors.green,
-                      xValueMapper: (PrGraphAllContent data, _) => data.Month,
-                      yValueMapper: (PrGraphAllContent data, _) =>
-                          data.TotalAmount,
-                    ),
-                  ],
-                );
-              },
-              error: (error, stack) => Center(child: Text('Error: $error')),
-              loading: () => const CircularProgressIndicator(),
-            ),
+                error: (error, stack) => Center(child: Text('Error: $error')),
+                loading: () => const CircularProgressIndicator(),
+                data: (data) {
+                  final filteredData = data.data
+                      .where((d) => d.TotalQty != 0 || d.TotalAmount != 0)
+                      .toList();
+                  return ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: filteredData.length,
+                      itemBuilder: (context, index) {
+                        return Card(
+                            elevation: 4,
+                            color: Colors.white,
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        'Total Quantity: ',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.grey[500]),
+                                      ),
+                                      Text(
+                                        filteredData[index].TotalQty.toString(),
+                                        style: const TextStyle(
+                                            color: Colors.blue,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        filteredData[index].Month.toString(),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        'Total Amount: ',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.grey[500]),
+                                      ),
+                                      Text(
+                                          filteredData[index]
+                                              .TotalAmount
+                                              .toString(),
+                                          style: const TextStyle(
+                                              color: Colors.green,
+                                              fontWeight: FontWeight.bold)),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ));
+                      });
+                })
           ],
         ),
       ),
     );
   }
 }
-
-// class ChartColumnData {
-//   ChartColumnData({this.x, this.y, this.y1});
-//   final String? x;
-//   final double? y;
-//   final double? y1;
-// }
-
-// final List<ChartColumnData> chartData = <ChartColumnData>[
-//   ChartColumnData(x: 'Mo', y: -0.3, y1: 1.7),
-//   ChartColumnData(x: "Tu", y: -0.5, y1: 0.4),
-//   ChartColumnData(x: "We", y: -0.4, y1: 1),
-//   ChartColumnData(x: "Th", y: -0.45, y1: 0.7),
-//   ChartColumnData(x: "Fr", y: -0.9, y1: 0.8),
-//   ChartColumnData(x: "Sa", y: -0.6, y1: 0.9),
-//   ChartColumnData(x: "Su", y: -0.5, y1: 1),
-// ];
-
-final List<PrGraphAllModel> chartData = <PrGraphAllModel>[];
