@@ -91,7 +91,6 @@ class newItemGroupWiseDetailsScreen extends StatelessWidget {
 
   Widget _buildCard(List<Widget> children) {
     return Card(
-      color: AppColor.cardBackgroundColor,
       elevation: 3,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       margin: const EdgeInsets.symmetric(vertical: 6),

@@ -14,9 +14,9 @@ class newItemWiseDetailsScreen extends StatelessWidget {
     final item = data[index];
     return Scaffold(
       appBar: AppBar(
-        title:  Text(
+        title: Text(
           HandText.prItemWiseDetailsTitle,
-          style:const TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
         ),
         iconTheme: const IconThemeData(color: Colors.white),
         flexibleSpace: Container(
@@ -96,7 +96,6 @@ class newItemWiseDetailsScreen extends StatelessWidget {
 
   Widget _buildCard(List<Widget> children) {
     return Card(
-      color: AppColor.cardBackgroundColor,
       elevation: 3,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       margin: const EdgeInsets.symmetric(vertical: 6),

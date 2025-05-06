@@ -127,7 +127,6 @@ class newAllPRDetailsScreen extends StatelessWidget {
 
   Widget _buildCard(List<Widget> children) {
     return Card(
-      color: AppColor.cardBackgroundColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       elevation: 4,
       margin: const EdgeInsets.symmetric(vertical: 8),
