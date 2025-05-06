@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:vitwoai_report/src/sales_Register/model/salesAllDetailsModel.dart';
 import 'package:vitwoai_report/src/sales_Register/model/salesCustomerWiseModel.dart';

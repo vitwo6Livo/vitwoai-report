@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:vitwoai_report/golobal-Widget/dayCalendar.dart';
 import 'package:vitwoai_report/golobal-Widget/loadingShimmer.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
@@ -158,6 +159,8 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
   @override
   Widget build(BuildContext context) {
     final salesRegisterList = ref.watch(salesRegisterListStateProvider);
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       backgroundColor: AppColor.screenBgColor,
@@ -247,7 +250,14 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
             child: _isInitialLoading
                 ? screen_shimmer(120, 800)
                 : salesRegisterList.content.isEmpty
-                    ? Center(child: Text(HandText.noData))
+                    ? Center(
+                        child: LottieBuilder.asset(
+                          'assets/json/NoDataFound.json',
+                          fit: BoxFit.fill,
+                          height: screenHeight * 0.38,
+                          width: screenWidth * 0.68,
+                        ),
+                      )
                     : ListView.builder(
                         controller: _scrollController,
                         itemCount: _isLoadingMore

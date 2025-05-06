@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:vitwoai_report/golobal-Widget/loadingShimmer.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/sales_Register/data/salesRegisterFatchData.dart';
@@ -141,6 +142,8 @@ class _SalesRegisterSOScreenState extends ConsumerState<SalesRegisterSOScreen> {
   @override
   Widget build(BuildContext context) {
     final salesRegisterSOList = ref.watch(salesRegisterSOListStateProvider);
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       backgroundColor: AppColor.screenBgColor,
@@ -170,7 +173,14 @@ class _SalesRegisterSOScreenState extends ConsumerState<SalesRegisterSOScreen> {
             child: _isInitialLoading
                 ? screen_shimmer(120, 800)
                 : salesRegisterSOList.content.isEmpty
-                    ? Center(child: Text(HandText.noData))
+                    ? Center(
+                        child: LottieBuilder.asset(
+                          'assets/json/NoDataFound.json',
+                          fit: BoxFit.fill,
+                          height: screenHeight * 0.38,
+                          width: screenWidth * 0.68,
+                        ),
+                      )
                     : ListView.builder(
                         controller: _scrollController,
                         itemCount: _isLoadingMore
