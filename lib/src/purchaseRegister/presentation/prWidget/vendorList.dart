@@ -4,16 +4,9 @@ import 'package:lottie/lottie.dart';
 import 'package:vitwoai_report/golobal-Widget/loadingShimmer.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/purchaseRegister/data/purchesRegister_repository.dart';
-import 'package:vitwoai_report/src/purchaseRegister/model/POModel.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/detailsPage/newVendorWiseDetails.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
-
-final purchaseRegisterPoWiseListStateProvider =
-    StateProvider<Map<String, dynamic>>((ref) => {
-          'content': [],
-          'last': false,
-        });
-
-final currentPagePoWiseProvider = StateProvider<int>((ref) => 0);
+import 'package:vitwoai_report/src/settings/texts.dart';
 
 class VendorList extends ConsumerStatefulWidget {
   const VendorList({super.key});
@@ -26,18 +19,16 @@ class _VendorListState extends ConsumerState<VendorList> {
   final ScrollController _scrollController = ScrollController();
   bool _isLoadingMore = false;
 
+  final purchaseRegisterPoWiseListStateProvider =
+      StateProvider<Map<String, dynamic>>((ref) => {
+            'content': [],
+            'last': false,
+          });
+  final currentPageProvider = StateProvider<int>((ref) => 0);
+
   @override
   void initState() {
     super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final currentState = ref.read(purchaseRegisterPoWiseListStateProvider);
-      if (currentState['content'].isEmpty) {
-        _loadPage(0);
-      }
-    });
-
-    // Add scroll listener for infinite scrolling
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
               _scrollController.position.maxScrollExtent - 100 &&
@@ -45,58 +36,39 @@ class _VendorListState extends ConsumerState<VendorList> {
         final isLastPage =
             ref.read(purchaseRegisterPoWiseListStateProvider)['last'] ?? false;
         if (!isLastPage) {
-          final nextPage = ref.read(currentPagePoWiseProvider) + 1;
-          _loadMoreData(nextPage);
+          _loadMoreData();
         }
       }
     });
   }
 
-  Future<void> _loadPage(int pageKey) async {
-    try {
-      final newData =
-          await ref.read(purchesRegisterPoWiseProvider(pageKey).future);
-      ref
-          .read(purchaseRegisterPoWiseListStateProvider.notifier)
-          .update((state) {
-        return {
-          'content': [...newData.content],
-          'last': newData.lastPage,
-        };
-      });
+  void _loadMoreData() async {
+    setState(() {
+      _isLoadingMore = true;
+    });
 
-      ref.read(currentPagePoWiseProvider.notifier).state = pageKey;
-    } catch (e) {
-      // Handle error
-    }
-  }
+    final currentPage = ref.read(currentPageProvider);
+    final nextPage = currentPage + 1;
 
-  Future<void> _loadMoreData(int nextPageKey) async {
-    setState(() => _isLoadingMore = true);
+    final newData =
+        await ref.read(purchesRegisterPoWiseProvider(nextPage).future);
 
-    try {
-      final newData =
-          await ref.read(purchesRegisterPoWiseProvider(nextPageKey).future);
+    ref.read(purchaseRegisterPoWiseListStateProvider.notifier).update((state) {
+      final updatedContent = [
+        ...state['content'],
+        ...newData.content,
+      ];
+      return {
+        'content': updatedContent,
+        'last': newData.lastPage,
+      };
+    });
 
-      ref
-          .read(purchaseRegisterPoWiseListStateProvider.notifier)
-          .update((state) {
-        final updatedContent = [
-          ...state['content'],
-          ...newData.content,
-        ];
-        return {
-          'content': updatedContent,
-          'last': newData.lastPage,
-        };
-      });
+    ref.read(currentPageProvider.notifier).state = nextPage;
 
-      ref.read(currentPagePoWiseProvider.notifier).state = nextPageKey;
-    } catch (e) {
-      // Optionally show an error toast or retry UI
-    } finally {
-      setState(() => _isLoadingMore = false);
-    }
+    setState(() {
+      _isLoadingMore = false;
+    });
   }
 
   @override
@@ -107,10 +79,8 @@ class _VendorListState extends ConsumerState<VendorList> {
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(purchaseRegisterPoWiseListStateProvider);
-    final content = state['content'] as List;
-    final last = state['last'] as bool;
-
+    final purchaseRegisterPoWiseList =
+        ref.watch(purchaseRegisterPoWiseListStateProvider);
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
@@ -118,7 +88,7 @@ class _VendorListState extends ConsumerState<VendorList> {
       child: Column(
         children: [
           Expanded(
-            child: content.isEmpty
+            child: purchaseRegisterPoWiseList['content'].isEmpty
                 ? ref.watch(purchesRegisterPoWiseProvider(0)).when(
                       data: (data) {
                         WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -130,7 +100,8 @@ class _VendorListState extends ConsumerState<VendorList> {
                             'last': data.lastPage,
                           };
                         });
-                        return _buildListView(data.content);
+                        return _buildListView(
+                            purchaseRegisterPoWiseList['content']);
                       },
                       error: (error, stack) => Center(
                         child: LottieBuilder.asset(
@@ -142,205 +113,181 @@ class _VendorListState extends ConsumerState<VendorList> {
                       ),
                       loading: () => screen_shimmer(120, 800),
                     )
-                : _buildListView(content.cast<POContentList>()),
+                : _buildListView(purchaseRegisterPoWiseList['content']),
           ),
-          if (_isLoadingMore)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 9),
-              child: loadingShimmer(110, 800),
-            ),
         ],
       ),
     );
   }
 
-  Widget _buildListView(List<POContentList> content) {
-    if (content.isEmpty) {
-      return const Center(child: Text("No Data Found"));
-    }
+  Widget _buildListView(List<dynamic> content) {
+    return content.isEmpty
+        ? Center(child: Text(HandText.noData))
+        : ListView.builder(
+            controller: _scrollController,
+            itemCount: _isLoadingMore ? content.length + 1 : content.length,
+            itemBuilder: (context, index) {
+              if (index < content.length) {
+                return InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => newVendorWiseDetails(
+                            data: content,
+                            index: index,
+                          ),
+                        ),
+                      );
+                    },
+                    child: _buildCard(index, content, context));
+              } else {
+                return Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  child: loadingShimmer(110, 800),
+                );
+              }
+            },
+          );
+  }
+}
 
-    return ListView.builder(
-      controller: _scrollController,
-      itemCount: _isLoadingMore ? content.length + 1 : content.length,
-      itemBuilder: (context, index) {
-        if (index < content.length) {
-          final item = content[index];
-          return Card(
-            color: AppColor.cardBackgroundColor,
-            margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            elevation: 4,
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.person_2_outlined,
-                          color: AppColor.cardDataIconColor),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          item.vendorName ?? '',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall!
-                              .copyWith(fontWeight: FontWeight.w500),
-                          overflow: TextOverflow.ellipsis,
-                        ),
+Widget _buildCard(int index, List<dynamic> content, BuildContext context) {
+  return Card(
+    color: AppColor.cardBackgroundColor,
+    margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12),
+    ),
+    elevation: 4,
+    child: Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                width: 150,
+                child: Text(
+                  content[index].vendorName.toString(),
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        fontWeight: FontWeight.w500,
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Flexible(
-                        flex: 2,
-                        child: Row(
-                          children: [
-                            Icon(Icons.sticky_note_2,
-                                color: AppColor.cardDataIconColor),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Text.rich(
-                                TextSpan(
-                                  text: 'Vendor Code: ',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall!
-                                      .copyWith(
-                                          color: AppColor.cardDataKeyColor),
-                                  children: [
-                                    TextSpan(
-                                      text: item.vendorCode ?? '',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall!
-                                          .copyWith(
-                                              fontWeight: FontWeight.w500),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              Text.rich(
+                TextSpan(
+                  text: HandText.prInvoiceQuantity,
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        color: AppColor.cardDataKeyColor,
                       ),
-                      Flexible(
-                        flex: 2,
-                        child: Row(
-                          children: [
-                            const Icon(Icons.event, color: Colors.grey),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Text.rich(
-                                TextSpan(
-                                  text: 'Invoice Qty: ',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall!
-                                      .copyWith(
-                                          color: AppColor.cardDataKeyColor),
-                                  children: [
-                                    TextSpan(
-                                      text: item.invoiceQuantity?.toString() ??
-                                          '0.0',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall!
-                                          .copyWith(
-                                              fontWeight: FontWeight.w500),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Flexible(
-                        flex: 2,
-                        child: Row(
-                          children: [
-                            const Icon(Icons.manage_accounts,
-                                color: Colors.grey),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Text.rich(
-                                TextSpan(
-                                  text: 'Received Qty: ',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall!
-                                      .copyWith(
-                                          color: AppColor.cardDataKeyColor),
-                                  children: [
-                                    TextSpan(
-                                      text: item.receivedQuantity?.toString() ??
-                                          '0.0',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall!
-                                          .copyWith(
-                                              fontWeight: FontWeight.w500),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Flexible(
-                        flex: 2,
-                        child: Row(
-                          children: [
-                            Icon(Icons.currency_rupee_outlined,
-                                color: AppColor.cardDataIconColor),
-                            Text.rich(
-                              TextSpan(
-                                text: 'Invoice Value: ',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall!
-                                    .copyWith(color: AppColor.cardDataKeyColor),
-                                children: [
-                                  TextSpan(
-                                    text:
-                                        item.invoiceValue?.toString() ?? '0.0',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall!
-                                        .copyWith(fontWeight: FontWeight.w500),
+                  children: [
+                    TextSpan(
+                      text: content[index].invoiceQuantity.toString(),
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            fontWeight: FontWeight.w500,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                width: 180,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text.rich(
+                        TextSpan(
+                          text: HandText.prVendorCode,
+                          style:
+                              Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    color: AppColor.cardDataKeyColor,
                                   ),
-                                ],
-                              ),
+                          children: [
+                            TextSpan(
+                              text: content[index].vendorCode,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall!
+                                  .copyWith(
+                                    fontWeight: FontWeight.w500,
+                                  ),
                             ),
                           ],
                         ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
                       ),
-                    ],
+                    ),
+                  ],
+                ),
+              ),
+              Text.rich(
+                TextSpan(
+                  text: HandText.prReceivedQuantity,
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        color: AppColor.cardDataKeyColor,
+                      ),
+                  children: [
+                    TextSpan(
+                      text: content[index].receivedQuantity.toString(),
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            fontWeight: FontWeight.w500,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    Icons.person,
+                    color: AppColor.cardDataIconColor,
+                  ),
+                  Text(
+                    content[index].vendorCode.toString(),
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
-            ),
-          );
-        } else {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-            child: loadingShimmer(110, 800),
-          );
-        }
-      },
-    );
-  }
+              Row(
+                children: [
+                  Icon(
+                    Icons.currency_rupee_outlined,
+                    color: AppColor.cardDataIconColor,
+                  ),
+                  Text(
+                    content[index].invoiceValue.toString(),
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
 }
