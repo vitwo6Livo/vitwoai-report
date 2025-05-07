@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:vitwoai_report/src/purchaseRegister/model/HsnCodeModel.dart';
 import 'package:vitwoai_report/src/purchaseRegister/model/ItemGroupWiseModel.dart';
 import 'package:vitwoai_report/src/purchaseRegister/model/ItemWiseModel.dart';
+import 'package:vitwoai_report/src/purchaseRegister/model/POModel.dart';
 import 'package:vitwoai_report/src/purchaseRegister/model/PRSummaryModel.dart';
 import 'package:vitwoai_report/src/purchaseRegister/model/purchaseModel.dart';
 import 'package:vitwoai_report/src/purchaseRegister/model/vendorWiseModal.dart';
@@ -77,17 +78,18 @@ Future<AllPurchasemodel> fetchPurchesRegisterData(int pagedata) async {
 }
 
 //PO Wise Data Api Call
-final purchesRegisterPoWiseProvider = FutureProvider((ref) async {
-  return await fetchPurchesRegisterPoWiseData();
+final purchesRegisterPoWiseProvider =
+    FutureProvider.family<Pomodel, int>((ref, page) async {
+  return await fetchPurchesRegisterPoWiseData(page);
 });
 
-Future<Map<String, dynamic>> fetchPurchesRegisterPoWiseData() async {
+Future<Pomodel> fetchPurchesRegisterPoWiseData(int page) async {
   final accessToken = await getTokenData();
 
   final url = Uri.parse('$baseURL$purchaseRegisterPOWiseUrl');
 
   final Map<String, dynamic> bodyData = {
-    "page": 0,
+    "page": page,
     "size": 100,
     "sortBy": "PO Date",
     "sortDir": "desc",
@@ -105,7 +107,8 @@ Future<Map<String, dynamic>> fetchPurchesRegisterPoWiseData() async {
     );
 
     if (response.statusCode == 200) {
-      return json.decode(response.body);
+      final data = json.decode(response.body);
+      return Pomodel.fromJson(data);
     } else {
       throw Exception('Failed to load data: ${response.statusCode}');
     }
