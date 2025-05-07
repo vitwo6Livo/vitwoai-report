@@ -4,7 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:vitwoai_report/golobal-Widget/loadingShimmer.dart';
 import 'package:vitwoai_report/golobal-Widget/shimmer_screen.dart';
 import 'package:vitwoai_report/src/purchaseRegister/data/purchesRegister_repository.dart';
-import 'package:vitwoai_report/src/purchaseRegister/presentation/detailsPage/newVendorWiseDetails.dart';
+import 'package:vitwoai_report/src/purchaseRegister/presentation/detailsPage/newPOWiseDetails.dart';
 import 'package:vitwoai_report/src/settings/colors.dart';
 import 'package:vitwoai_report/src/settings/texts.dart';
 
@@ -133,7 +133,7 @@ class _VendorListState extends ConsumerState<VendorList> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => newVendorWiseDetails(
+                          builder: (context) => newPOWiseDetails(
                             data: content,
                             index: index,
                           ),

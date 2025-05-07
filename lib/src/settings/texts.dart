@@ -115,11 +115,17 @@ class HandText {
   static String prItemGW_ItemInfo = "Item Group Info";
   static String prItemGWTaxAmt = "Tax Summary";
   //Details- Vendor Wise
-  static String prVendorDetailsTitle = "Vendor Wise Details";
   static String prVendorInfoDetails = "Vendor Information";
+  static String prVendorDetailsTitle = "Vendor Wise Details";
   static String prVendorOrderQty = "Order & Quantity Details";
   static String prVendor_ItemInfo = "Item Group Info";
   static String prVendorTaxAmt = "Tax Summary";
+  //Details- PO Wise
+  static String prPODetailsTitle = "PO Details";
+  static String prPOVendorInfoDetails = "Vendor Information";
+  static String prPOVendorOrderQty = "Order & Quantity Details";
+  static String prPOVendor_ItemInfo = "Item Group Info";
+  static String prPOVendorTaxAmt = "Tax Summary";
 
   // Code
   static String prHSNCode = 'HSN Code: ';
