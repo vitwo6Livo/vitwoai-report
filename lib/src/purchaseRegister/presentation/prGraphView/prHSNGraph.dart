@@ -84,7 +84,6 @@ class _CostCenterGraphModelState extends ConsumerState<CostCenterGraphModel> {
                     ),
                   ),
                 ),
-                graphShimmer(),
                 ListView.builder(
                     itemCount: yourColorPalette.length,
                     shrinkWrap: true,

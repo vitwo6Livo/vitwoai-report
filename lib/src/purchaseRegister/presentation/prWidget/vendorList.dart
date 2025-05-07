@@ -103,15 +103,14 @@ class _VendorListState extends ConsumerState<VendorList> {
                         return _buildListView(
                             purchaseRegisterPoWiseList['content']);
                       },
-                      error: (error, stack) => Text('Error: $error'),
-                      // Center(
-                      //   child: LottieBuilder.asset(
-                      //     'assets/json/NoDataFound.json',
-                      //     fit: BoxFit.fill,
-                      //     height: screenHeight * 0.33,
-                      //     width: screenWidth * 0.64,
-                      //   ),
-                      // ),
+                      error: (error, stack) => Center(
+                        child: LottieBuilder.asset(
+                          'assets/json/NoDataFound.json',
+                          fit: BoxFit.fill,
+                          height: screenHeight * 0.33,
+                          width: screenWidth * 0.64,
+                        ),
+                      ),
                       loading: () => screen_shimmer(120, 800),
                     )
                 : _buildListView(purchaseRegisterPoWiseList['content']),
