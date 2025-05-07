@@ -17,7 +17,9 @@ class Pomodel {
 
   factory Pomodel.fromJson(Map<String, dynamic> json) {
     return Pomodel(
-      content: json[''],
+      content: (json['content'] as List)
+          .map((e) => POContentList.fromJson(e))
+          .toList(),
       pageNumber: json['pageNumber'],
       pageSize: json['pageSize'],
       totalElements: json['totalElements'],
