@@ -182,6 +182,7 @@ class _SalesRegisterSOScreenState extends ConsumerState<SalesRegisterSOScreen> {
                         ),
                       )
                     : ListView.builder(
+                        physics: const BouncingScrollPhysics(),
                         controller: _scrollController,
                         itemCount: _isLoadingMore
                             ? salesRegisterSOList.content.length + 1

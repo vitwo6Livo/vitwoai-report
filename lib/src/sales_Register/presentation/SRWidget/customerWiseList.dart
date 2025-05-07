@@ -262,6 +262,7 @@ class _CustomerWiseScreenState extends ConsumerState<CustomerWiseScreen> {
                         ),
                       )
                     : ListView.builder(
+                        physics: const BouncingScrollPhysics(),
                         controller: _scrollController,
                         itemCount: _isLoadingMore
                             ? salesRegisterCustomerList.content.length + 1

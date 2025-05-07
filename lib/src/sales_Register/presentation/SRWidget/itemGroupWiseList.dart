@@ -267,6 +267,7 @@ class _ItemGroupWiseScreenState extends ConsumerState<ItemGroupWiseScreen> {
                         ),
                       )
                     : ListView.builder(
+                        physics: const BouncingScrollPhysics(),
                         controller: _scrollController,
                         itemCount: _isLoadingMore
                             ? salesRegisterItemGroupList.content.length + 1

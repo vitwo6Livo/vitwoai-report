@@ -266,6 +266,7 @@ class _HsnCodeWiseScreenState extends ConsumerState<HsnCodeWiseScreen> {
                         ),
                       )
                     : ListView.builder(
+                        physics: const BouncingScrollPhysics(),
                         controller: _scrollController,
                         itemCount: _isLoadingMore
                             ? salesRegisterHsnCodeList.content.length + 1
@@ -297,32 +298,10 @@ class _HsnCodeWiseScreenState extends ConsumerState<HsnCodeWiseScreen> {
                         },
                       ),
           ),
-          // if (_isLoadingMore)
-          //   Padding(
-          //     padding: const EdgeInsets.symmetric(vertical: 9),
-          //     child: loadingShimmer(100, 800),
-          //   ),
         ],
       ),
     );
   }
-
-//   // Helper method to build Text.rich rows
-//   Widget _buildTextRow(String label, dynamic value) {
-//     return Text.rich(
-//       TextSpan(
-//         text: label,
-//         style: const TextStyle(fontSize: 14, color: Colors.grey),
-//         children: [
-//           TextSpan(
-//             text: value?.toString() ?? 'N/A',
-//             style: const TextStyle(fontSize: 16, color: Colors.black),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
 
   Widget _buildCard(int index, List<dynamic> content) {
     final item = content[index];

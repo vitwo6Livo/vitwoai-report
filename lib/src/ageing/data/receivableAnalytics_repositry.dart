@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:vitwoai_report/src/ageing/model/payableModel.dart';
 import 'package:vitwoai_report/src/ageing/model/receivableModel.dart';
 import 'package:vitwoai_report/src/ageing/model/receivableTotalModel.dart';
 import 'package:vitwoai_report/src/utils/api_urls.dart';
@@ -95,23 +96,29 @@ Future<ReceivableAPIModel> fetchReceivablesCustomerData(
 
 //List of Payable Customer Api Data
 
-final payableCustomerProvider = FutureProvider((ref) async {
-  return await fetchPayableCustomerData();
+final payableCustomerProvider =
+    FutureProvider.family<PayableModel, Map<String, dynamic>>(
+        (ref, soParams) async {
+  return await fetchPayableCustomerData(
+      searchData: soParams['key'], pageData: soParams['page']);
 });
 
-Future<Map<String, dynamic>> fetchPayableCustomerData() async {
+Future<PayableModel> fetchPayableCustomerData({
+  required int pageData,
+  required String searchData,
+}) async {
   final accessToken = await getTokenData();
   final url = Uri.parse('$baseURL$payableCustomerurl');
 
   final Map<String, dynamic> bodyData = {
     "interval": 30,
     "bucketNo": 7,
-    "asOnDate": "",
-    "page": 0,
-    "size": 5,
+    "asOnDate": DateTime.now().toString().split(' ')[0],
+    "page": pageData,
+    "size": 20,
     "sortBy": "total_onaccount",
     "sortDir": "desc",
-    "searchKey": ""
+    "searchKey": searchData
   };
 
   try {
@@ -125,7 +132,8 @@ Future<Map<String, dynamic>> fetchPayableCustomerData() async {
     );
 
     if (response.statusCode == 200) {
-      return json.decode(response.body);
+      final data = json.decode(response.body);
+      return PayableModel.fromMap(data);
     } else {
       throw Exception('Failed to load data: ${response.statusCode}');
     }

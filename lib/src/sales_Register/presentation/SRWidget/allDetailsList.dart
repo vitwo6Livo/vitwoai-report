@@ -259,6 +259,7 @@ class _AllSalesRegisterListState extends ConsumerState<AllSalesRegisterList> {
                         ),
                       )
                     : ListView.builder(
+                        physics: const BouncingScrollPhysics(),
                         controller: _scrollController,
                         itemCount: _isLoadingMore
                             ? salesRegisterList.content.length + 1

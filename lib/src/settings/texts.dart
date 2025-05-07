@@ -34,6 +34,7 @@ class HandText {
   static String receivableChartsOverview = 'Charts Overview';
   static String receivableCustomerCode = 'Customer Code: ';
   static String receivableDetails = "Details Receivable";
+  static String payableDetails = "Details Payable";
   //
   static String receivableNetDue = 'Net due: ';
   static String receivableOnAccountDue = 'On account due: ';
