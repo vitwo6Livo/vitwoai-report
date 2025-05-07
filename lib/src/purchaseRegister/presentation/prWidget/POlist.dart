@@ -54,8 +54,7 @@ class _PurchaseOrderListState extends ConsumerState<PurchaseOrderList> {
     final newData =
         await ref.read(purchesRegisterVendorWiseProvider(nextPage).future);
 
-    ref
-        .read(purchaseRegisterVendorWiseListStateProvider.notifier)
+    ref.read(purchaseRegisterVendorWiseListStateProvider.notifier)
         .update((state) {
       final updatedContent = [
         ...state['content'],
