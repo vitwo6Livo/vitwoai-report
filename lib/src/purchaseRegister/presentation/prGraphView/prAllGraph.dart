@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:vitwoai_report/golobal-Widget/lineChartShimmer.dart';
 import 'package:vitwoai_report/src/purchaseRegister/data/prGraphAPI.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vitwoai_report/src/purchaseRegister/model/prGraphAllModel.dart';
@@ -18,65 +20,65 @@ class _ProductGraphModelState extends ConsumerState<ProductGraphModel> {
   @override
   Widget build(BuildContext context) {
     final PRGraphAll = ref.watch(prGraphAllProvider);
-    // List count = PRGraphAll.whenData("");
 
-    return Card(
-      color: Colors.white,
-      surfaceTintColor: Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(15),
-              child: Column(
-                children: [
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+    return PRGraphAll.when(
+      data: (data) {
+        final filteredData = data.data
+            .where((d) => d.TotalQty != 0 || d.TotalAmount != 0)
+            .toList();
+        return Card(
+          color: Colors.white,
+          surfaceTintColor: Colors.white,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: Column(
                     children: [
-                      Text(
-                        'All Sales Register',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 28,
-                          fontWeight: FontWeight.w700,
-                        ),
+                      const Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'All Sales Register',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 28,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 40),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Radio<String>(
-                        value: 'qty',
-                        groupValue: _selectedGraph,
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedGraph = value!;
-                          });
-                        },
+                      const SizedBox(height: 40),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Radio<String>(
+                            value: 'qty',
+                            groupValue: _selectedGraph,
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedGraph = value!;
+                              });
+                            },
+                          ),
+                          const Text('Total Qty'),
+                          Radio<String>(
+                            value: 'amount',
+                            groupValue: _selectedGraph,
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedGraph = value!;
+                              });
+                            },
+                          ),
+                          const Text('Total Amount'),
+                        ],
                       ),
-                      const Text('Total Qty'),
-                      Radio<String>(
-                        value: 'amount',
-                        groupValue: _selectedGraph,
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedGraph = value!;
-                          });
-                        },
-                      ),
-                      const Text('Total Amount'),
-                    ],
-                  ),
-                  PRGraphAll.when(
-                    data: (data) {
-                      final filteredData = data.data
-                          .where((d) => d.TotalQty != 0 || d.TotalAmount != 0)
-                          .toList();
-                      return Column(
+                      Column(
                         children: [
                           SfCartesianChart(
                             enableSideBySideSeriesPlacement: true,
@@ -130,86 +132,86 @@ class _ProductGraphModelState extends ConsumerState<ProductGraphModel> {
                             ],
                           ),
                         ],
-                      );
-                    },
-                    error: (error, stack) =>
-                        Center(child: Text('Error: $error')),
-                    loading: () => const CircularProgressIndicator(),
+                      )
+                    ],
                   ),
-                ],
-              ),
+                ),
+                ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: filteredData.length,
+                    itemBuilder: (context, index) {
+                      return Card(
+                          elevation: 4,
+                          color: Colors.white,
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      'Total Quantity: ',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.grey[500]),
+                                    ),
+                                    Text(
+                                      filteredData[index].TotalQty.toString(),
+                                      style: const TextStyle(
+                                          color: Colors.blue,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      filteredData[index].Month.toString(),
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      'Total Amount: ',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.grey[500]),
+                                    ),
+                                    Text(
+                                        filteredData[index]
+                                            .TotalAmount
+                                            .toString(),
+                                        style: const TextStyle(
+                                            color: Colors.green,
+                                            fontWeight: FontWeight.bold)),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ));
+                    }),
+              ],
             ),
-            PRGraphAll.when(
-                error: (error, stack) => Center(child: Text('Error: $error')),
-                loading: () => const CircularProgressIndicator(),
-                data: (data) {
-                  final filteredData = data.data
-                      .where((d) => d.TotalQty != 0 || d.TotalAmount != 0)
-                      .toList();
-                  return ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: filteredData.length,
-                      itemBuilder: (context, index) {
-                        return Card(
-                            elevation: 4,
-                            color: Colors.white,
-                            child: Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Text(
-                                        'Total Quantity: ',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.grey[500]),
-                                      ),
-                                      Text(
-                                        filteredData[index].TotalQty.toString(),
-                                        style: const TextStyle(
-                                            color: Colors.blue,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        filteredData[index].Month.toString(),
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Text(
-                                        'Total Amount: ',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.grey[500]),
-                                      ),
-                                      Text(
-                                          filteredData[index]
-                                              .TotalAmount
-                                              .toString(),
-                                          style: const TextStyle(
-                                              color: Colors.green,
-                                              fontWeight: FontWeight.bold)),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ));
-                      });
-                })
-          ],
+          ),
+        );
+      },
+      error: (error, stack) => Center(
+        child: Center(
+          child: LottieBuilder.asset(
+            'assets/json/ErrorLoading.json',
+            fit: BoxFit.fill,
+            height: 550,
+            width: 450,
+          ),
         ),
       ),
+      loading: () => lineChartShimmer(),
     );
   }
 }

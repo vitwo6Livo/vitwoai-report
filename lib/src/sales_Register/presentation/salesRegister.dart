@@ -104,7 +104,7 @@ class SalesRegister extends ConsumerWidget {
                                       .copyWith(color: AppColor.lightFontCpy));
                             },
                             error: (error, stackTrace) {
-                              return const Text("Error fetching data");
+                              return const Text("Something went wrong!");
                             },
                             loading: () {
                               return ShimmerSummary();
@@ -125,7 +125,7 @@ class SalesRegister extends ConsumerWidget {
                                   fontSize: 28));
                         },
                         error: (error, stackTrace) {
-                          return const Text("Error fetching data");
+                          return const Text("Something went wrong!");
                         },
                         loading: () {
                           return ShimmerSummary();
@@ -178,7 +178,7 @@ class SalesRegister extends ConsumerWidget {
                                       .copyWith(color: AppColor.lightFontCpy));
                             },
                             error: (error, stackTrace) {
-                              return const Text("Error fetching data");
+                              return const Text("Something went wrong!");
                             },
                             loading: () {
                               return ShimmerSummary();
@@ -199,7 +199,7 @@ class SalesRegister extends ConsumerWidget {
                                   fontSize: 28));
                         },
                         error: (error, stackTrace) {
-                          return const Text("Error fetching data");
+                          return const Text("Something went wrong!");
                         },
                         loading: () {
                           return ShimmerSummary();
@@ -251,7 +251,7 @@ class SalesRegister extends ConsumerWidget {
                                       .copyWith(color: AppColor.lightFontCpy));
                             },
                             error: (error, stackTrace) {
-                              return const Text("Error fetching data");
+                              return const Text("Something went wrong!");
                             },
                             loading: () {
                               return ShimmerSummary();
@@ -272,7 +272,7 @@ class SalesRegister extends ConsumerWidget {
                                   fontSize: 28));
                         },
                         error: (error, stackTrace) {
-                          return const Text("Error fetching data");
+                          return const Text("Something went wrong!");
                         },
                         loading: () {
                           return ShimmerSummary();
@@ -324,7 +324,7 @@ class SalesRegister extends ConsumerWidget {
                                       .copyWith(color: AppColor.lightFontCpy));
                             },
                             error: (error, stackTrace) {
-                              return const Text("Error fetching data");
+                              return const Text("Something went wrong!");
                             },
                             loading: () {
                               return ShimmerSummary();
@@ -345,7 +345,7 @@ class SalesRegister extends ConsumerWidget {
                                   fontSize: 28));
                         },
                         error: (error, stackTrace) {
-                          return const Text("Error fetching data");
+                          return const Text("Something went wrong!");
                         },
                         loading: () {
                           return ShimmerSummary();
@@ -397,7 +397,7 @@ class SalesRegister extends ConsumerWidget {
                                       .copyWith(color: AppColor.lightFontCpy));
                             },
                             error: (error, stackTrace) {
-                              return const Text("Error fetching data");
+                              return const Text("Something went wrong!");
                             },
                             loading: () {
                               return ShimmerSummary();
@@ -418,7 +418,7 @@ class SalesRegister extends ConsumerWidget {
                                   fontSize: 28));
                         },
                         error: (error, stackTrace) {
-                          return const Text("Error fetching data");
+                          return const Text("Something went wrong!");
                         },
                         loading: () {
                           return ShimmerSummary();
@@ -470,7 +470,7 @@ class SalesRegister extends ConsumerWidget {
                                       .copyWith(color: AppColor.lightFontCpy));
                             },
                             error: (error, stackTrace) {
-                              return const Text("Error fetching data");
+                              return const Text("Something went wrong!");
                             },
                             loading: () {
                               return ShimmerSummary();
@@ -491,7 +491,7 @@ class SalesRegister extends ConsumerWidget {
                                   fontSize: 28));
                         },
                         error: (error, stackTrace) {
-                          return const Text("Error fetching data");
+                          return const Text("Something went wrong!");
                         },
                         loading: () {
                           return ShimmerSummary();
