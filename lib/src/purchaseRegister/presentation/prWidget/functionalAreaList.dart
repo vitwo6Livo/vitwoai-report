@@ -102,11 +102,13 @@ class _FunctionalAreaListState extends ConsumerState<FunctionalAreaList> {
                           };
                         });
                         return _buildListView(
-                            purchesRegisterItemWiseList['content']);
+                            purchesRegisterItemWiseList['content'],
+                            screenHeight,
+                            screenWidth);
                       },
                       error: (error, stack) => Center(
                         child: LottieBuilder.asset(
-                          'assets/json/NoDataFound.json',
+                          'assets/json/ErrorLoading.json',
                           fit: BoxFit.fill,
                           height: screenHeight * 0.33,
                           width: screenWidth * 0.64,
@@ -114,7 +116,8 @@ class _FunctionalAreaListState extends ConsumerState<FunctionalAreaList> {
                       ),
                       loading: () => screen_shimmer(120, 800),
                     )
-                : _buildListView(purchesRegisterItemWiseList['content']),
+                : _buildListView(purchesRegisterItemWiseList['content'],
+                    screenHeight, screenWidth),
           ),
           // if (_isLoadingMore)
           //   Padding(
@@ -126,9 +129,17 @@ class _FunctionalAreaListState extends ConsumerState<FunctionalAreaList> {
     );
   }
 
-  Widget _buildListView(List<dynamic> content) {
+  Widget _buildListView(
+      List<dynamic> content, double screenHeight, double screenWidth) {
     return content.isEmpty
-        ? Center(child: Text(HandText.noData))
+        ? Center(
+            child: LottieBuilder.asset(
+              'assets/json/NoDataFound.json',
+              fit: BoxFit.fill,
+              height: screenHeight * 0.33,
+              width: screenWidth * 0.64,
+            ),
+          )
         : ListView.builder(
             controller: _scrollController,
             itemCount: _isLoadingMore ? content.length + 1 : content.length,
