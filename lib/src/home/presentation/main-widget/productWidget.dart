@@ -31,21 +31,21 @@ class ProductWidget extends ConsumerWidget {
             const SizedBox(height: 5),
             trandingProductList.when(
                 data: (data) {
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: data['topList'].length,
-                    itemBuilder: (context, index) {
-                      return data.isEmpty
-                          ? Center(
-                              child: LottieBuilder.asset(
-                                'assets/json/NoDataFound.json',
-                                fit: BoxFit.fill,
-                                height: screenHeight * 0.196,
-                                width: screenWidth * 0.25,
-                              ),
-                            )
-                          : Column(
+                  return data.isEmpty
+                      ? Center(
+                          child: LottieBuilder.asset(
+                            'assets/json/NoDataFound.json',
+                            fit: BoxFit.fill,
+                            height: screenHeight * 0.198,
+                            width: screenWidth * 0.28,
+                          ),
+                        )
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: data['topList'].length,
+                          itemBuilder: (context, index) {
+                            return Column(
                               children: [
                                 ListTile(
                                   leading: const CircleAvatar(
@@ -70,15 +70,15 @@ class ProductWidget extends ConsumerWidget {
                                 ),
                               ],
                             );
-                    },
-                  );
+                          },
+                        );
                 },
                 error: (error, stack) => Center(
                       child: LottieBuilder.asset(
                         'assets/json/ErrorLoading.json',
                         fit: BoxFit.fill,
-                        height: screenHeight * 0.196,
-                        width: screenWidth * 0.25,
+                        height: screenHeight * 0.250,
+                        width: screenWidth * 0.80,
                       ),
                     ),
                 loading: () => screen_shimmer(50, 800))

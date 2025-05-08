@@ -101,28 +101,20 @@ class Deafaultwidget extends ConsumerWidget {
                                 return CircularChart(
                                     'Sales', totalSales, 100, totalSales);
                               }, error: (error, stackTrace) {
-                                return Text(
-                                  'Error: $error',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium!
-                                      .copyWith(
-                                          fontSize: 20,
-                                          color: AppColor.appbarFont),
+                                return Shimmer.fromColors(
+                                  baseColor: Colors.grey[300]!,
+                                  highlightColor: Colors.grey[100]!,
+                                  child: const CircularChart('Sales', 0, 0, 0),
                                 );
                               }, loading: () {
                                 return Shimmer.fromColors(
                                   baseColor: Colors.grey[300]!,
                                   highlightColor: Colors.grey[100]!,
-                                  child: Container(
-                                    width: 100,
-                                    height: 20,
-                                    color: Colors.white,
-                                  ),
+                                  child: const CircularChart('Sales', 0, 0, 0),
                                 );
                               }),
-                              CircularChart('Revenue', 26, 100, 26),
-                              CircularChart('growth', 14, 100, 14),
+                              const CircularChart('Revenue', 26, 100, 26),
+                              const CircularChart('growth', 14, 100, 14),
                             ],
                           ),
                         ],
@@ -159,9 +151,9 @@ class Deafaultwidget extends ConsumerWidget {
                       );
                     }, error: (error, stackTrace) {
                       return Text(
-                        'Error: $error',
+                        'Something went wrong!',
                         style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            fontSize: 20, color: AppColor.lightFontCpy),
+                            fontSize: 10, color: AppColor.lightFontCpy),
                       );
                     }, loading: () {
                       return ShimmerSummary();
@@ -202,9 +194,9 @@ class Deafaultwidget extends ConsumerWidget {
                       );
                     }, error: (error, stackTrace) {
                       return Text(
-                        'Error: $error',
+                        'Something went wrong!',
                         style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            fontSize: 20, color: AppColor.lightFontCpy),
+                            fontSize: 10, color: AppColor.lightFontCpy),
                       );
                     }, loading: () {
                       return ShimmerSummary();
