@@ -54,7 +54,8 @@ class _PurchaseOrderListState extends ConsumerState<PurchaseOrderList> {
     final newData =
         await ref.read(purchesRegisterVendorWiseProvider(nextPage).future);
 
-    ref.read(purchaseRegisterVendorWiseListStateProvider.notifier)
+    ref
+        .read(purchaseRegisterVendorWiseListStateProvider.notifier)
         .update((state) {
       final updatedContent = [
         ...state['content'],
@@ -103,11 +104,13 @@ class _PurchaseOrderListState extends ConsumerState<PurchaseOrderList> {
                           };
                         });
                         return _buildListView(
-                            purchaseRegisterVendorWiseList['content']);
+                            purchaseRegisterVendorWiseList['content'],
+                            screenHeight,
+                            screenWidth);
                       },
                       error: (error, stack) => Center(
                         child: LottieBuilder.asset(
-                          'assets/json/NoDataFound.json',
+                          'assets/json/ErrorLoading.json',
                           fit: BoxFit.fill,
                           height: screenHeight * 0.33,
                           width: screenWidth * 0.64,
@@ -115,7 +118,8 @@ class _PurchaseOrderListState extends ConsumerState<PurchaseOrderList> {
                       ),
                       loading: () => screen_shimmer(120, 800),
                     )
-                : _buildListView(purchaseRegisterVendorWiseList['content']),
+                : _buildListView(purchaseRegisterVendorWiseList['content'],
+                    screenHeight, screenWidth),
           ),
           // if (_isLoadingMore)
           //   Padding(
@@ -127,9 +131,17 @@ class _PurchaseOrderListState extends ConsumerState<PurchaseOrderList> {
     );
   }
 
-  Widget _buildListView(List<dynamic> content) {
+  Widget _buildListView(
+      List<dynamic> content, double screenHeight, double screenWidth) {
     return content.isEmpty
-        ? Center(child: Text(HandText.noData))
+        ? Center(
+            child: LottieBuilder.asset(
+              'assets/json/NoDataFound.json',
+              fit: BoxFit.fill,
+              height: screenHeight * 0.33,
+              width: screenWidth * 0.64,
+            ),
+          )
         : ListView.builder(
             controller: _scrollController,
             itemCount: _isLoadingMore ? content.length + 1 : content.length,
