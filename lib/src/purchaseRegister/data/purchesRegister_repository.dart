@@ -90,7 +90,7 @@ Future<Pomodel> fetchPurchesRegisterPoWiseData(int page) async {
 
   final Map<String, dynamic> bodyData = {
     "page": page,
-    "size": 20,
+    "size": 10,
     "sortBy": "PO Date",
     "sortDir": "desc",
     "search": ""

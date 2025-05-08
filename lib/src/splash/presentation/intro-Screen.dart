@@ -50,14 +50,18 @@ class _IntroScreenState extends State<Intro_Screen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            FlutterLogo(size: 100),
-            SizedBox(height: 20),
-            Text(
+            // FlutterLogo(size: 100),
+            Image.asset(
+              'assets/images/vitwologo.png',
+              height: 350,
+            ),
+            const SizedBox(height: 20),
+            const Text(
               'Welcome to Vitwo Analytics App',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
