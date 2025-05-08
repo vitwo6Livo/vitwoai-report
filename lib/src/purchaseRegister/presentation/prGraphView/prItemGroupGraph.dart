@@ -3,6 +3,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:vitwoai_report/golobal-Widget/graphShimmer.dart';
 import 'package:vitwoai_report/src/purchaseRegister/data/prGraphAPI.dart';
 
@@ -41,7 +42,7 @@ class _StorageLocationGraphModelState
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'Item Group Graph',
+                  'Item Group Wise Graph',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 28,
@@ -153,7 +154,16 @@ class _StorageLocationGraphModelState
           ),
         );
       },
-      error: (error, stack) => Center(child: Text('Error: $error')),
+      error: (error, stack) => Center(
+        child: Center(
+          child: LottieBuilder.asset(
+            'assets/json/ErrorLoading.json',
+            fit: BoxFit.fill,
+            height: 550,
+            width: 450,
+          ),
+        ),
+      ),
       loading: () => graphShimmer(),
     ));
   }

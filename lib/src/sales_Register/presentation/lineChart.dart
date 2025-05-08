@@ -1,6 +1,8 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
+import 'package:vitwoai_report/golobal-Widget/srLineChartShimmer.dart';
 import 'package:vitwoai_report/src/sales_Register/data/salesRegisterFatchData.dart';
 
 // class LineChartSample2 extends StatefulWidget {
@@ -407,8 +409,15 @@ class LineChartSample2 extends ConsumerWidget {
           ),
         );
       },
-      error: (error, stack) => Center(child: Text('Error: $error')),
-      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, stack) => Center(
+        child: LottieBuilder.asset(
+          'assets/json/ErrorLoading.json',
+          fit: BoxFit.fill,
+          height: 550,
+          width: 450,
+        ),
+      ),
+      loading: () => srlineChartShimmer(),
     );
   }
 }
